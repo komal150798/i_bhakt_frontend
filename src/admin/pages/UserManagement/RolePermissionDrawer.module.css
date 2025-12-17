@@ -1,0 +1,149 @@
+.drawerOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+.drawer {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.drawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.drawerHeader h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.roleName {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.drawerClose {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawerClose:hover {
+  color: #333;
+}
+
+.drawerBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.permissionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.permissionItem {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.permissionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.permissionCheckbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+}
+
+.permissionName {
+  font-size: 1rem;
+  color: #333;
+}
+
+.permissionChildren {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid #e0e0e0;
+}
+
+.drawerFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #ddd;
+}
+
+.btnCancel,
+.btnSave {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btnCancel {
+  background: #6c757d;
+  color: white;
+}
+
+.btnCancel:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+.btnSave {
+  background: #28a745;
+  color: white;
+}
+
+.btnSave:hover:not(:disabled) {
+  background: #218838;
+}
+
+.btnCancel:disabled,
+.btnSave:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

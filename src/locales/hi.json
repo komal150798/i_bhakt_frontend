@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "home": "होम",
+    "kundli": "कुंडली",
+    "manifestation": "मनोकामना",
+    "karma": "कर्म",
+    "pricing": "मूल्य निर्धारण",
+    "login": "लॉग इन",
+    "signup": "साइन अप",
+    "logout": "लॉग आउट",
+    "myKundli": "मेरी कुंडली",
+    "myManifestation": "मेरा मनोकामना स्कोर",
+    "myOrders": "मेरे ऑर्डर और प्लान",
+    "notifications": "सूचनाएं"
+  },
+  "footer": {
+    "corporate": "कॉर्पोरेट",
+    "quickLinks": "त्वरित लिंक",
+    "contact": "संपर्क करें",
+    "followUs": "हमें फॉलो करें",
+    "aboutUs": "हमारे बारे में",
+    "privacyPolicy": "गोपनीयता नीति",
+    "termsConditions": "नियम और शर्तें",
+    "refundPolicy": "रिफंड और रद्दीकरण नीति",
+    "pricingPolicy": "मूल्य निर्धारण नीति",
+    "disclaimer": "अस्वीकरण",
+    "dosha": "दोष",
+    "yog": "योग",
+    "marriage": "विवाह",
+    "numerology": "अंक ज्योतिष",
+    "tarot": "टैरो",
+    "blog": "ब्लॉग",
+    "email": "ईमेल",
+    "phone": "फोन",
+    "address": "पता",
+    "copyright": "सभी अधिकार सुरक्षित"
+  },
+  "plan": {
+    "freePlan": "आप वर्तमान में मुफ्त प्लान पर हैं",
+    "upgradePlan": "प्लान अपग्रेड करें",
+    "unlockFeatures": "सभी फीचर्स अनलॉक करें",
+    "locked": "लॉक"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफल",
+    "cancel": "रद्द करें",
+    "confirm": "पुष्टि करें",
+    "save": "सहेजें",
+    "edit": "संपादित करें",
+    "delete": "हटाएं"
+  }
+}
+
+
+
+
+
+
+

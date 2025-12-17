@@ -1,0 +1,98 @@
+/* ============================================
+   I-Bhakt Admin Stats Cards
+   ============================================ */
+
+.statCard {
+  background: radial-gradient(circle at top, rgba(248, 250, 252, 0.06), transparent 55%),
+              var(--bg-elevated);
+  border: 1px solid var(--border-light);
+  border-radius: var(--card-radius);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform var(--transition-base);
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border-color: var(--primary-color);
+}
+
+.statCard:hover::before {
+  transform: scaleX(1);
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-md);
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--button-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-color);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-base);
+}
+
+.statCard:hover .iconWrapper {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-glow);
+}
+
+.iconWrapper i {
+  font-size: 1.75rem;
+}
+
+.primary {
+  color: var(--primary-color);
+}
+
+.success {
+  color: var(--success-color);
+}
+
+.info {
+  color: var(--accent-color);
+}
+
+.accent {
+  color: var(--accent-color);
+}
+
+.content {
+  margin-top: var(--spacing-md);
+}
+
+.value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-xs);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.02em;
+}
+
+.label {
+  color: var(--muted-text-color);
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 500;
+}

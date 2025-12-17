@@ -1,0 +1,110 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height, 72px);
+  background: var(--admin-header-bg, #ffffff);
+  border-bottom: 1px solid var(--admin-border, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg, 1.5rem);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 1rem);
+  flex: 1;
+}
+
+.menuToggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--admin-text, #0b1120);
+  cursor: pointer;
+  padding: var(--spacing-sm, 0.5rem);
+  border-radius: var(--button-radius, 12px);
+  transition: var(--transition-base, 300ms ease);
+}
+
+.menuToggle:hover {
+  background: var(--admin-hover, #f3f4f6);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 0.5rem);
+}
+
+.logoImage {
+  height: 40px;
+  width: auto;
+  border-radius: 8px;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--admin-text, #0b1120);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pageTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--admin-text-muted, #6b7280);
+  margin-left: var(--spacing-lg, 1.5rem);
+  padding-left: var(--spacing-lg, 1.5rem);
+  border-left: 1px solid var(--admin-border, #e5e7eb);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 1rem);
+}
+
+.themeToggle {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--admin-text, #0b1120);
+  cursor: pointer;
+  padding: var(--spacing-sm, 0.5rem);
+  border-radius: var(--button-radius, 12px);
+  transition: var(--transition-base, 300ms ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.themeToggle:hover {
+  background: var(--admin-hover, #f3f4f6);
+}
+
+@media (max-width: 768px) {
+  .menuToggle {
+    display: block;
+  }
+
+  .pageTitle {
+    display: none;
+  }
+
+  .logoText {
+    display: none;
+  }
+}
+
+
+

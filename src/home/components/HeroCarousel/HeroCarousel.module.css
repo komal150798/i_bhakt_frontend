@@ -1,0 +1,154 @@
+/* ============================================
+   I-Bhakt Hero Carousel
+   ============================================ */
+
+.slide {
+  min-height: 100vh;
+  background: var(--gradient-bg);
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-top: var(--header-height);
+  padding-bottom: var(--spacing-3xl);
+}
+
+/* Star field background effect */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, var(--primary-soft), transparent),
+    radial-gradient(2px 2px at 60% 70%, var(--accent-color), transparent),
+    radial-gradient(1px 1px at 50% 50%, var(--primary-soft), transparent),
+    radial-gradient(1px 1px at 80% 10%, var(--accent-color), transparent),
+    radial-gradient(2px 2px at 90% 40%, var(--primary-soft), transparent),
+    radial-gradient(1px 1px at 33% 60%, var(--accent-color), transparent);
+  background-size: 200% 200%;
+  background-position: 0% 0%;
+  opacity: 0.4;
+  animation: starfield 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes starfield {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.title {
+  color: var(--primary-soft);
+  text-shadow: var(--shadow-glow);
+  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--spacing-lg);
+}
+
+.subtitle {
+  color: var(--muted-text-color);
+  font-size: 1.25rem;
+  font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto var(--spacing-xl);
+}
+
+/* Carousel Controls - I-Bhakt Style */
+:global(.carousel-control-prev),
+:global(.carousel-control-next) {
+  width: 50px;
+  height: 50px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  opacity: 0.8;
+  transition: all var(--transition-base);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+:global(.carousel-control-prev) {
+  left: var(--spacing-xl);
+}
+
+:global(.carousel-control-next) {
+  right: var(--spacing-xl);
+}
+
+:global(.carousel-control-prev):hover,
+:global(.carousel-control-next):hover {
+  opacity: 1;
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-glow);
+  background: var(--bg-color);
+}
+
+:global(.carousel-control-prev-icon),
+:global(.carousel-control-next-icon) {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Carousel Indicators - I-Bhakt Style */
+:global(.carousel-indicators) {
+  bottom: var(--spacing-xl);
+}
+
+:global(.carousel-indicators [data-bs-target]) {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--muted-text-color);
+  border: 2px solid transparent;
+  opacity: 0.5;
+  transition: all var(--transition-base);
+}
+
+:global(.carousel-indicators [data-bs-target].active) {
+  background-color: var(--primary-color);
+  border-color: var(--primary-soft);
+  opacity: 1;
+  box-shadow: var(--shadow-glow);
+  transform: scale(1.2);
+}
+
+:global(.carousel-indicators [data-bs-target]:hover) {
+  opacity: 0.8;
+  background-color: var(--primary-soft);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slide {
+    min-height: 80vh;
+    padding-top: calc(var(--header-height) + var(--spacing-lg));
+    padding-bottom: var(--spacing-xl);
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.125rem;
+  }
+
+  :global(.carousel-control-prev),
+  :global(.carousel-control-next) {
+    width: 40px;
+    height: 40px;
+  }
+
+  :global(.carousel-control-prev) {
+    left: var(--spacing-md);
+  }
+
+  :global(.carousel-control-next) {
+    right: var(--spacing-md);
+  }
+}

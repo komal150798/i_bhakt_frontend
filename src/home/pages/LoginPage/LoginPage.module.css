@@ -1,0 +1,327 @@
+/* ============================================
+   LoginPage - I-Bhakt Theme
+   ============================================ */
+
+.loginPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #050608 0%, #0B0F19 50%, #111827 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  padding: 2.5rem 2rem;
+  background: var(--bg-elevated);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-soft);
+  border-top: 1px solid rgba(251, 191, 36, 0.5);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-soft));
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+}
+
+.title {
+  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-sm);
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-soft));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--muted-text-color);
+  font-size: 0.95rem;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* ============================================
+   Tabs (Segment Control)
+   ============================================ */
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xl);
+  background: var(--bg-color);
+  padding: 4px;
+  border-radius: var(--button-radius);
+  border: 1px solid var(--border-color);
+}
+
+.tab {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: transparent;
+  border: none;
+  border-radius: var(--button-radius);
+  color: var(--muted-text-color);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--text-color);
+  background: var(--bg-elevated);
+}
+
+.tabActive {
+  background: var(--primary-color);
+  color: #000;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.tabActive:hover {
+  background: var(--primary-soft);
+  color: #000;
+}
+
+/* ============================================
+   Form
+   ============================================ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.inputGroup {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+}
+
+.input::placeholder {
+  color: var(--muted-text-color);
+}
+
+.forgotPassword {
+  text-align: right;
+  margin-top: calc(var(--spacing-xs) * -1);
+}
+
+.forgotLink {
+  color: var(--primary-soft);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.forgotLink:hover {
+  color: var(--primary-color);
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.primaryButton {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  border-radius: 9999px;
+  background: var(--primary-color);
+  color: #000;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: var(--primary-soft);
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.5);
+  transform: translateY(-2px);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secondaryButton {
+  padding: 0.5rem 1rem;
+  border-radius: var(--button-radius);
+  background: transparent;
+  color: var(--muted-text-color);
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.secondaryButton:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.googleButton {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  border-radius: 9999px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.googleButton:hover:not(:disabled) {
+  background: var(--bg-elevated);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+  transform: translateY(-2px);
+}
+
+.googleButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.googleSubtext {
+  text-align: center;
+  color: var(--muted-text-color);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ============================================
+   Messages
+   ============================================ */
+
+.error {
+  color: var(--danger-color);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: var(--spacing-sm);
+  background: rgba(249, 115, 115, 0.1);
+  border-radius: var(--button-radius);
+  border: 1px solid rgba(249, 115, 115, 0.3);
+}
+
+.success {
+  color: var(--success-color);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: var(--spacing-sm);
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: var(--button-radius);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* ============================================
+   Links
+   ============================================ */
+
+.signupLink {
+  text-align: center;
+  color: var(--muted-text-color);
+  font-size: 0.9rem;
+  margin-top: var(--spacing-md);
+}
+
+.signupLink a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.signupLink a:hover {
+  color: var(--primary-soft);
+}
+
+/* ============================================
+   OTP Actions
+   ============================================ */
+
+.otpActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: calc(var(--spacing-xs) * -1);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .card {
+    padding: 2rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .tab {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}

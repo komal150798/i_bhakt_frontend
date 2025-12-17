@@ -1,0 +1,541 @@
+/**
+ * iBhakt DT - Premium Cosmic Design System
+ * Bootstrap 5 + Custom CSS Variables
+ */
+
+/* ========================================
+   CSS VARIABLES - THEME SYSTEM
+   ======================================== */
+
+:root {
+  /* Color Palette */
+  --cosmic-purple: #7b2ff7;
+  --mystic-blue: #4facfe;
+  --deep-black: #0a0a0f;
+  --pure-white: #ffffff;
+  --soft-gold: #f6c86e;
+  --astro-violet: #9d4edd;
+  
+  /* Gradients */
+  --cosmic-gradient: linear-gradient(135deg, #7b2ff7 0%, #4facfe 50%, #f6c86e 100%);
+  --cosmic-gradient-horizontal: linear-gradient(90deg, #7b2ff7 0%, #4facfe 50%, #f6c86e 100%);
+  --cosmic-gradient-vertical: linear-gradient(180deg, #7b2ff7 0%, #4facfe 50%, #f6c86e 100%);
+  --purple-blue-gradient: linear-gradient(135deg, #7b2ff7 0%, #4facfe 100%);
+  --dark-cosmic-gradient: linear-gradient(135deg, #4a148c 0%, #1a237e 50%, #3e2723 100%);
+  
+  /* Light Theme */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #0a0a0f;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --card-bg: #ffffff;
+  --card-border: #e9ecef;
+  --input-bg: #ffffff;
+  --input-border: #dee2e6;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(123, 47, 247, 0.3);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #141420;
+  --bg-tertiary: #1a1a2e;
+  --text-primary: #ffffff;
+  --text-secondary: #adb5bd;
+  --text-muted: #6c757d;
+  --card-bg: #141420;
+  --card-border: #1a1a2e;
+  --input-bg: #1a1a2e;
+  --input-border: #2a2a3e;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 30px rgba(123, 47, 247, 0.5);
+  --glass-bg: rgba(20, 20, 32, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+* {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Poppins', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.display-1, .display-2, .display-3, .display-4 {
+  background: var(--cosmic-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.text-gradient {
+  background: var(--cosmic-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   GLASS MORPHISM
+   ======================================== */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.glass-nav {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.glass-nav .navbar-nav .nav-link {
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.glass-nav .navbar-nav .nav-link:hover,
+.glass-nav .navbar-nav .nav-link.active {
+  color: var(--cosmic-purple);
+}
+
+.glass-nav .navbar-nav .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 2px;
+  background: var(--cosmic-gradient);
+  border-radius: 2px;
+}
+
+.glass-nav .navbar-toggler {
+  background: transparent;
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+}
+
+.glass-nav .navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(123, 47, 247, 0.1);
+}
+
+@media (max-width: 991px) {
+  .glass-nav .navbar-collapse {
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 12px;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+  }
+}
+
+/* ========================================
+   COSMIC BUTTONS
+   ======================================== */
+
+.btn-cosmic {
+  background: var(--cosmic-gradient);
+  border: none;
+  color: white;
+  padding: 12px 32px;
+  font-weight: 600;
+  border-radius: 50px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-cosmic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-cosmic:hover::before {
+  left: 100%;
+}
+
+.btn-cosmic:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(123, 47, 247, 0.6);
+}
+
+.btn-cosmic:active {
+  transform: translateY(0);
+}
+
+.btn-cosmic-outline {
+  background: transparent;
+  border: 2px solid;
+  border-image: var(--cosmic-gradient) 1;
+  color: var(--text-primary);
+  padding: 12px 32px;
+  font-weight: 600;
+  border-radius: 50px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.btn-cosmic-outline:hover {
+  background: var(--cosmic-gradient);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ========================================
+   CARDS & CONTAINERS
+   ======================================== */
+
+.cosmic-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cosmic-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--cosmic-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cosmic-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.cosmic-card:hover::before {
+  opacity: 1;
+}
+
+.cosmic-card-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ========================================
+   FORM INPUTS
+   ======================================== */
+
+.cosmic-input {
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.cosmic-input:focus {
+  outline: none;
+  border-color: var(--cosmic-purple);
+  box-shadow: 0 0 0 3px rgba(123, 47, 247, 0.1);
+  background: var(--input-bg);
+}
+
+.cosmic-input::placeholder {
+  color: var(--text-muted);
+}
+
+.input-group-cosmic {
+  position: relative;
+}
+
+.input-group-cosmic .input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  z-index: 10;
+}
+
+.input-group-cosmic .cosmic-input {
+  padding-left: 48px;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(123, 47, 247, 0.8);
+  }
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animation Classes */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow 20s linear infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 3s infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out;
+}
+
+/* ========================================
+   COSMIC ELEMENTS
+   ======================================== */
+
+.cosmic-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.cosmic-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(123, 47, 247, 0.1) 0%, transparent 70%);
+  animation: rotate-slow 30s linear infinite;
+}
+
+.planet-icon {
+  font-size: 3rem;
+  color: var(--cosmic-purple);
+  filter: drop-shadow(0 0 10px rgba(123, 47, 247, 0.5));
+  animation: float 6s ease-in-out infinite;
+}
+
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* ========================================
+   PROGRESS BARS & GAUGES
+   ======================================== */
+
+.cosmic-progress {
+  height: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cosmic-progress-bar {
+  height: 100%;
+  background: var(--cosmic-gradient);
+  border-radius: 50px;
+  transition: width 1s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cosmic-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+.radial-gauge {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .cosmic-card {
+    padding: 1.5rem;
+  }
+  
+  .display-1, .display-2, .display-3, .display-4 {
+    font-size: 2rem !important;
+  }
+}
+
+/* ========================================
+   UTILITIES
+   ======================================== */
+
+.section-spacing {
+  padding: 80px 0;
+}
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
+}
+
+.border-gradient {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+              var(--cosmic-gradient) border-box;
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

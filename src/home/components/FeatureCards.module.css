@@ -1,0 +1,37 @@
+.features {
+  background-color: var(--bg-color);
+  padding: var(--spacing-2xl) 0;
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.featureCard {
+  transition: all var(--transition-base);
+  border: 1px solid var(--border-color);
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
+}
+
+.icon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: var(--spacing-md);
+}
+
+.cardTitle {
+  color: var(--text-color);
+  font-size: 1.25rem;
+}
+
+.cardText {
+  color: var(--muted-text-color);
+  font-size: 0.95rem;
+}
+

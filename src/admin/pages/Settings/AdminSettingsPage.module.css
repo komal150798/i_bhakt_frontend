@@ -1,0 +1,97 @@
+.page {
+  max-width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg, 1.5rem);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--admin-text, #0b1120);
+}
+
+.saveButton {
+  background: var(--admin-primary, #fbbf24);
+  color: var(--text-inverse, #0b1220);
+  border: none;
+  padding: var(--spacing-sm, 0.5rem) var(--spacing-lg, 1.5rem);
+  border-radius: var(--button-radius, 12px);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base, 300ms ease);
+}
+
+.saveButton:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.settingsForm {
+  background: var(--admin-bg-elevated, #ffffff);
+  border: 1px solid var(--admin-border, #e5e7eb);
+  border-radius: var(--card-radius, 18px);
+  padding: var(--spacing-lg, 1.5rem);
+}
+
+.section {
+  margin-bottom: var(--spacing-xl, 2rem);
+}
+
+.section h2 {
+  margin: 0 0 var(--spacing-md, 1rem) 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--admin-text, #0b1120);
+}
+
+.formGroup {
+  margin-bottom: var(--spacing-md, 1rem);
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: var(--spacing-xs, 0.25rem);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--admin-text, #0b1120);
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  width: 100%;
+  padding: var(--spacing-sm, 0.5rem) var(--spacing-md, 1rem);
+  border: 1px solid var(--admin-border, #e5e7eb);
+  border-radius: var(--input-radius, 10px);
+  font-size: 0.9375rem;
+  color: var(--admin-text, #0b1120);
+  background: var(--admin-bg, #f9fafb);
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--admin-primary, #fbbf24);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--spacing-xl, 2rem);
+  color: var(--admin-text-muted, #6b7280);
+}
+
+
+

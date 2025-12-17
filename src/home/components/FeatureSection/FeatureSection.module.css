@@ -1,0 +1,102 @@
+/* ============================================
+   I-Bhakt Feature Section
+   ============================================ */
+
+.features {
+  background: var(--gradient-bg);
+  padding: var(--spacing-3xl) 0;
+  position: relative;
+}
+
+.features::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  opacity: 0.3;
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.featureCard {
+  background: radial-gradient(circle at top, rgba(248, 250, 252, 0.06), transparent 55%),
+              var(--bg-elevated);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-soft);
+  transition: all var(--transition-base);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.featureCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform var(--transition-base);
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border-color: var(--primary-color);
+}
+
+.featureCard:hover::before {
+  transform: scaleX(1);
+}
+
+.icon {
+  font-size: 3.5rem;
+  line-height: 1;
+  margin-bottom: var(--spacing-md);
+  filter: drop-shadow(0 4px 8px rgba(251, 191, 36, 0.3));
+  transition: transform var(--transition-base);
+}
+
+.featureCard:hover .icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.cardTitle {
+  color: var(--text-color);
+  font-size: 1.25rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.cardText {
+  color: var(--muted-text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Section Title with Star Decoration */
+:global(.features h2) {
+  position: relative;
+  display: inline-block;
+}
+
+:global(.features h2::before),
+:global(.features h2::after) {
+  content: '✦';
+  color: var(--primary-color);
+  margin: 0 var(--spacing-sm);
+  font-size: 0.8em;
+  opacity: 0.6;
+}

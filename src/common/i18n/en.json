@@ -1,0 +1,230 @@
+{
+  "common": {
+    "logo": "I-Bhakt",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "home": "Home",
+    "about": "About Us",
+    "contact": "Contact",
+    "services": "Services",
+    "optional": "Optional"
+  },
+  "nav": {
+    "home": "Home",
+    "aboutUs": "About Us",
+    "kundli": "Kundli",
+    "dailyHoroscope": "Daily Horoscope",
+    "karma": "Karma",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "home": {
+    "heroTitle": "Unlock Your Destiny with Astrology",
+    "heroSubtitle": "Kundli, Horoscope, and personalized guidance from expert astrologers.",
+    "generateKundli": "Generate Free Kundli",
+    "talkToAstrologer": "Talk to Astrologer",
+    "heroTitle2": "Daily Horoscope, Accurate & Insightful",
+    "heroSubtitle2": "Stay ahead with daily, weekly, and monthly predictions.",
+    "viewHoroscope": "View Today's Horoscope",
+    "heroTitle3": "Matchmaking & Compatibility",
+    "heroSubtitle3": "Find your perfect life partner with Vedic astrology.",
+    "checkCompatibility": "Check Compatibility"
+  },
+  "features": {
+    "title": "Our Services",
+    "subtitle": "Comprehensive astrological services to guide your life journey",
+    "freeKundli": {
+      "title": "Free Kundli",
+      "description": "Generate your complete birth chart with accurate planetary positions and houses."
+    },
+    "dailyHoroscope": {
+      "title": "Daily Horoscope",
+      "description": "Get daily, weekly, and monthly predictions tailored to your zodiac sign."
+    },
+    "matchmaking": {
+      "title": "Matchmaking",
+      "description": "Check compatibility with your partner using advanced astrological matching."
+    },
+    "tarotReading": {
+      "title": "Tarot Reading",
+      "description": "Get insights into your future through mystical tarot card readings."
+    }
+  },
+  "kundli": {
+    "title": "Generate Your Kundli",
+    "subtitle": "Get your complete astrological birth chart with detailed planetary positions",
+    "form": {
+      "name": "Full Name",
+      "dob": "Date of Birth",
+      "tob": "Time of Birth",
+      "place": "Place of Birth",
+      "submit": "Generate Kundli",
+      "generating": "Generating..."
+    },
+    "results": {
+      "title": "Kundli Results",
+      "birthDate": "Birth Date",
+      "birthTime": "Birth Time",
+      "birthPlace": "Birth Place",
+      "lagna": "Lagna (Ascendant)",
+      "nakshatra": "Nakshatra",
+      "planetaryPositions": "Planetary Positions",
+      "houses": "Houses",
+      "sign": "Sign",
+      "lord": "Lord",
+      "house": "House",
+      "longitude": "Longitude",
+      "degrees": "Degrees",
+      "pada": "Pada",
+      "retrograde": "Retrograde",
+      "close": "Close",
+      "tithi": "Tithi",
+      "yoga": "Yoga",
+      "karana": "Karana"
+    }
+  },
+  "horoscope": {
+    "title": "Daily Horoscope",
+    "subtitle": "Get your personalized horoscope predictions",
+    "selectSign": "Select Your Zodiac Sign",
+    "chooseSign": "Choose your sign...",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "prediction": "Prediction",
+    "love": "Love & Relationships",
+    "career": "Career & Work",
+    "health": "Health & Wellness",
+    "finance": "Finance & Money",
+    "luckyElements": "Lucky Elements",
+    "luckyNumber": "Lucky Number",
+    "luckyColor": "Lucky Color",
+    "compatibility": "Compatibility",
+    "mood": "Mood",
+    "personalized": "Personalized Horoscope",
+    "personalizedAvailable": "Personalized horoscope available",
+    "optional": "Optional",
+    "chooseSignOrUsePersonalized": "Choose sign or use your profile",
+    "info": {
+      "noBirthDate": "Birth date not found",
+      "noBirthDateDesc": "Please update your profile with birth date to get personalized horoscope."
+    },
+    "errors": {
+      "selectSign": "Please select a zodiac sign",
+      "selectSignDesc": "You need to choose your zodiac sign to get horoscope predictions.",
+      "fetchFailed": "Failed to fetch horoscope"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Login",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign up"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "name": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Sign Up",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Login"
+  },
+  "refer": {
+    "title": "Refer & Earn",
+    "subtitle": "Invite your friends and earn rewards on every successful signup",
+    "yourCode": "Your Referral Code",
+    "copyLink": "Copy Referral Link",
+    "inviteNow": "Invite Now",
+    "totalReferrals": "Total Referrals",
+    "successfulSignups": "Successful Signups",
+    "totalEarnings": "Total Earnings"
+  },
+  "profile": {
+    "title": "My Profile",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "edit": "Edit Profile",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dateOfBirth": "Date of Birth",
+    "timeOfBirth": "Time of Birth",
+    "placeOfBirth": "Place of Birth",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "timezone": "Timezone",
+    "gender": "Gender"
+  },
+  "karma": {
+    "title": "Karma Engine",
+    "subtitle": "Track your actions and build positive karma. Every action matters.",
+    "form": {
+      "title": "Add Karma Action",
+      "description": "Describe an action you performed today. Our AI will classify it and update your karma score.",
+      "actionText": "Action Description",
+      "actionTextPlaceholder": "e.g., Helped a friend move today, Donated to charity, Told a lie...",
+      "actionTextHelp": "Describe what you did in detail. Be honest and specific.",
+      "category": "Category",
+      "categoryPlaceholder": "e.g., social, spiritual, work (optional)",
+      "categoryHelp": "Optional: Specify a category to help with classification.",
+      "intensity": "Intensity Level",
+      "intensityHelp": "How significant was this action? (1 = minor, 10 = major impact)",
+      "submit": "Add Karma Action",
+      "submitting": "Adding..."
+    },
+    "summary": {
+      "title": "Your Karma Summary",
+      "score": "Karma Score",
+      "recentActions": "Recent Actions"
+    },
+    "success": {
+      "added": "Karma action added successfully",
+      "addedDesc": "Your action has been classified and your karma score has been updated."
+    },
+    "errors": {
+      "actionRequired": "Action description is required",
+      "actionRequiredDesc": "Please describe the action you performed.",
+      "notAuthenticated": "Please login to add karma actions",
+      "addFailed": "Failed to add karma action"
+    },
+    "dashboard": {
+      "title": "Karma Dashboard",
+      "subtitle": "Your karma journey from {{from}} to {{to}}",
+      "loadFailed": "Failed to load dashboard",
+      "noData": "No karma data available yet",
+      "addFirstKarma": "Add Your First Karma",
+      "totalActions": "{{count}} total actions",
+      "trendUp": "Improving",
+      "trendDown": "Declining",
+      "trendFlat": "Stable",
+      "breakdown": "Karma Breakdown",
+      "goodKarma": "Good Karma",
+      "badKarma": "Bad Karma",
+      "neutralKarma": "Neutral",
+      "categories": "Category Scores",
+      "recentActions": "Recent Actions",
+      "date": "Date",
+      "action": "Action",
+      "type": "Type",
+      "score": "Score",
+      "strengths": "Your Strengths",
+      "weaknesses": "Areas to Improve",
+      "frequency": "Frequency",
+      "impact": "Impact",
+      "noStrengths": "No strengths detected yet",
+      "noWeaknesses": "No weaknesses detected",
+      "improvementPlan": "Improvement Plan",
+      "recommendations": "Recommendations",
+      "weeklyChange": "Weekly Change",
+      "addMoreKarma": "Add More Karma"
+    }
+  }
+}
+

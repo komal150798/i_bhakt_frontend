@@ -1,0 +1,610 @@
+/* ============================================
+   CSS Variables for Theme System
+   ============================================ */
+
+:root[data-theme="light"] {
+    --bg-color: #F5F3FF;
+    --card-color: #FFFFFF;
+    --primary-color: #6C5CE7;
+    --accent-color: #FDCB6E;
+    --text-color: #1F1338;
+    --muted-text-color: #6B7280;
+    --header-bg: rgba(255, 255, 255, 0.9);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --border-color: rgba(108, 92, 231, 0.2);
+}
+
+:root[data-theme="dark"] {
+    --bg-color: #050816;
+    --card-color: #0F172A;
+    --primary-color: #A855F7;
+    --accent-color: #FBBF24;
+    --text-color: #E5E7EB;
+    --muted-text-color: #9CA3AF;
+    --header-bg: rgba(15, 23, 42, 0.9);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --border-color: rgba(168, 85, 247, 0.2);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.6;
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+p, span, a {
+    color: var(--text-color);
+}
+
+.text-muted {
+    color: var(--muted-text-color) !important;
+}
+
+/* ============================================
+   Navbar / Header
+   ============================================ */
+
+.navbar-glass {
+    background-color: var(--header-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px var(--shadow-color);
+    transition: all 0.3s ease;
+    padding: 1rem 0;
+}
+
+.navbar-glass.scrolled {
+    box-shadow: 0 4px 30px var(--shadow-color);
+}
+
+.navbar-brand .logo-text {
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-color) !important;
+    font-weight: 500;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--primary-color) !important;
+    background-color: rgba(108, 92, 231, 0.1);
+}
+
+[data-theme="dark"] .navbar-nav .nav-link:hover {
+    background-color: rgba(168, 85, 247, 0.1);
+}
+
+/* Navbar Toggler Icon */
+.navbar-toggler {
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+}
+
+[data-theme="dark"] .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(168, 85, 247, 0.25);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(31, 19, 56, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(229, 231, 235, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    color: var(--text-color) !important;
+    border: none;
+    background: transparent;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(108, 92, 231, 0.1);
+    transform: rotate(15deg);
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+    background-color: rgba(168, 85, 247, 0.1);
+}
+
+.theme-icon {
+    transition: transform 0.3s ease;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* Accent Button */
+.btn-accent {
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
+    color: var(--text-color) !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-accent:hover {
+    background-color: var(--accent-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(253, 203, 110, 0.4);
+}
+
+[data-theme="dark"] .btn-accent:hover {
+    box-shadow: 0 8px 20px rgba(251, 191, 36, 0.5);
+}
+
+.btn-outline-accent {
+    border: 2px solid var(--accent-color) !important;
+    color: var(--accent-color) !important;
+    background: transparent !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-accent:hover {
+    background-color: var(--accent-color) !important;
+    color: var(--text-color) !important;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   Hero Section with Carousel
+   ============================================ */
+
+.hero-section {
+    margin-top: 76px;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel {
+    height: calc(100vh - 76px);
+    min-height: 600px;
+}
+
+.carousel-inner,
+.carousel-item {
+    height: 100%;
+}
+
+.hero-slide {
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.hero-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-slide-2 {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
+}
+
+.hero-slide-3 {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #9333EA 50%, var(--accent-color) 100%);
+}
+
+.hero-title {
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.8s ease;
+}
+
+.hero-subtitle {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.25rem;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+/* Carousel Controls */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.carousel-control-prev {
+    left: 2rem;
+}
+
+.carousel-control-next {
+    right: 2rem;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators [data-bs-target].active {
+    background-color: white;
+    width: 30px;
+    border-radius: 6px;
+}
+
+/* ============================================
+   Features Section
+   ============================================ */
+
+.features-section {
+    background-color: var(--bg-color);
+}
+
+.feature-card {
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px var(--shadow-color);
+    border-color: var(--primary-color);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.feature-card .card-title {
+    color: var(--text-color);
+    font-size: 1.25rem;
+}
+
+.feature-card .card-text {
+    color: var(--muted-text-color);
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   Kundli CTA Section
+   ============================================ */
+
+.kundli-section {
+    background-color: var(--bg-color);
+}
+
+.kundli-card {
+    background-color: var(--card-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 40px var(--shadow-color),
+                0 0 30px rgba(108, 92, 231, 0.2);
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .kundli-card {
+    box-shadow: 0 10px 40px var(--shadow-color),
+                0 0 30px rgba(168, 85, 247, 0.3);
+}
+
+.kundli-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px var(--shadow-color),
+                0 0 40px rgba(108, 92, 231, 0.3);
+}
+
+[data-theme="dark"] .kundli-card:hover {
+    box-shadow: 0 15px 50px var(--shadow-color),
+                0 0 40px rgba(168, 85, 247, 0.4);
+}
+
+.kundli-form .form-label {
+    color: var(--text-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.kundli-form .form-control {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.kundli-form .form-control:focus {
+    background-color: var(--bg-color);
+    border-color: var(--primary-color);
+    color: var(--text-color);
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+    outline: none;
+}
+
+[data-theme="dark"] .kundli-form .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(168, 85, 247, 0.25);
+}
+
+.kundli-form .form-control::placeholder {
+    color: var(--muted-text-color);
+}
+
+/* ============================================
+   Refer & Earn Section
+   ============================================ */
+
+.refer-section {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #F59E0B 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.refer-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.refer-card {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.refer-icon {
+    font-size: 4rem;
+    display: inline-block;
+    animation: bounce 2s infinite;
+}
+
+.refer-card h2,
+.refer-card p {
+    color: var(--text-color);
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+
+.footer-section {
+    background-color: var(--card-color);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
+}
+
+.footer-section .logo-text {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.5rem;
+}
+
+.footer-section h5 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.footer-section a {
+    color: var(--muted-text-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: var(--primary-color);
+    padding-left: 0.25rem;
+}
+
+.footer-divider {
+    border-color: var(--border-color);
+    opacity: 0.5;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--bg-color);
+    border-radius: 50%;
+    color: var(--text-color);
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .carousel-control-prev {
+        left: 1rem;
+    }
+    
+    .carousel-control-next {
+        right: 1rem;
+    }
+    
+    .navbar-nav {
+        text-align: center;
+        padding: 1rem 0;
+    }
+    
+    .navbar-nav .nav-link {
+        margin: 0.25rem 0;
+    }
+}
+
+/* ============================================
+   Smooth Transitions for Theme Change
+   ============================================ */
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Override for specific elements that shouldn't transition */
+.carousel,
+.carousel-item,
+.hero-slide {
+    transition: none;
+}
+

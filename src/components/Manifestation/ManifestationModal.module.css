@@ -1,0 +1,335 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: radial-gradient(circle at top, #1f2937 0%, #0f172a 45%, #020617 100%);
+  color: #f8fafc;
+  width: 90%;
+  max-width: 600px;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  box-shadow: -4px 0 24px rgba(251, 191, 36, 0.3);
+  border-left: 2px solid rgba(251, 191, 36, 0.3);
+  animation: slideIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+  position: sticky;
+  top: 0;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.closeButton:hover {
+  background: #f1f5f9;
+}
+
+.form,
+.insightsView {
+  padding: 24px;
+  flex: 1;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #fbbf24;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="date"],
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: rgba(15, 23, 42, 0.8);
+  color: #f8fafc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.formGroup input::placeholder,
+.formGroup textarea::placeholder {
+  color: #64748b;
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.helpText {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.error {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ef4444;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.cancelButton {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.cancelButton:hover {
+  background: #cbd5e1;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.85));
+  color: #0f172a;
+  border: 2px solid rgba(251, 191, 36, 0.8);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 1), rgba(249, 115, 22, 0.95));
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(251, 191, 36, 0.6);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Insights View Styles */
+.insightsView {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.insightSection {
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.insightSection:last-child {
+  border-bottom: none;
+}
+
+.insightSection h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.scoresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.scoreCard {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.scoreCard:hover {
+  border-color: rgba(251, 191, 36, 0.4);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+}
+
+.scoreLabel {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.scoreValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.tipGroup {
+  margin-bottom: 20px;
+}
+
+.tipGroup h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tipGroup ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.tipGroup li {
+  margin-bottom: 8px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.narrative,
+.astroInsights {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.narrative p,
+.astroInsights p {
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.energyState {
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 12px;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+.energyState strong {
+  color: #fbbf24;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .scoresGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+

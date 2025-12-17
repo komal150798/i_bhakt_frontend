@@ -1,0 +1,117 @@
+/* ============================================
+   I-Bhakt Admin Sidebar
+   ============================================ */
+
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: linear-gradient(180deg, #050608 0%, #020617 100%);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: var(--shadow-lg);
+}
+
+.logo {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-light);
+  background: linear-gradient(90deg, rgba(251, 191, 36, 0.1), transparent);
+}
+
+.logo a {
+  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  color: var(--muted-text-color);
+  text-decoration: none;
+  border-radius: var(--button-radius);
+  transition: all var(--transition-fast);
+  margin-bottom: var(--spacing-xs);
+  position: relative;
+}
+
+.menuItem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 0;
+  background: var(--gradient-primary);
+  border-radius: 0 2px 2px 0;
+  transition: all var(--transition-base);
+}
+
+.menuItem:hover {
+  background-color: rgba(251, 191, 36, 0.1);
+  color: var(--primary-soft);
+  padding-left: var(--spacing-lg);
+}
+
+.menuItem:hover::before {
+  transform: translateY(-50%) scaleY(1);
+  height: 60%;
+}
+
+.menuItem.active {
+  background-color: rgba(251, 191, 36, 0.15);
+  color: var(--primary-color);
+  font-weight: 600;
+  padding-left: var(--spacing-lg);
+}
+
+.menuItem.active::before {
+  transform: translateY(-50%) scaleY(1);
+  height: 60%;
+  box-shadow: var(--shadow-glow);
+}
+
+.icon {
+  font-size: 1.25rem;
+  width: 24px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}

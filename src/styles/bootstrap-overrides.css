@@ -1,0 +1,108 @@
+/* ============================================
+   Bootstrap 5 Overrides
+   ============================================ */
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  border-radius: var(--button-radius);
+  transition: all var(--transition-base);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline-primary {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  border-radius: var(--button-radius);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+/* Cards */
+.card {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Form Controls */
+.form-control,
+.form-select {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: var(--input-radius);
+  transition: all var(--transition-fast);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--bg-elevated);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+  box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(168, 85, 247, 0.25);
+}
+
+.form-control::placeholder {
+  color: var(--muted-text-color);
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Modal */
+.modal-content {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--border-color);
+}
+
+/* Table */
+.table {
+  color: var(--text-color);
+}
+
+.table thead th {
+  border-bottom-color: var(--border-color);
+}
+
+.table tbody tr {
+  border-top-color: var(--border-color);
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--bg-color);
+}
+

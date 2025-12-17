@@ -1,0 +1,55 @@
+/* ============================================
+   I-Bhakt Admin Table
+   ============================================ */
+
+.tableWrapper {
+  overflow-x: auto;
+  background: radial-gradient(circle at top, rgba(248, 250, 252, 0.06), transparent 55%),
+              var(--bg-elevated);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-soft);
+}
+
+.table {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.table thead th {
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.1), transparent);
+  border-bottom: 2px solid var(--border-light);
+  font-weight: 600;
+  color: var(--text-color);
+  padding: var(--spacing-md);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.04em;
+}
+
+.table tbody tr {
+  border-top: 1px solid var(--border-light);
+  transition: background-color var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(251, 191, 36, 0.05);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background-color: rgba(251, 191, 36, 0.1) !important;
+}
+
+.table tbody td {
+  padding: var(--spacing-md);
+  color: var(--text-color);
+}
+
+.empty {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--muted-text-color);
+}

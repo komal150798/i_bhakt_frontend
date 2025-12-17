@@ -1,0 +1,176 @@
+/* ============================================
+   I-Bhakt Design System - CSS Variables
+   Brand: I-Bhakt (Dark, Mystical, Spiritual + Science)
+   ============================================ */
+
+:root[data-theme="dark"] {
+  /* Background Colors */
+  --bg-color: #050608;
+  --bg-elevated: #0B0F19;
+  --bg-overlay: rgba(5, 6, 8, 0.95);
+  
+  /* Primary Colors - Warm Glowing Gold */
+  --primary-color: #FBBF24;
+  --primary-soft: #FDE68A;
+  --primary-dark: #D97706;
+  
+  /* Accent Colors - Cool Blue (DNA Glow) */
+  --accent-color: #38BDF8;
+  --accent-soft: #7DD3FC;
+  --accent-dark: #0EA5E9;
+  
+  /* Status Colors */
+  --success-color: #10B981;
+  --danger-color: #F97373;
+  --warning-color: #F59E0B;
+  --info-color: #3B82F6;
+  
+  /* Text Colors */
+  --text-color: #F9FAFB;
+  --muted-text-color: #9CA3AF;
+  --text-inverse: #0B1220;
+  
+  /* Border & Divider */
+  --border-color: #1F2933;
+  --border-light: rgba(148, 163, 184, 0.25);
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  
+  /* Border Radius */
+  --card-radius: 18px;
+  --button-radius: 12px;
+  --input-radius: 10px;
+  --pill-radius: 50px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.6);
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 18px rgba(251, 191, 36, 0.4);
+  --shadow-glow-strong: 0 0 32px rgba(251, 191, 36, 0.6);
+  --shadow-accent: 0 0 20px rgba(56, 189, 248, 0.3);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+  
+  /* Layout */
+  --header-height: 72px;
+  --sidebar-width: 250px;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #FBBF24 0%, #FDE68A 100%);
+  --gradient-accent: linear-gradient(135deg, #38BDF8 0%, #7DD3FC 100%);
+  --gradient-bg: linear-gradient(180deg, #050608 0%, #0B0F19 50%, #111827 100%);
+  --gradient-header: linear-gradient(90deg, #050608 0%, #0B0F19 100%);
+}
+
+:root[data-theme="light"] {
+  /* Background Colors */
+  --bg-color: #F9FAFB;
+  --bg-elevated: #FFFFFF;
+  --bg-overlay: rgba(249, 250, 251, 0.95);
+  
+  /* Primary Colors - Deep Gold */
+  --primary-color: #C08401;
+  --primary-soft: #F2CA72;
+  --primary-dark: #92400E;
+  
+  /* Accent Colors - Deep Blue */
+  --accent-color: #2563EB;
+  --accent-soft: #3B82F6;
+  --accent-dark: #1E40AF;
+  
+  /* Status Colors */
+  --success-color: #10B981;
+  --danger-color: #EF4444;
+  --warning-color: #F59E0B;
+  --info-color: #3B82F6;
+  
+  /* Text Colors */
+  --text-color: #0B1220;
+  --muted-text-color: #6B7280;
+  --text-inverse: #F9FAFB;
+  
+  /* Border & Divider */
+  --border-color: #E5E7EB;
+  --border-light: rgba(148, 163, 184, 0.15);
+  
+  /* Spacing - same as dark */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  
+  /* Border Radius - same as dark */
+  --card-radius: 18px;
+  --button-radius: 12px;
+  --input-radius: 10px;
+  --pill-radius: 50px;
+  
+  /* Shadows - lighter for light theme */
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 16px 32px rgba(15, 23, 42, 0.16);
+  --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.18);
+  --shadow-glow: 0 0 12px rgba(192, 132, 1, 0.3);
+  --shadow-glow-strong: 0 0 24px rgba(192, 132, 1, 0.4);
+  --shadow-accent: 0 0 16px rgba(37, 99, 235, 0.2);
+  
+  /* Transitions - same as dark */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+  
+  /* Layout - same as dark */
+  --header-height: 72px;
+  --sidebar-width: 250px;
+  
+  /* Gradients - adjusted for light theme */
+  --gradient-primary: linear-gradient(135deg, #C08401 0%, #F2CA72 100%);
+  --gradient-accent: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+  --gradient-bg: linear-gradient(180deg, #F9FAFB 0%, #FFFFFF 50%, #F3F4F6 100%);
+  --gradient-header: linear-gradient(90deg, #F9FAFB 0%, #FFFFFF 100%);
+}
+
+/* ============================================
+   Admin Theme Variables
+   ============================================ */
+
+:root[data-theme="admin-light"] {
+  --admin-bg: #f9fafb;
+  --admin-bg-elevated: #ffffff;
+  --admin-sidebar-bg: #0f172a;
+  --admin-header-bg: #ffffff;
+  --admin-text: #0b1120;
+  --admin-text-muted: #6b7280;
+  --admin-primary: #fbbf24;
+  --admin-accent: #38bdf8;
+  --admin-border: #e5e7eb;
+  --admin-hover: #f3f4f6;
+}
+
+:root[data-theme="admin-dark"] {
+  --admin-bg: #020617;
+  --admin-bg-elevated: #0f172a;
+  --admin-sidebar-bg: #0f172a;
+  --admin-header-bg: #1e293b;
+  --admin-text: #e5e7eb;
+  --admin-text-muted: #9ca3af;
+  --admin-primary: #fbbf24;
+  --admin-accent: #38bdf8;
+  --admin-border: #334155;
+  --admin-hover: #1e293b;
+}

@@ -1,0 +1,45 @@
+.page {
+  max-width: 100%;
+}
+
+.header {
+  margin-bottom: var(--spacing-lg, 1.5rem);
+}
+
+.header h1 {
+  margin: 0 0 var(--spacing-md, 1rem) 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--admin-text, #0b1120);
+}
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-sm, 0.5rem);
+  border-bottom: 2px solid var(--admin-border, #e5e7eb);
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: var(--spacing-md, 1rem) var(--spacing-lg, 1.5rem);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--admin-text-muted, #6b7280);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: var(--transition-base, 300ms ease);
+}
+
+.tab:hover {
+  color: var(--admin-text, #0b1120);
+}
+
+.tab.active {
+  color: var(--admin-primary, #fbbf24);
+  border-bottom-color: var(--admin-primary, #fbbf24);
+}
+
+
+

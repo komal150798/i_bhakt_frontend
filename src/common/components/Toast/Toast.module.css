@@ -1,0 +1,338 @@
+/* ============================================
+   Toast Container - Position Styles
+   ============================================ */
+
+.container {
+  position: fixed;
+  z-index: 9999;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.topRight {
+  top: var(--header-height, 72px);
+  right: 0;
+  align-items: flex-end;
+}
+
+.topLeft {
+  top: var(--header-height, 72px);
+  left: 0;
+  align-items: flex-start;
+}
+
+.bottomRight {
+  bottom: 0;
+  right: 0;
+  align-items: flex-end;
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
+  align-items: flex-start;
+}
+
+/* ============================================
+   Toast Item - Base Styles
+   ============================================ */
+
+.toast {
+  max-width: 360px;
+  min-width: 300px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  pointer-events: auto;
+
+  /* Glassmorphism Background */
+  background: radial-gradient(circle at top, rgba(248, 250, 252, 0.14), transparent 60%),
+    rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+
+  /* Shadow */
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6);
+
+  /* Animation - Enter */
+  animation: toastEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: center;
+}
+
+/* Dark theme adjustments */
+:global([data-theme='dark']) .toast {
+  background: radial-gradient(circle at top, rgba(248, 250, 252, 0.08), transparent 60%),
+    rgba(5, 6, 8, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* Light theme adjustments */
+:global([data-theme='light']) .toast {
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7) 60%),
+    rgba(249, 250, 251, 0.95);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   Toast Type Variants - Accent Colors
+   ============================================ */
+
+.toast.success {
+  border-left: 3px solid var(--primary-color, #fbbf24);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+.toast.error {
+  border-left: 3px solid #f97373;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(249, 115, 115, 0.2);
+}
+
+.toast.info {
+  border-left: 3px solid var(--accent-color, #38bdf8);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+.toast.warning {
+  border-left: 3px solid #fbbf24;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+/* ============================================
+   Icon Section
+   ============================================ */
+
+.iconSection {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toast.success .iconSection {
+  color: var(--primary-color, #fbbf24);
+  background: rgba(251, 191, 36, 0.15);
+}
+
+.toast.error .iconSection {
+  color: #f97373;
+  background: rgba(249, 115, 115, 0.15);
+}
+
+.toast.info .iconSection {
+  color: var(--accent-color, #38bdf8);
+  background: rgba(56, 189, 248, 0.15);
+}
+
+.toast.warning .iconSection {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+}
+
+/* ============================================
+   Content Section
+   ============================================ */
+
+.contentSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-color);
+  line-height: 1.4;
+}
+
+.message {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+.description {
+  font-size: 0.8rem;
+  color: var(--muted-text-color);
+  line-height: 1.4;
+  margin-top: 0.25rem;
+}
+
+.actionButton {
+  margin-top: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast, 150ms ease);
+  align-self: flex-start;
+}
+
+.actionButton:hover {
+  background: var(--primary-color);
+  color: var(--text-inverse, #000);
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   Close Button
+   ============================================ */
+
+.closeButton {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--muted-text-color);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all var(--transition-fast, 150ms ease);
+  opacity: 0.6;
+}
+
+.closeButton:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes toastEnter {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Top-left enter animation */
+.topLeft .toast {
+  animation-name: toastEnterLeft;
+}
+
+@keyframes toastEnterLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Bottom enter animations */
+.bottomRight .toast,
+.bottomLeft .toast {
+  animation-name: toastEnterBottom;
+}
+
+@keyframes toastEnterBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Exit animation */
+.toast.exiting {
+  animation: toastExit 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes toastExit {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%) scale(0.95);
+  }
+}
+
+.topLeft .toast.exiting {
+  animation-name: toastExitLeft;
+}
+
+@keyframes toastExitLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.95);
+  }
+}
+
+.bottomRight .toast.exiting,
+.bottomLeft .toast.exiting {
+  animation-name: toastExitBottom;
+}
+
+@keyframes toastExitBottom {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%) scale(0.95);
+  }
+}
+
+/* ============================================
+   Responsive Styles
+   ============================================ */
+
+@media (max-width: 768px) {
+  .toast {
+    max-width: calc(100vw - 2rem);
+    min-width: auto;
+  }
+
+  .container {
+    padding: 0.75rem;
+  }
+
+  .topRight,
+  .topLeft {
+    top: calc(var(--header-height, 72px) + 0.5rem);
+  }
+}
+
+

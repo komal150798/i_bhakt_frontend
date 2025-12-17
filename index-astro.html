@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroVerse - Unlock Your Destiny with Astrology</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles-astro.css">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-glass" id="mainNavbar">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold" href="#home">
+                <span class="logo-text">AstroVerse</span>
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#kundli">Kundli</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#horoscope">Daily Horoscope</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#refer">Refer & Earn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                
+                <!-- Right Side Actions -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Theme Toggle -->
+                    <button class="btn btn-link theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+                        <i class="bi bi-sun-fill theme-icon" id="themeIcon"></i>
+                    </button>
+                    
+                    <!-- Auth Buttons -->
+                    <button class="btn btn-outline-primary btn-sm d-none d-md-inline-block">Login</button>
+                    <button class="btn btn-primary btn-sm rounded-pill d-none d-md-inline-block">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Carousel -->
+    <section id="home" class="hero-section">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <div class="hero-slide hero-slide-1">
+                        <div class="container">
+                            <div class="row align-items-center min-vh-100">
+                                <div class="col-lg-8 mx-auto text-center">
+                                    <h1 class="display-3 fw-bold mb-4 hero-title">Unlock Your Destiny with Astrology</h1>
+                                    <p class="lead mb-5 hero-subtitle">Kundli, Horoscope, and personalized guidance from expert astrologers.</p>
+                                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                                        <button class="btn btn-primary btn-lg rounded-pill px-5">Generate Free Kundli</button>
+                                        <button class="btn btn-outline-accent btn-lg rounded-pill px-5">Talk to Astrologer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <div class="hero-slide hero-slide-2">
+                        <div class="container">
+                            <div class="row align-items-center min-vh-100">
+                                <div class="col-lg-8 mx-auto text-center">
+                                    <h1 class="display-3 fw-bold mb-4 hero-title">Daily Horoscope, Accurate & Insightful</h1>
+                                    <p class="lead mb-5 hero-subtitle">Stay ahead with daily, weekly, and monthly predictions.</p>
+                                    <button class="btn btn-primary btn-lg rounded-pill px-5">View Today's Horoscope</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="carousel-item">
+                    <div class="hero-slide hero-slide-3">
+                        <div class="container">
+                            <div class="row align-items-center min-vh-100">
+                                <div class="col-lg-8 mx-auto text-center">
+                                    <h1 class="display-3 fw-bold mb-4 hero-title">Matchmaking & Compatibility</h1>
+                                    <p class="lead mb-5 hero-subtitle">Find your perfect life partner with Vedic astrology.</p>
+                                    <button class="btn btn-primary btn-lg rounded-pill px-5">Check Compatibility</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="services" class="features-section py-5">
+        <div class="container py-5">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-5 fw-bold mb-3">Our Services</h2>
+                    <p class="lead text-muted">Comprehensive astrological services to guide your life journey</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Feature 1: Free Kundli -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">🔯</div>
+                            <h5 class="card-title fw-bold mb-3">Free Kundli</h5>
+                            <p class="card-text text-muted">Generate your complete birth chart with accurate planetary positions and houses.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 2: Daily Horoscope -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">📅</div>
+                            <h5 class="card-title fw-bold mb-3">Daily Horoscope</h5>
+                            <p class="card-text text-muted">Get daily, weekly, and monthly predictions tailored to your zodiac sign.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 3: Matchmaking -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">💑</div>
+                            <h5 class="card-title fw-bold mb-3">Matchmaking</h5>
+                            <p class="card-text text-muted">Check compatibility with your partner using advanced astrological matching.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 4: Tarot Reading -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">🔮</div>
+                            <h5 class="card-title fw-bold mb-3">Tarot Reading</h5>
+                            <p class="card-text text-muted">Get insights into your future through mystical tarot card readings.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kundli CTA Section -->
+    <section id="kundli" class="kundli-section py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="kundli-card card">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 mb-4 mb-lg-0">
+                                    <h2 class="display-6 fw-bold mb-4">Get Your Janam Kundli in 2 Minutes</h2>
+                                    <p class="lead mb-4">Discover your complete astrological profile with accurate planetary positions, houses, and dasha periods.</p>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                            Accurate planetary positions
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                            Complete house analysis
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                            Dasha & Antardasha periods
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                            Compatibility matching
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6">
+                                    <form class="kundli-form">
+                                        <div class="mb-3">
+                                            <label for="fullName" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="dateOfBirth" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="timeOfBirth" class="form-label">Time of Birth</label>
+                                            <input type="time" class="form-control" id="timeOfBirth" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="placeOfBirth" class="form-label">Place of Birth</label>
+                                            <input type="text" class="form-control" id="placeOfBirth" placeholder="City, State, Country" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">Generate Kundli Now</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Refer & Earn Section -->
+    <section id="refer" class="refer-section py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="refer-card card">
+                        <div class="card-body p-4 p-md-5 text-center">
+                            <div class="refer-icon mb-4">🎁</div>
+                            <h2 class="display-5 fw-bold mb-3">Refer & Earn</h2>
+                            <p class="lead mb-4">Invite your friends and earn rewards on every successful signup.</p>
+                            <button class="btn btn-accent btn-lg rounded-pill px-5">Invite Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Left: Logo & Description -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="fw-bold mb-3 logo-text">AstroVerse</h5>
+                    <p class="text-muted">Your trusted companion for accurate astrology predictions, kundli generation, and spiritual guidance.</p>
+                </div>
+                
+                <!-- Center: Quick Links -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="#about" class="text-muted text-decoration-none">About Us</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#faqs" class="text-muted text-decoration-none">FAQs</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#terms" class="text-muted text-decoration-none">Terms & Conditions</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#privacy" class="text-muted text-decoration-none">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Right: Contact & Social -->
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">Contact Us</h5>
+                    <ul class="list-unstyled text-muted mb-4">
+                        <li class="mb-2">
+                            <i class="bi bi-envelope me-2"></i>
+                            support@astroverse.com
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-telephone me-2"></i>
+                            +1 (555) 123-4567
+                        </li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#" class="social-link me-3" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-link me-3" aria-label="Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link me-3" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4 footer-divider">
+            
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted mb-0">&copy; 2024 AstroVerse. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Theme Toggle JS -->
+    <script src="theme-astro.js"></script>
+</body>
+</html>
+

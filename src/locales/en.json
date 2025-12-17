@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "home": "Home",
+    "kundli": "Kundli",
+    "manifestation": "Manifestation",
+    "karma": "Karma",
+    "pricing": "Pricing",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "myKundli": "My Kundli",
+    "myManifestation": "My Manifestation Score",
+    "myOrders": "My Orders & Plans",
+    "notifications": "Notifications"
+  },
+  "footer": {
+    "corporate": "Corporate",
+    "quickLinks": "Quick Links",
+    "contact": "Contact Us",
+    "followUs": "Follow Us",
+    "aboutUs": "About Us",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions",
+    "refundPolicy": "Refund & Cancellation Policy",
+    "pricingPolicy": "Pricing Policy",
+    "disclaimer": "Disclaimer",
+    "dosha": "Dosha",
+    "yog": "Yog",
+    "marriage": "Marriage",
+    "numerology": "Numerology",
+    "tarot": "Tarot",
+    "blog": "Blog",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "copyright": "All rights reserved"
+  },
+  "plan": {
+    "freePlan": "You are currently on Free Plan",
+    "upgradePlan": "Upgrade Plan",
+    "unlockFeatures": "Unlock all features",
+    "locked": "Locked"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete"
+  }
+}
+
+
+
+
+
+
+

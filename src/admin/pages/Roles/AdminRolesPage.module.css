@@ -1,0 +1,17 @@
+.page {
+  max-width: 100%;
+}
+
+.header {
+  margin-bottom: var(--spacing-lg, 1.5rem);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--admin-text, #0b1120);
+}
+
+
+

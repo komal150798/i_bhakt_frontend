@@ -1,0 +1,713 @@
+/* Karma Dashboard Page Styles */
+.dashboardPage {
+  min-height: 100vh;
+  padding: var(--spacing-xl) 0;
+  background: var(--bg-color);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.title {
+  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-soft);
+  margin-bottom: var(--spacing-md);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--muted-text-color);
+}
+
+/* Score Hero Card */
+.scoreHeroCard {
+  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.15), transparent 60%),
+              var(--bg-elevated);
+  border-radius: var(--card-radius);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+  margin-bottom: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.scoreCircle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent),
+              var(--bg-color);
+  border-radius: 50%;
+  border: 3px solid var(--primary-color);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+}
+
+.scoreValue {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+  line-height: 1;
+}
+
+.scoreMax {
+  font-size: 1.5rem;
+  color: var(--muted-text-color);
+  font-weight: 400;
+}
+
+.scoreGrade {
+  margin-top: var(--spacing-sm);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--button-radius);
+  background: var(--primary-color);
+  color: var(--text-inverse);
+}
+
+.gradeAPlus, .gradeA, .gradeAMinus {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
+
+.gradeBPlus, .gradeB, .gradeBMinus {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-soft));
+  color: var(--text-inverse);
+}
+
+.gradeCPlus, .gradeC, .gradeCMinus {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.gradeD, .gradeF {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.scoreInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+  min-width: 250px;
+}
+
+.trendIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 1.1rem;
+}
+
+.trendUp {
+  color: #22c55e;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.trendDown {
+  color: #ef4444;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.trendFlat {
+  color: var(--muted-text-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.trendText {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.totalActions {
+  color: var(--muted-text-color);
+  font-size: 0.95rem;
+}
+
+.weeklyChange {
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.positive {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.negative {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Section Title */
+.sectionTitle {
+  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+/* Breakdown Section */
+.breakdownSection {
+  margin-bottom: var(--spacing-xl);
+}
+
+.breakdownCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.breakdownCard {
+  background: var(--bg-elevated);
+  border-radius: var(--card-radius);
+  padding: var(--spacing-lg);
+  text-align: center;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.breakdownCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.goodCard {
+  border-left: 4px solid #22c55e;
+}
+
+.badCard {
+  border-left: 4px solid #ef4444;
+}
+
+.neutralCard {
+  border-left: 4px solid var(--muted-text-color);
+}
+
+.breakdownIcon {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.breakdownLabel {
+  font-size: 0.9rem;
+  color: var(--muted-text-color);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-sm);
+}
+
+.breakdownCount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-xs);
+}
+
+.breakdownPoints {
+  font-size: 1rem;
+  color: var(--muted-text-color);
+}
+
+.progressBar {
+  margin-top: var(--spacing-lg);
+}
+
+.progressBarTrack {
+  width: 100%;
+  height: 12px;
+  background: var(--bg-color);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm);
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, var(--primary-color));
+  transition: width 0.5s ease;
+  border-radius: 6px;
+}
+
+.progressBarLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--muted-text-color);
+}
+
+/* Categories Section */
+.categoriesSection {
+  margin-bottom: var(--spacing-xl);
+}
+
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.categoryCard {
+  background: var(--bg-elevated);
+  border-radius: var(--card-radius);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast);
+}
+
+.categoryCard:hover {
+  transform: translateY(-2px);
+}
+
+.categoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.categoryName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.categoryStatus {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--button-radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.categoryStatus.high {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.categoryStatus.medium {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--primary-color);
+}
+
+.categoryStatus.needs {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.categoryScore {
+  margin-bottom: var(--spacing-sm);
+}
+
+.categoryScoreValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.categoryScoreMax {
+  font-size: 1rem;
+  color: var(--muted-text-color);
+}
+
+.categoryBreakdown {
+  display: flex;
+  gap: var(--spacing-md);
+  font-size: 0.9rem;
+}
+
+.categoryGood {
+  color: #22c55e;
+}
+
+.categoryBad {
+  color: #ef4444;
+}
+
+/* Recent Actions Section */
+.recentActionsSection {
+  margin-bottom: var(--spacing-xl);
+}
+
+.actionsTable {
+  background: var(--bg-elevated);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.actionsTableHeader {
+  display: grid;
+  grid-template-columns: 120px 1fr 100px 80px;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.actionsTableRow {
+  display: grid;
+  grid-template-columns: 120px 1fr 100px 80px;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition-fast);
+}
+
+.actionsTableRow:hover {
+  background: var(--bg-color);
+}
+
+.actionsTableRow:last-child {
+  border-bottom: none;
+}
+
+.actionDate {
+  color: var(--muted-text-color);
+  font-size: 0.9rem;
+}
+
+.actionText {
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.actionTypeBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--button-radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.actionTypeBadge.good {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.actionTypeBadge.bad {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.actionTypeBadge.neutral {
+  background: rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+}
+
+.actionScore {
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Patterns Section */
+.patternsSection {
+  margin-bottom: var(--spacing-xl);
+}
+
+.patternsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.patternsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.patternsTitle {
+  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.patternCard {
+  background: var(--bg-elevated);
+  border-radius: var(--card-radius);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast);
+}
+
+.patternCard:hover {
+  transform: translateY(-2px);
+}
+
+.strengthCard {
+  border-left: 4px solid #22c55e;
+  background: radial-gradient(circle at top, rgba(34, 197, 94, 0.1), transparent);
+}
+
+.weaknessCard {
+  border-left: 4px solid #ef4444;
+  background: radial-gradient(circle at top, rgba(239, 68, 68, 0.1), transparent);
+}
+
+.patternHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.patternIcon {
+  font-size: 1.5rem;
+}
+
+.patternLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.patternDescription {
+  color: var(--muted-text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+}
+
+.patternStats {
+  display: flex;
+  gap: var(--spacing-md);
+  font-size: 0.85rem;
+  color: var(--muted-text-color);
+}
+
+.noPatterns {
+  color: var(--muted-text-color);
+  font-style: italic;
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+/* Improvement Section */
+.improvementSection {
+  margin-bottom: var(--spacing-xl);
+}
+
+.improvementCard {
+  background: var(--bg-elevated);
+  border-radius: var(--card-radius);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+}
+
+.improvementSummary {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  line-height: 1.8;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.motivationalQuote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.1), transparent),
+              var(--bg-color);
+  border-radius: var(--card-radius);
+  border-left: 4px solid var(--primary-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.quoteIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.motivationalQuote p {
+  color: var(--text-color);
+  font-style: italic;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.recommendationsList {
+  margin-top: var(--spacing-lg);
+}
+
+.recommendationsTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.recommendationCard {
+  background: var(--bg-color);
+  border-radius: var(--card-radius);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid var(--border-color);
+}
+
+.recommendationHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.recommendationNumber {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.recommendationTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.recommendationDescription {
+  color: var(--muted-text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-left: calc(32px + var(--spacing-md));
+}
+
+/* Action Section */
+.actionSection {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+}
+
+.addKarmaBtn {
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-soft));
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--button-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.addKarmaBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+}
+
+/* Error Card */
+.errorCard {
+  background: var(--bg-elevated);
+  border-radius: var(--card-radius);
+  padding: var(--spacing-xl);
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.errorCard p {
+  color: var(--muted-text-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .scoreHeroCard {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .scoreCircle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .scoreValue {
+    font-size: 3rem;
+  }
+
+  .breakdownCards {
+    grid-template-columns: 1fr;
+  }
+
+  .categoriesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .actionsTableHeader,
+  .actionsTableRow {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .actionsTableHeader {
+    display: none; /* Hide header on mobile */
+  }
+
+  .actionsTableRow {
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-radius);
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-md);
+  }
+
+  .patternCard {
+    padding: var(--spacing-md);
+  }
+
+  .patternsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
