@@ -7,6 +7,7 @@ type UserProfile = {
 	dateOfBirth?: string
 	timeOfBirth?: string
 	placeOfBirth?: string
+	gender?: string
 }
 
 type AuthContextValue = {

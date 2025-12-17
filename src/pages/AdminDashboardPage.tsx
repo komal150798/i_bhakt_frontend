@@ -139,14 +139,14 @@ export default function AdminDashboardPage() {
 				{activeTab === 'dashboard' && stats && (
 					<DashboardStats stats={stats} />
 				)}
-				{activeTab === 'users' && <UsersManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
-				{activeTab === 'karma' && <KarmaManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
-				{activeTab === 'guidance' && <GuidanceManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
-				{activeTab === 'tips' && <TipsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
-				{activeTab === 'config' && <ConfigManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
-				{activeTab === 'audit' && <AuditLogsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
-				{activeTab === 'plan_limits' && <PlanLimitsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
-				{activeTab === 'referrals' && <ReferralsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} />}
+				{activeTab === 'users' && <UsersManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
+				{activeTab === 'karma' && <KarmaManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
+				{activeTab === 'guidance' && <GuidanceManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
+				{activeTab === 'tips' && <TipsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
+				{activeTab === 'config' && <ConfigManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
+				{activeTab === 'audit' && <AuditLogsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
+				{activeTab === 'plan_limits' && <PlanLimitsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
+				{activeTab === 'referrals' && <ReferralsManagement getAuthHeaders={getAuthHeaders} backendBaseUrl={backendBaseUrl} apiBaseUrl={apiBaseUrl} />}
 			</div>
 			{showChatbot && (
 				<AdminChatbot
@@ -189,7 +189,7 @@ function StatCard({ title, value, color }: { title: string; value: number; color
 	)
 }
 
-function UsersManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function UsersManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [users, setUsers] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -316,7 +316,7 @@ function UsersManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: (
 	)
 }
 
-function KarmaManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function KarmaManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [records, setRecords] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -488,6 +488,7 @@ function KarmaManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: (
 				<CreateKarmaModal
 					backendBaseUrl={backendBaseUrl}
 					getAuthHeaders={getAuthHeaders}
+					apiBaseUrl={apiBaseUrl}
 					onClose={() => { setShowCreateModal(false); fetchRecords() }}
 				/>
 			)}
@@ -497,6 +498,7 @@ function KarmaManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: (
 					record={editingRecord}
 					backendBaseUrl={backendBaseUrl}
 					getAuthHeaders={getAuthHeaders}
+					apiBaseUrl={apiBaseUrl}
 					onClose={() => { setEditingRecord(null); fetchRecords() }}
 				/>
 			)}
@@ -504,7 +506,7 @@ function KarmaManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: (
 	)
 }
 
-function GuidanceManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function GuidanceManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [logs, setLogs] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -636,6 +638,7 @@ function GuidanceManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders
 					log={editingLog}
 					backendBaseUrl={backendBaseUrl}
 					getAuthHeaders={getAuthHeaders}
+					apiBaseUrl={apiBaseUrl}
 					onClose={() => { setEditingLog(null); fetchLogs() }}
 				/>
 			)}
@@ -643,7 +646,7 @@ function GuidanceManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders
 	)
 }
 
-function EditGuidanceModal({ log, backendBaseUrl, getAuthHeaders, onClose }: { log: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void }) {
+function EditGuidanceModal({ log, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { log: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
 	const [formData, setFormData] = useState({ guidance_text: log.guidance_text || '', status: log.status || 'pending' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -714,7 +717,7 @@ function EditGuidanceModal({ log, backendBaseUrl, getAuthHeaders, onClose }: { l
 	)
 }
 
-function TipsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function TipsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [tips, setTips] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -847,6 +850,7 @@ function TipsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: ()
 					tip={editingTip}
 					backendBaseUrl={backendBaseUrl}
 					getAuthHeaders={getAuthHeaders}
+					apiBaseUrl={apiBaseUrl}
 					onClose={() => { setEditingTip(null); fetchTips() }}
 				/>
 			)}
@@ -854,7 +858,7 @@ function TipsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: ()
 	)
 }
 
-function EditTipModal({ tip, backendBaseUrl, getAuthHeaders, onClose }: { tip: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void }) {
+function EditTipModal({ tip, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { tip: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
 	const [formData, setFormData] = useState({ tip_text: tip.tip_text || '', status: tip.status || 'active', frequency: tip.frequency || 'daily' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -937,7 +941,7 @@ function EditTipModal({ tip, backendBaseUrl, getAuthHeaders, onClose }: { tip: a
 	)
 }
 
-function ConfigManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function ConfigManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [configs, setConfigs] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 
@@ -1430,7 +1434,7 @@ const deleteButtonStyle: React.CSSProperties = {
 }
 
 // Create Karma Modal
-function CreateKarmaModal({ backendBaseUrl, getAuthHeaders, onClose }: { backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void }) {
+function CreateKarmaModal({ backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
 	const [formData, setFormData] = useState({ user_id: '', input_text: '', category_slug: '', score_delta: '0', source: 'admin' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -1522,7 +1526,7 @@ function CreateKarmaModal({ backendBaseUrl, getAuthHeaders, onClose }: { backend
 }
 
 // Edit Karma Modal
-function EditKarmaModal({ record, backendBaseUrl, getAuthHeaders, onClose }: { record: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void }) {
+function EditKarmaModal({ record, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { record: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
 	const [formData, setFormData] = useState({ input_text: record.input_text || '', score_delta: record.score_delta?.toString() || '0', status: record.status || 'pending' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -1666,7 +1670,7 @@ const inputStyle: React.CSSProperties = {
 }
 
 // Audit Logs Management
-function AuditLogsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function AuditLogsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [logs, setLogs] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -1768,7 +1772,7 @@ function AuditLogsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeader
 }
 
 // Plan Limits Management Component
-function ReferralsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function ReferralsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [referrals, setReferrals] = useState<any[]>([])
 	const [stats, setStats] = useState<any>(null)
 	const [loading, setLoading] = useState(true)
@@ -1923,7 +1927,7 @@ function ReferralsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeader
 	)
 }
 
-function PlanLimitsManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+function PlanLimitsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
 	const [limits, setLimits] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [editingRow, setEditingRow] = useState<string | null>(null) // Format: "plan-feature"
