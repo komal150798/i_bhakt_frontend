@@ -5,7 +5,10 @@
 
 export interface Entitlements {
   plan?: string;
-  features?: Record<string, any>;
+  plan_type?: string;
+  plan_name?: string;
+  features?: Array<{ feature: string; allowed: boolean; limit?: number }> | Record<string, any>;
+  usage_limits?: Record<string, { limit: number; current: number }>;
   [key: string]: any;
 }
 
@@ -18,7 +21,7 @@ export interface FeatureAccess {
  * Get all user entitlements based on current plan
  * @returns Promise<Entitlements> User entitlements with plan info and features
  */
-export function getEntitlements(): Promise<Entitlements>;
+export function getEntitlements(): Promise<any>;
 
 /**
  * Check if user has access to a specific feature

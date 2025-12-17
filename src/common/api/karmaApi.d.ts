@@ -17,6 +17,10 @@ export interface KarmaEntry {
 }
 
 export interface KarmaDashboard {
+  karma_score?: number;
+  karma_grade?: string;
+  trend?: string;
+  total_actions?: number;
   summary?: {
     total_score?: number;
     positive_score?: number;
@@ -26,6 +30,12 @@ export interface KarmaDashboard {
   streak?: {
     current?: number;
     longest?: number;
+    current_days?: number;
+    longest_days?: number;
+    level?: string;
+    level_name?: string;
+    next_level_threshold?: number;
+    progress_to_next_level?: number;
     [key: string]: any;
   };
   [key: string]: any;
@@ -52,7 +62,7 @@ export function addKarmaAction(karmaData: KarmaData): Promise<KarmaEntry>;
  * Uses new /app/karma/dashboard endpoint with streak data
  * @returns Promise<KarmaDashboard> Karma dashboard data with streak information
  */
-export function getKarmaDashboard(): Promise<KarmaDashboard>;
+export function getKarmaDashboard(): Promise<any>;
 
 /**
  * Get karma summary for a user
