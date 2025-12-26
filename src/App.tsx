@@ -159,6 +159,15 @@ const AppContentInner: React.FC = () => {
 							</ProtectedRoute>
 						}
 					/>
+					{/* Alias route for /manifestations (plural) */}
+					<Route
+						path="/manifestations"
+						element={
+							<ProtectedRoute>
+								<ManifestationPage />
+							</ProtectedRoute>
+						}
+					/>
 					
 					{/* Legal Pages */}
 					<Route path="/about" element={<AboutPage />} />

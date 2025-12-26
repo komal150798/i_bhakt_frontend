@@ -4,6 +4,225 @@
   min-height: 100vh;
 }
 
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.pageTitle {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pageSubtitle {
+  margin: 0;
+  font-size: 16px;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.createButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.95), rgba(249, 115, 22, 0.9));
+  color: #0f172a;
+  border: 2px solid rgba(251, 191, 36, 0.8);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.createButton:hover {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 1), rgba(249, 115, 22, 1));
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(251, 191, 36, 0.6);
+}
+
+.createButtonIcon {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.scoreCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.scoreCard {
+  background: rgba(15, 23, 42, 0.8);
+  border: 2px solid rgba(251, 191, 36, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.scoreCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scoreCard:hover {
+  border-color: rgba(251, 191, 36, 0.6);
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+  transform: translateY(-4px);
+}
+
+.scoreCard:hover::before {
+  opacity: 1;
+}
+
+.scoreCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.scoreCardNumber {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.scoreCardTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f8fafc;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.scoreCardCategory {
+  display: inline-block;
+  font-size: 12px;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  margin-bottom: 16px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.scoreCardScores {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(251, 191, 36, 0.1);
+}
+
+.scoreItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scoreLabel {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.scoreValue {
+  font-size: 24px;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.scoreCardActions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.unlockButton {
+  padding: 8px 16px;
+  background: rgba(100, 116, 139, 0.2);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+}
+
+.unlockButton:hover {
+  background: rgba(100, 116, 139, 0.3);
+  border-color: rgba(100, 116, 139, 0.5);
+  transform: scale(1.02);
+}
+
+.scoreCardDate {
+  font-size: 11px;
+  color: #64748b;
+  text-align: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(251, 191, 36, 0.1);
+}
+
+.emptyStateIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.emptyState h3 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.emptyState p {
+  color: #94a3b8;
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
 .loading,
 .error {
   display: flex;
@@ -38,18 +257,19 @@
 }
 
 .summaryHeader {
-  background: #fff;
-  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .summaryHeader h2 {
   margin: 0 0 20px 0;
   font-size: 24px;
   font-weight: 700;
-  color: #1e293b;
+  color: #f8fafc;
 }
 
 .summaryCards {
@@ -99,10 +319,12 @@
 }
 
 .manifestationsSection {
-  background: #fff;
-  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
 }
 
 .sectionHeader {
@@ -116,7 +338,7 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #1e293b;
+  color: #f8fafc;
 }
 
 .addButton {
@@ -157,14 +379,17 @@
 }
 
 .manifestationCard {
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 12px;
   padding: 20px;
-  transition: box-shadow 0.2s;
+  background: rgba(15, 23, 42, 0.4);
+  transition: all 0.3s ease;
 }
 
 .manifestationCard:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: rgba(251, 191, 36, 0.4);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+  background: rgba(15, 23, 42, 0.6);
 }
 
 .cardHeader {
@@ -261,6 +486,8 @@
 }
 
 .viewButton,
+.lockButton,
+.lockButtonActive,
 .archiveButton {
   padding: 8px 16px;
   border: none;
@@ -295,6 +522,28 @@
   border-color: rgba(239, 68, 68, 0.6);
 }
 
+.lockButton {
+  background: rgba(100, 116, 139, 0.2);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.lockButton:hover {
+  background: rgba(100, 116, 139, 0.3);
+  border-color: rgba(100, 116, 139, 0.5);
+}
+
+.lockButtonActive {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.lockButtonActive:hover {
+  background: rgba(251, 191, 36, 0.3);
+  border-color: rgba(251, 191, 36, 0.6);
+}
+
 .floatingAddButton {
   position: fixed;
   bottom: 32px;
@@ -327,7 +576,22 @@
     padding: 16px;
   }
 
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .createButton {
+    width: 100%;
+    justify-content: center;
+  }
+
   .summaryCards {
+    grid-template-columns: 1fr;
+  }
+
+  .scoreCardsGrid {
     grid-template-columns: 1fr;
   }
 

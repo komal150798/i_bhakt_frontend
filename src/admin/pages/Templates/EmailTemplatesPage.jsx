@@ -224,7 +224,7 @@ function EmailTemplatesPage() {
                   placeholder="Email body (HTML or text). Use {{variable}} for placeholders"
                   rows={8}
                 />
-                <small>Use {{variable}} for placeholders. HTML is supported if "Is HTML" is checked.</small>
+                <small>Use {'{{variable}}'} for placeholders. HTML is supported if "Is HTML" is checked.</small>
               </div>
               <div className={styles.formGroup}>
                 <label>Description</label>

@@ -4,7 +4,6 @@ import styles from './ManifestationModal.module.css';
 
 function ManifestationModal({ manifestation, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
-    title: '',
     description: '',
   });
   const [loading, setLoading] = useState(false);
@@ -16,14 +15,12 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
       // View mode - show existing manifestation
       setIsViewMode(true);
       setFormData({
-        title: manifestation.title || '',
         description: manifestation.description || '',
       });
     } else {
       // Add mode
       setIsViewMode(false);
       setFormData({
-        title: '',
         description: '',
       });
     }
@@ -47,10 +44,6 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
 
   const validate = () => {
     const newErrors = {};
-
-    if (!formData.title || formData.title.trim().length === 0) {
-      newErrors.title = 'Title is required';
-    }
 
     if (!formData.description || formData.description.trim().length < 15) {
       newErrors.description =
@@ -77,7 +70,6 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
     try {
       setLoading(true);
       await manifestationApi.createManifestation({
-        title: formData.title.trim(),
         description: formData.description.trim(),
       });
 
@@ -117,21 +109,65 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
         {isViewMode && manifestation ? (
           // View Mode - Show Insights
           <div className={styles.insightsView}>
-            {/* Category Display */}
-            {manifestation.category && (
-              <div className={styles.insightSection} style={{ marginBottom: 16 }}>
+            {/* Title and Description Section */}
+            <div className={styles.insightSection} style={{ marginBottom: 24 }}>
+              <h2 style={{ 
+                fontSize: 24, 
+                fontWeight: 700, 
+                color: '#fbbf24', 
+                marginBottom: 12,
+                textTransform: 'none',
+                letterSpacing: 'normal'
+              }}>
+                {manifestation.title}
+              </h2>
+              
+              {manifestation.description && (
+                <div style={{
+                  padding: '16px',
+                  background: 'rgba(251, 191, 36, 0.05)',
+                  border: '1px solid rgba(251, 191, 36, 0.2)',
+                  borderRadius: 8,
+                  marginTop: 12
+                }}>
+                  <div style={{ 
+                    fontSize: 12, 
+                    color: '#94a3b8', 
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    marginBottom: 8,
+                    fontWeight: 600
+                  }}>
+                    Your Intention
+                  </div>
+                  <p style={{ 
+                    fontSize: 15, 
+                    color: '#e2e8f0', 
+                    lineHeight: 1.6,
+                    margin: 0,
+                    whiteSpace: 'pre-wrap',
+                    wordWrap: 'break-word'
+                  }}>
+                    {manifestation.description}
+                  </p>
+                </div>
+              )}
+
+              {manifestation.category && (
                 <div style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: 12,
-                  padding: '12px 16px',
+                  padding: '10px 16px',
                   background: 'rgba(251, 191, 36, 0.1)',
                   border: '1px solid rgba(251, 191, 36, 0.3)',
-                  borderRadius: 8
+                  borderRadius: 8,
+                  marginTop: 12,
+                  width: 'fit-content'
                 }}>
-                  <span style={{ fontSize: 14, color: '#94a3b8' }}>Category:</span>
+                  <span style={{ fontSize: 13, color: '#94a3b8' }}>Category:</span>
                   <span style={{ 
-                    fontSize: 16, 
+                    fontSize: 14, 
                     fontWeight: 600, 
                     color: '#fbbf24',
                     textTransform: 'capitalize'
@@ -139,8 +175,28 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
                     {manifestation.category_label || manifestation.category}
                   </span>
                 </div>
-              </div>
-            )}
+              )}
+
+              {manifestation.added_date && (
+                <div style={{ 
+                  fontSize: 12, 
+                  color: '#64748b', 
+                  marginTop: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6
+                }}>
+                  <span>Created:</span>
+                  <span style={{ color: '#94a3b8' }}>
+                    {new Date(manifestation.added_date).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </span>
+                </div>
+              )}
+            </div>
 
             <div className={styles.insightSection}>
               <h3>Scores</h3>
@@ -234,66 +290,136 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
             {manifestation.insights && (
               <div className={styles.insightSection}>
                 <h3>Insights</h3>
+                
+                {/* Main AI Narrative/Insights */}
                 {manifestation.insights.ai_narrative && (
-                  <div className={styles.narrative}>
-                    <p>{manifestation.insights.ai_narrative}</p>
-                  </div>
-                )}
-                {manifestation.insights.astro_insights && (
-                  <div className={styles.astroInsights}>
-                    <p>{manifestation.insights.astro_insights}</p>
-                  </div>
-                )}
-                <div className={styles.energyState}>
-                  <strong>Energy State:</strong>{' '}
-                  <span
-                    style={{
-                      color:
-                        manifestation.insights.energy_state === 'aligned'
-                          ? '#10b981'
-                          : manifestation.insights.energy_state === 'unstable'
-                            ? '#f59e0b'
-                            : '#ef4444',
-                    }}
-                  >
-                    {manifestation.insights.energy_state || 'unknown'}
-                  </span>
-                </div>
-                {manifestation.insights.energy_reason && (
-                  <div style={{ 
-                    marginTop: 12, 
-                    padding: 12, 
-                    background: 'rgba(148, 163, 184, 0.1)', 
-                    borderRadius: 6,
-                    fontSize: 13,
-                    color: '#cbd5e1',
-                    lineHeight: 1.6
+                  <div className={styles.narrative} style={{
+                    padding: '16px',
+                    background: 'rgba(251, 191, 36, 0.05)',
+                    border: '1px solid rgba(251, 191, 36, 0.2)',
+                    borderRadius: 8,
+                    marginBottom: 16
                   }}>
-                    <strong style={{ color: '#fbbf24' }}>Why:</strong> {manifestation.insights.energy_reason}
+                    <p style={{ 
+                      margin: 0, 
+                      fontSize: 15, 
+                      color: '#e2e8f0', 
+                      lineHeight: 1.7,
+                      whiteSpace: 'pre-wrap',
+                      wordWrap: 'break-word'
+                    }}>
+                      {manifestation.insights.ai_narrative}
+                    </p>
                   </div>
                 )}
+
+                {/* Astrological Insights */}
+                {manifestation.insights.astro_insights && (
+                  <div className={styles.astroInsights} style={{
+                    padding: '16px',
+                    background: 'rgba(100, 116, 139, 0.1)',
+                    border: '1px solid rgba(100, 116, 139, 0.2)',
+                    borderRadius: 8,
+                    marginBottom: 16
+                  }}>
+                    <div style={{ 
+                      fontSize: 12, 
+                      color: '#94a3b8', 
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      marginBottom: 8,
+                      fontWeight: 600
+                    }}>
+                      Astrological Alignment
+                    </div>
+                    <p style={{ 
+                      margin: 0, 
+                      fontSize: 14, 
+                      color: '#cbd5e1', 
+                      lineHeight: 1.6,
+                      whiteSpace: 'pre-wrap',
+                      wordWrap: 'break-word'
+                    }}>
+                      {manifestation.insights.astro_insights}
+                    </p>
+                  </div>
+                )}
+
+                {/* Energy State with Detailed Reason */}
+                <div style={{
+                  padding: '16px',
+                  background: manifestation.insights.energy_state === 'aligned'
+                    ? 'rgba(16, 185, 129, 0.1)'
+                    : manifestation.insights.energy_state === 'unstable' || manifestation.insights.energy_state === 'scattered'
+                      ? 'rgba(245, 158, 11, 0.1)'
+                      : 'rgba(239, 68, 68, 0.1)',
+                  border: `1px solid ${
+                    manifestation.insights.energy_state === 'aligned'
+                      ? 'rgba(16, 185, 129, 0.3)'
+                      : manifestation.insights.energy_state === 'unstable' || manifestation.insights.energy_state === 'scattered'
+                        ? 'rgba(245, 158, 11, 0.3)'
+                        : 'rgba(239, 68, 68, 0.3)'
+                  }`,
+                  borderRadius: 8,
+                  marginTop: 16
+                }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 8,
+                    marginBottom: manifestation.insights.energy_reason ? 12 : 0
+                  }}>
+                    <strong style={{ 
+                      fontSize: 13, 
+                      color: '#94a3b8', 
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em'
+                    }}>
+                      Energy State:
+                    </strong>
+                    <span
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color:
+                          manifestation.insights.energy_state === 'aligned'
+                            ? '#10b981'
+                            : manifestation.insights.energy_state === 'unstable' || manifestation.insights.energy_state === 'scattered'
+                              ? '#f59e0b'
+                              : '#ef4444',
+                        textTransform: 'capitalize'
+                      }}
+                    >
+                      {manifestation.insights.energy_state || 'unknown'}
+                    </span>
+                  </div>
+                  {manifestation.insights.energy_reason && (
+                    <div style={{ 
+                      marginTop: 12, 
+                      paddingTop: 12,
+                      borderTop: `1px solid ${
+                        manifestation.insights.energy_state === 'aligned'
+                          ? 'rgba(16, 185, 129, 0.2)'
+                          : manifestation.insights.energy_state === 'unstable' || manifestation.insights.energy_state === 'scattered'
+                            ? 'rgba(245, 158, 11, 0.2)'
+                            : 'rgba(239, 68, 68, 0.2)'
+                      }`,
+                      fontSize: 14,
+                      color: '#cbd5e1',
+                      lineHeight: 1.7,
+                      whiteSpace: 'pre-wrap',
+                      wordWrap: 'break-word'
+                    }}>
+                      {manifestation.insights.energy_reason}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
         ) : (
           // Add Mode - Form
           <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.formGroup}>
-              <label htmlFor="title">
-                Title <span className={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="e.g., I want a new job"
-                required
-              />
-              {errors.title && <span className={styles.error}>{errors.title}</span>}
-            </div>
-
             <div className={styles.formGroup}>
               <label htmlFor="description">
                 Description / Intent <span className={styles.required}>*</span>

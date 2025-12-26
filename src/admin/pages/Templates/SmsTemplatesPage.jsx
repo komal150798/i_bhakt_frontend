@@ -212,7 +212,7 @@ function SmsTemplatesPage() {
                   placeholder="SMS body with placeholders, e.g., Hi {{name}}, OTP is {{otp}}"
                   rows={4}
                 />
-                <small>Use {{variable}} for placeholders</small>
+                <small>Use {'{{variable}}'} for placeholders</small>
               </div>
               <div className={styles.formGroup}>
                 <label>Description</label>

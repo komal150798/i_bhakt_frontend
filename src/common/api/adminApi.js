@@ -193,6 +193,59 @@ export const adminApi = {
     });
   },
 
+  // AI Prompts
+  getAIPrompts: async (filters = {}) => {
+    const queryParams = new URLSearchParams();
+    if (filters.scope) queryParams.append('scope', filters.scope);
+    if (filters.type) queryParams.append('type', filters.type);
+    if (filters.language) queryParams.append('language', filters.language);
+    if (filters.is_active !== undefined) queryParams.append('is_active', filters.is_active.toString());
+    
+    const queryString = queryParams.toString();
+    const url = `/admin/ai-prompts${queryString ? `?${queryString}` : ''}`;
+    const data = await adminApiRequest(url);
+    return Array.isArray(data) ? data : data.data || [];
+  },
+
+  getAIPromptById: async (promptId) => {
+    const data = await adminApiRequest(`/admin/ai-prompts/${promptId}`);
+    return data.data || data;
+  },
+
+  createAIPrompt: async (promptData) => {
+    const data = await adminApiRequest('/admin/ai-prompts', {
+      method: 'POST',
+      body: JSON.stringify(promptData),
+    });
+    return data.data || data;
+  },
+
+  updateAIPrompt: async (promptId, promptData) => {
+    const data = await adminApiRequest(`/admin/ai-prompts/${promptId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(promptData),
+    });
+    return data.data || data;
+  },
+
+  deleteAIPrompt: async (promptId) => {
+    return adminApiRequest(`/admin/ai-prompts/${promptId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  clearAIPromptCache: async (promptId) => {
+    return adminApiRequest(`/admin/ai-prompts/${promptId}/clear-cache`, {
+      method: 'POST',
+    });
+  },
+
+  clearAllAIPromptCache: async () => {
+    return adminApiRequest('/admin/ai-prompts/clear-all-cache', {
+      method: 'POST',
+    });
+  },
+
   // Settings
   getSettings: async () => {
     return adminApiRequest('/admin/config');

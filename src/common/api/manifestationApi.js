@@ -96,6 +96,16 @@ export const manifestationApi = {
   },
 
   /**
+   * Lock/Unlock a manifestation
+   * PUT /api/v1/app/manifestation/lock/:id
+   */
+  toggleLockManifestation: async (id) => {
+    return apiRequest(`/app/manifestation/lock/${id}`, {
+      method: 'PUT',
+    });
+  },
+
+  /**
    * Get tips for a manifestation
    * GET /api/v1/app/manifestation/tips/:id
    */
@@ -109,6 +119,17 @@ export const manifestationApi = {
    */
   getAllManifestations: async () => {
     return apiRequest('/app/manifestation/list/all');
+  },
+
+  /**
+   * Calculate detailed resonance score with Dasha analysis
+   * POST /api/v1/app/manifestation/calculate-resonance
+   */
+  calculateResonance: async (description) => {
+    return apiRequest('/app/manifestation/calculate-resonance', {
+      method: 'POST',
+      body: JSON.stringify({ description }),
+    });
   },
 };
 

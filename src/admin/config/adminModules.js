@@ -84,6 +84,15 @@ export const adminModules = [
     order: 31,
     category: 'communication',
   },
+  {
+    id: 'ai-prompts',
+    label: 'AI Prompts',
+    icon: 'bi-robot',
+    path: 'ai-prompts',
+    permission: 'MANAGE_AI_PROMPTS',
+    order: 32,
+    category: 'communication',
+  },
   
   // Content & CMS
   {

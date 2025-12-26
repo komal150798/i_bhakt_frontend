@@ -71,6 +71,20 @@ function ManifestationDashboard() {
     }
   };
 
+  const handleToggleLock = async (manifestationId, currentLockStatus) => {
+    try {
+      await manifestationApi.toggleLockManifestation(manifestationId);
+      const message = currentLockStatus
+        ? 'Manifestation unlocked. It will no longer be included in dashboard calculations.'
+        : 'Manifestation locked. It will now be included in dashboard calculations.';
+      alert(message);
+      fetchDashboard();
+    } catch (error) {
+      console.error('Failed to toggle lock:', error);
+      alert('Failed to toggle lock: ' + error.message);
+    }
+  };
+
   const handleModalClose = () => {
     setShowModal(false);
     setSelectedManifestation(null);
@@ -96,6 +110,10 @@ function ManifestationDashboard() {
 
   const { summary, manifestations } = dashboard;
 
+  // Separate locked and unlocked manifestations
+  const lockedManifestations = manifestations.filter(m => m.is_locked === true);
+  const unlockedManifestations = manifestations.filter(m => m.is_locked !== true);
+
   // Get energy state color
   const getEnergyStateColor = (state) => {
     switch (state) {
@@ -110,53 +128,179 @@ function ManifestationDashboard() {
     }
   };
 
+  // Get score color based on value
+  const getScoreColor = (score) => {
+    if (score >= 80) return '#10b981'; // green
+    if (score >= 60) return '#f59e0b'; // yellow
+    if (score >= 40) return '#f97316'; // orange
+    return '#ef4444'; // red
+  };
+
   return (
     <div className={styles.dashboard}>
-      {/* Summary Header */}
-      <div className={styles.summaryHeader}>
-        <h2>Manifestation</h2>
-        <div className={styles.summaryCards}>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryLabel}>Resonance Score</div>
-            <div className={styles.summaryValue}>{summary.top_resonance || 0}</div>
-          </div>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryLabel}>Alignment Score</div>
-            <div className={styles.summaryValue}>{summary.alignment_score || 0}</div>
-          </div>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryLabel}>Astro Support</div>
-            <div className={styles.summaryValue}>{summary.astro_support || 0}</div>
-          </div>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryLabel}>Energy State</div>
-            <div
-              className={styles.energyBadge}
-              style={{ backgroundColor: getEnergyStateColor(summary.energy_state) }}
-            >
-              {summary.energy_state || 'unknown'}
+      {/* Header with Create Button */}
+      <div className={styles.pageHeader}>
+        <div>
+          <h1 className={styles.pageTitle}>Manifestation Dashboard</h1>
+          <p className={styles.pageSubtitle}>Track your locked manifestations and their resonance scores</p>
+        </div>
+        <button className={styles.createButton} onClick={handleAddManifestation}>
+          <span className={styles.createButtonIcon}>+</span>
+          Create New Manifestation
+        </button>
+      </div>
+
+      {/* Summary Cards - Only show if there are locked manifestations */}
+      {lockedManifestations.length > 0 && (
+        <div className={styles.summaryHeader}>
+          <h2>Overall Summary</h2>
+          <div className={styles.summaryCards}>
+            <div className={styles.summaryCard}>
+              <div className={styles.summaryLabel}>Resonance Score</div>
+              <div className={styles.summaryValue}>{summary.top_resonance || 0}</div>
+            </div>
+            <div className={styles.summaryCard}>
+              <div className={styles.summaryLabel}>Alignment Score</div>
+              <div className={styles.summaryValue}>{summary.alignment_score || 0}</div>
+            </div>
+            <div className={styles.summaryCard}>
+              <div className={styles.summaryLabel}>Astro Support</div>
+              <div className={styles.summaryValue}>{summary.astro_support || 0}</div>
+            </div>
+            <div className={styles.summaryCard}>
+              <div className={styles.summaryLabel}>Energy State</div>
+              <div
+                className={styles.energyBadge}
+                style={{ backgroundColor: getEnergyStateColor(summary.energy_state) }}
+              >
+                {summary.energy_state || 'unknown'}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Manifestations List */}
-      <div className={styles.manifestationsSection}>
-        <div className={styles.sectionHeader}>
-          <h3>Manifestation</h3>
-          <div style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400, textTransform: 'none', letterSpacing: 'normal' }}>Intentions List</div>
-        </div>
-
-        {manifestations.length === 0 ? (
-          <div className={styles.emptyState}>
-            <p>No active manifestations yet.</p>
-            <button className={styles.addButton} onClick={handleAddManifestation}>
-              Create Your First Manifestation
-            </button>
+      {/* Locked Manifestations - Score Cards */}
+      {lockedManifestations.length > 0 && (
+        <div className={styles.manifestationsSection}>
+          <div className={styles.sectionHeader}>
+            <div>
+              <h3>Locked Manifestations</h3>
+              <div style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400, textTransform: 'none', letterSpacing: 'normal', marginTop: 4 }}>
+                {lockedManifestations.length} active {lockedManifestations.length === 1 ? 'manifestation' : 'manifestations'}
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className={styles.manifestationsList}>
-            {manifestations.map((manifestation) => (
+          <div className={styles.scoreCardsGrid}>
+            {lockedManifestations.map((manifestation, index) => (
+              <div 
+                key={manifestation.id} 
+                className={styles.scoreCard}
+                onClick={() => handleViewInsights(manifestation.id)}
+              >
+                <div className={styles.scoreCardHeader}>
+                  <div className={styles.scoreCardNumber}>#{index + 1}</div>
+                  <div className={styles.scoreCardTitle}>{manifestation.title}</div>
+                </div>
+                {manifestation.category && (
+                  <div className={styles.scoreCardCategory}>
+                    {manifestation.category_label || manifestation.category}
+                  </div>
+                )}
+                <div className={styles.scoreCardScores}>
+                  <div className={styles.scoreItem}>
+                    <span className={styles.scoreLabel}>Resonance</span>
+                    <span 
+                      className={styles.scoreValue}
+                      style={{ color: getScoreColor(manifestation.resonance_score || 0) }}
+                    >
+                      {manifestation.resonance_score || 0}
+                    </span>
+                  </div>
+                  <div className={styles.scoreItem}>
+                    <span className={styles.scoreLabel}>Alignment</span>
+                    <span 
+                      className={styles.scoreValue}
+                      style={{ color: getScoreColor(manifestation.alignment_score || 0) }}
+                    >
+                      {manifestation.alignment_score || 0}
+                    </span>
+                  </div>
+                  <div className={styles.scoreItem}>
+                    <span className={styles.scoreLabel}>MFP Score</span>
+                    <span 
+                      className={styles.scoreValue}
+                      style={{ color: getScoreColor(manifestation.mfp_score || 0) }}
+                    >
+                      {manifestation.mfp_score || 0}
+                    </span>
+                  </div>
+                  {manifestation.coherence_score !== null && (
+                    <div className={styles.scoreItem}>
+                      <span className={styles.scoreLabel}>Coherence</span>
+                      <span 
+                        className={styles.scoreValue}
+                        style={{ color: getScoreColor(manifestation.coherence_score || 0) }}
+                      >
+                        {manifestation.coherence_score || 0}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className={styles.scoreCardActions}>
+                  <button
+                    className={styles.viewButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleViewInsights(manifestation.id);
+                    }}
+                  >
+                    View Details
+                  </button>
+                  <button
+                    className={styles.unlockButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleLock(manifestation.id, manifestation.is_locked);
+                    }}
+                    title="Unlock to exclude from dashboard"
+                  >
+                    🔓 Unlock
+                  </button>
+                </div>
+                <div className={styles.scoreCardDate}>
+                  Created: {new Date(manifestation.added_date).toLocaleDateString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Unlocked Manifestations - Regular List */}
+      {unlockedManifestations.length > 0 && (
+        <div className={styles.manifestationsSection}>
+          <div className={styles.sectionHeader}>
+            <div>
+              <h3>Unlocked Manifestations</h3>
+              <div style={{ fontSize: 14, color: '#94a3b8', fontWeight: 400, textTransform: 'none', letterSpacing: 'normal', marginTop: 4 }}>
+                {unlockedManifestations.length} unlocked {unlockedManifestations.length === 1 ? 'manifestation' : 'manifestations'}
+              </div>
+            </div>
+          </div>
+
+          {unlockedManifestations.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>No unlocked manifestations.</p>
+            </div>
+          ) : (
+            <div className={styles.manifestationsList}>
+              {/* Sort manifestations by creation date (oldest first) */}
+              {[...unlockedManifestations].sort((a, b) => {
+                const dateA = new Date(a.added_date || 0).getTime();
+                const dateB = new Date(b.added_date || 0).getTime();
+                return dateA - dateB; // Oldest first
+              }).map((manifestation, index) => (
               <div 
                 key={manifestation.id} 
                 className={styles.manifestationCard}
@@ -164,15 +308,30 @@ function ManifestationDashboard() {
                 style={{ cursor: 'pointer' }}
               >
                 <div className={styles.cardHeader}>
-                  <div>
-                    <h4>{manifestation.title}</h4>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                      <span style={{ 
+                        fontSize: 11, 
+                        color: '#64748b',
+                        fontWeight: 600,
+                        background: 'rgba(100, 116, 139, 0.1)',
+                        padding: '2px 8px',
+                        borderRadius: 4
+                      }}>
+                        #{index + 1}
+                      </span>
+                      <h4 style={{ margin: 0, flex: 1 }}>{manifestation.title}</h4>
+                    </div>
                     {manifestation.category && (
                       <span style={{ 
                         fontSize: 12, 
                         color: '#fbbf24', 
                         textTransform: 'capitalize',
-                        marginTop: 4,
-                        display: 'block'
+                        display: 'inline-block',
+                        background: 'rgba(251, 191, 36, 0.1)',
+                        padding: '4px 8px',
+                        borderRadius: 4,
+                        marginTop: 4
                       }}>
                         {manifestation.category_label || manifestation.category}
                       </span>
@@ -211,6 +370,16 @@ function ManifestationDashboard() {
                     View Insights
                   </button>
                   <button
+                    className={manifestation.is_locked ? styles.lockButtonActive : styles.lockButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleLock(manifestation.id, manifestation.is_locked);
+                    }}
+                    title={manifestation.is_locked ? 'Unlock to exclude from dashboard' : 'Lock to include in dashboard'}
+                  >
+                    {manifestation.is_locked ? '🔒 Locked' : '🔓 Unlocked'}
+                  </button>
+                  <button
                     className={styles.archiveButton}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -221,10 +390,23 @@ function ManifestationDashboard() {
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Empty State - No manifestations at all */}
+      {manifestations.length === 0 && (
+        <div className={styles.emptyState}>
+          <div className={styles.emptyStateIcon}>✨</div>
+          <h3>No Manifestations Yet</h3>
+          <p>Start your manifestation journey by creating your first intention.</p>
+          <button className={styles.addButton} onClick={handleAddManifestation}>
+            Create Your First Manifestation
+          </button>
+        </div>
+      )}
 
       {/* Floating Add Button */}
       <button className={styles.floatingAddButton} onClick={handleAddManifestation}>

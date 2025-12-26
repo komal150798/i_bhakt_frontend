@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './common/context/AuthContext';
 import { AdminAuthProvider } from './common/context/AdminAuthContext';
@@ -9,18 +10,23 @@ import './styles/globals.css';
 import './styles/bootstrap-overrides.css';
 
 function App() {
+  // Get Google Client ID from environment variables
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <ToastProvider>
-          <AuthProvider>
-            <AdminAuthProvider>
-              <AppRouter />
-            </AdminAuthProvider>
-          </AuthProvider>
-        </ToastProvider>
-      </LanguageProvider>
-    </ThemeProvider>
+    <GoogleOAuthProvider clientId={googleClientId || ''}>
+      <ThemeProvider>
+        <LanguageProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <AdminAuthProvider>
+                <AppRouter />
+              </AdminAuthProvider>
+            </AuthProvider>
+          </ToastProvider>
+        </LanguageProvider>
+      </ThemeProvider>
+    </GoogleOAuthProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ManifestationDashboard from '../../../components/Manifestation/ManifestationDashboard';
+import ManifestationResonanceScreen from '../../../components/Manifestation/ManifestationResonanceScreen';
 
 function ManifestationPage() {
   return (
@@ -7,9 +7,8 @@ function ManifestationPage() {
       minHeight: '100vh',
       background: 'radial-gradient(circle at top, #1f2937 0%, #0f172a 45%, #020617 100%)',
       color: '#f8fafc',
-      padding: '24px',
     }}>
-      <ManifestationDashboard />
+      <ManifestationResonanceScreen />
     </div>
   );
 }
