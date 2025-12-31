@@ -128,7 +128,7 @@ const FooterNew: React.FC = () => {
         <div className="border-t border-gray-700 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
-              &copy; {currentYear} ASTROVERSE. All rights reserved.
+              &copy; {currentYear} ibhakt. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm text-gray-400">
               <Link to="/terms" className="hover:text-gold-400 transition-colors">

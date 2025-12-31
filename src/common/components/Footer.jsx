@@ -77,7 +77,7 @@ function Footer() {
         <div className="row">
           <div className="col-12 text-center">
             <p className={styles.copyright}>
-              &copy; {currentYear} AstroVerse. All rights reserved.
+              &copy; {currentYear} ibhakt. All rights reserved.
             </p>
           </div>
         </div>

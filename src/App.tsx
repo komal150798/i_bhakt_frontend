@@ -77,11 +77,14 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 	const { token } = useAuth()
+	const location = useLocation()
 	// Check both context and localStorage to avoid race conditions during navigation
 	const localToken = typeof window !== 'undefined' ? localStorage.getItem('ibhakt_token') : null
 	const hasToken = token || localToken
 	
 	if (!hasToken) {
+		// Redirect to home page (login might not exist, so redirect to home)
+		// The user can login from there
 		return <Navigate to="/" replace />
 	}
 	return children

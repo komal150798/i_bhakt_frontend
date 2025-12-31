@@ -123,7 +123,9 @@ function HomeHeader() {
                 <Link
                   to={item.path}
                   className={`${styles.navLink} ${isActive(item.path) ? styles.active : ''}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                  }}
                 >
                   {t(item.key)}
                 </Link>
@@ -150,7 +152,9 @@ function HomeHeader() {
             </div>
 
             {/* Theme Toggle */}
-            <ThemeToggle />
+            <div style={{ display: 'none' }}>
+              <ThemeToggle />
+            </div>
 
             {/* Auth Section */}
             {isAuthenticated && user ? (
