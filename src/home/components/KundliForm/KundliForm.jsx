@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { homeApi } from '../../../api/homeApi';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
+import { useAuth } from '../../../common/context/AuthContext';
 import Loader from '../../../common/components/Loader/Loader';
+import LocationAutocomplete from '../../../components/common/LocationAutocomplete';
 import styles from './KundliForm.module.css';
 
 const INITIAL_FORM_DATA = {
@@ -9,13 +11,54 @@ const INITIAL_FORM_DATA = {
   dateOfBirth: '',
   timeOfBirth: '',
   placeOfBirth: '',
+  latitude: null,
+  longitude: null,
+  timezone: 'Asia/Kolkata',
 };
+
+/**
+ * Format date to dd/mm/yyyy format
+ * @param {string} dateStr - Date string to format
+ * @returns {string} Formatted date string
+ */
+function formatDate(dateStr) {
+  if (!dateStr) return 'N/A';
+  try {
+    const date = new Date(dateStr);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  } catch {
+    return dateStr;
+  }
+}
+
+/**
+ * Format duration in years to a human-readable format
+ * @param {number} years - Duration in years
+ * @returns {string} Formatted duration string
+ */
+function formatDuration(years) {
+  if (years >= 1) {
+    return `${years.toFixed(2)} yr`;
+  } else if (years >= 1 / 12) {
+    const months = years * 12;
+    return `${months.toFixed(1)} mo`;
+  } else {
+    const days = Math.round(years * 365);
+    return `${days} days`;
+  }
+}
 
 function KundliForm() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pdfError, setPdfError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [kundliData, setKundliData] = useState(null);
 
@@ -23,6 +66,86 @@ function KundliForm() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setError(null);
+  };
+
+  // Handle location autocomplete selection
+  const handleLocationChange = (value) => {
+    setFormData((prev) => ({ ...prev, placeOfBirth: value }));
+    setError(null);
+  };
+
+  const handleLocationSelect = (locationData) => {
+    setFormData((prev) => ({
+      ...prev,
+      placeOfBirth: locationData.placeName,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      timezone: locationData.timezone || 'Asia/Kolkata',
+    }));
+    setError(null);
+  };
+
+  /**
+   * Handle PDF download - only available for authenticated users
+   */
+  const handleDownloadPdf = async () => {
+    if (!isAuthenticated) {
+      setPdfError('Please login to download the PDF report.');
+      return;
+    }
+
+    if (!kundliData) {
+      setPdfError('No kundli data available to download.');
+      return;
+    }
+
+    setIsPdfLoading(true);
+    setPdfError(null);
+
+    try {
+      // Prepare PDF data with dasha information
+      const pdfData = {
+        name: kundliData.name,
+        birth_date: kundliData.birth_date,
+        birth_time: kundliData.birth_time,
+        birth_place: kundliData.birth_place,
+        latitude: kundliData.latitude,
+        longitude: kundliData.longitude,
+        timezone: kundliData.timezone,
+        lagna: kundliData.lagna,
+        nakshatra: kundliData.nakshatra,
+        planets: kundliData.planets,
+        houses: kundliData.houses,
+        ayanamsa: kundliData.ayanamsa,
+        tithi: kundliData.tithi,
+        yoga: kundliData.yoga,
+        karana: kundliData.karana,
+        // Include dasha data from full_data if available
+        dasha_timeline: kundliData.full_data?.dasha_timeline || kundliData.dasha_timeline,
+      };
+
+      const pdfBlob = await homeApi.downloadKundliPdf(pdfData);
+
+      // Create download link and trigger download
+      const url = globalThis.URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      const safeName = kundliData.name.replaceAll(/[^a-zA-Z0-9\s]/g, '').replaceAll(/\s+/g, '_');
+      link.download = `Kundli_Report_${safeName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      globalThis.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('PDF download error:', err);
+      if (err.response?.status === 401) {
+        setPdfError('Please login to download the PDF report.');
+      } else {
+        setPdfError(err.response?.data?.message || err.message || 'Failed to download PDF. Please try again.');
+      }
+    } finally {
+      setIsPdfLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -38,6 +161,10 @@ function KundliForm() {
         birth_date: formData.dateOfBirth,
         birth_time: formData.timeOfBirth ? `${formData.timeOfBirth}:00` : '12:00:00', // Add seconds if not present
         birth_place: formData.placeOfBirth,
+        // Include coordinates if available from location autocomplete
+        ...(formData.latitude && { latitude: formData.latitude }),
+        ...(formData.longitude && { longitude: formData.longitude }),
+        ...(formData.timezone && { timezone: formData.timezone }),
       };
 
       // Ensure time format is HH:MM:SS
@@ -145,16 +272,22 @@ function KundliForm() {
                         <label htmlFor="placeOfBirth" className="form-label">
                           {t('kundli.form.place')}
                         </label>
-                        <input
-                          type="text"
-                          className="form-control"
+                        <LocationAutocomplete
                           id="placeOfBirth"
                           name="placeOfBirth"
                           value={formData.placeOfBirth}
-                          onChange={handleChange}
-                          placeholder="City, State"
+                          onChange={handleLocationChange}
+                          onLocationSelect={handleLocationSelect}
+                          placeholder={t('kundli.form.placePlaceholder') || 'Search city, state...'}
+                          inputClassName="form-control"
                           required
                         />
+                        {formData.latitude && formData.longitude && (
+                          <small className="text-muted mt-1 d-block">
+                            <i className="bi bi-geo-alt-fill me-1"></i>
+                            {formData.latitude.toFixed(4)}°, {formData.longitude.toFixed(4)}°
+                          </small>
+                        )}
                       </div>
                       <button
                         type="submit"
@@ -184,18 +317,62 @@ function KundliForm() {
                       <i className="bi bi-stars me-2"></i>
                       {kundliData.name}'s {t('kundli.results.title') || 'Kundli'}
                     </h2>
-                    <button
-                      className="btn btn-sm btn-outline-secondary"
-                      onClick={() => {
-                        setKundliData(null);
-                        setSuccess(false);
-                        setFormData(INITIAL_FORM_DATA);
-                      }}
-                    >
-                      <i className="bi bi-x-lg me-1"></i>
-                      {t('kundli.results.close') || 'Close'}
-                    </button>
+                    <div className="d-flex gap-2">
+                      {/* Download PDF Button - Only visible for authenticated users */}
+                      {isAuthenticated && (
+                        <button
+                          className="btn btn-sm btn-primary"
+                          onClick={handleDownloadPdf}
+                          disabled={isPdfLoading}
+                          title={t('kundli.results.downloadPdf') || 'Download PDF Report'}
+                        >
+                          {isPdfLoading ? (
+                            <>
+                              <Loader size="sm" /> {t('kundli.results.generatingPdf') || 'Generating...'}
+                            </>
+                          ) : (
+                            <>
+                              <i className="bi bi-file-earmark-pdf me-1"></i>
+                              {t('kundli.results.downloadPdf') || 'Download PDF'}
+                            </>
+                          )}
+                        </button>
+                      )}
+                      {/* Login prompt for non-authenticated users */}
+                      {!isAuthenticated && (
+                        <span className="text-muted small align-self-center me-2" title="Login required to download PDF">
+                          <i className="bi bi-lock me-1"></i>
+                          {t('kundli.results.loginForPdf') || 'Login to download PDF'}
+                        </span>
+                      )}
+                      <button
+                        className="btn btn-sm btn-outline-secondary"
+                        onClick={() => {
+                          setKundliData(null);
+                          setSuccess(false);
+                          setFormData(INITIAL_FORM_DATA);
+                          setPdfError(null);
+                        }}
+                      >
+                        <i className="bi bi-x-lg me-1"></i>
+                        {t('kundli.results.close') || 'Close'}
+                      </button>
+                    </div>
                   </div>
+
+                  {/* PDF Error Alert */}
+                  {pdfError && (
+                    <div className="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+                      <i className="bi bi-exclamation-triangle me-2"></i>
+                      {pdfError}
+                      <button
+                        type="button"
+                        className="btn-close"
+                        onClick={() => setPdfError(null)}
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                  )}
 
                   {/* Basic Information */}
                   <div className={styles.basicInfo}>
@@ -206,7 +383,7 @@ function KundliForm() {
                             {t('kundli.results.birthDate') || 'Birth Date'}
                           </div>
                           <div className={styles.infoValue}>
-                            {new Date(kundliData.birth_date).toLocaleDateString()}
+                            {formatDate(kundliData.birth_date)}
                           </div>
                         </div>
                       </div>
@@ -301,6 +478,164 @@ function KundliForm() {
                               {t('kundli.results.karana') || 'Karana'}
                             </div>
                             <div className={styles.smallInfoValue}>{kundliData.karana}</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Vimshottari Dasha */}
+                  {kundliData.dasha_timeline?.vimshottari && (
+                    <div className={styles.dashaSection + ' mb-4'}>
+                      <h3 className={styles.sectionTitle}>
+                        <i className="bi bi-calendar3 me-2"></i>
+                        {t('kundli.results.vimshottariDasha') || 'Vimshottari Dasha'}
+                      </h3>
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-4">
+                          <div className={styles.highlightCard}>
+                            <div className={styles.highlightContent}>
+                              <div className={styles.highlightLabel}>
+                                {t('kundli.results.mahadasha') || 'Mahadasha'}
+                              </div>
+                              <div className={styles.highlightValue}>
+                                {kundliData.dasha_timeline.vimshottari.current_mahadasha || 'N/A'}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-4">
+                          <div className={styles.highlightCard}>
+                            <div className={styles.highlightContent}>
+                              <div className={styles.highlightLabel}>
+                                {t('kundli.results.antardasha') || 'Antardasha'}
+                              </div>
+                              <div className={styles.highlightValue}>
+                                {kundliData.dasha_timeline.vimshottari.current_antardasha || 'N/A'}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-4">
+                          <div className={styles.highlightCard}>
+                            <div className={styles.highlightContent}>
+                              <div className={styles.highlightLabel}>
+                                {t('kundli.results.pratyantar') || 'Pratyantar'}
+                              </div>
+                              <div className={styles.highlightValue}>
+                                {kundliData.dasha_timeline.vimshottari.current_pratyantar || 'N/A'}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Mahadasha Timeline */}
+                      {kundliData.dasha_timeline.vimshottari.mahadasha && (
+                        <div className={styles.dashaTimeline}>
+                          <h4 className={styles.subSectionTitle}>
+                            {t('kundli.results.mahadashaTimeline') || 'Mahadasha Timeline'}
+                          </h4>
+                          <div className="table-responsive">
+                            <table className="table table-sm table-hover">
+                              <thead>
+                                <tr>
+                                  <th>{t('kundli.results.lord') || 'Lord'}</th>
+                                  <th>{t('kundli.results.startDate') || 'Start'}</th>
+                                  <th>{t('kundli.results.endDate') || 'End'}</th>
+                                  <th>{t('kundli.results.duration') || 'Duration'}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {kundliData.dasha_timeline.vimshottari.mahadasha.map((dasha) => (
+                                  <tr
+                                    key={dasha.lord}
+                                    className={
+                                      dasha.lord === kundliData.dasha_timeline.vimshottari.current_mahadasha
+                                        ? styles.currentDashaRow
+                                        : ''
+                                    }
+                                  >
+                                    <td>
+                                      <strong>{dasha.lord}</strong>
+                                      {dasha.lord === kundliData.dasha_timeline.vimshottari.current_mahadasha && (
+                                        <span className="badge bg-primary ms-2">Current</span>
+                                      )}
+                                    </td>
+                                    <td>{formatDate(dasha.start)}</td>
+                                    <td>{formatDate(dasha.end)}</td>
+                                    <td>{dasha.duration_years} years</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Detailed Dasha Timeline (Mahadasha > Antardasha > Pratyantar) */}
+                      {kundliData.dasha_timeline.vimshottari.detailed_timeline &&
+                        kundliData.dasha_timeline.vimshottari.detailed_timeline.length > 0 && (
+                        <div className={styles.detailedDashaTimeline}>
+                          <h4 className={styles.subSectionTitle}>
+                            <i className="bi bi-list-nested me-2"></i>
+                            {t('kundli.results.detailedDashaTimeline') || 'Detailed Dasha Timeline'}
+                          </h4>
+                          <p className={styles.dashaSubtext}>
+                            {t('kundli.results.detailedDashaDescription') || 'Complete breakdown showing Mahadasha, Antardasha, and Pratyantar periods with exact dates'}
+                          </p>
+                          <div className={`table-responsive ${styles.detailedDashaTableWrapper}`}>
+                            <table className={`table table-sm ${styles.detailedDashaTable}`}>
+                              <thead className={styles.detailedDashaHeader}>
+                                <tr>
+                                  <th>{t('kundli.results.mahadasha') || 'Mahadasha'}</th>
+                                  <th>{t('kundli.results.antardasha') || 'Antardasha'}</th>
+                                  <th>{t('kundli.results.pratyantar') || 'Pratyantar'}</th>
+                                  <th>{t('kundli.results.startDate') || 'Start Date'}</th>
+                                  <th>{t('kundli.results.endDate') || 'End Date'}</th>
+                                  <th>{t('kundli.results.duration') || 'Duration'}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {kundliData.dasha_timeline.vimshottari.detailed_timeline.map((period, index) => {
+                                  const isCurrentPeriod =
+                                    period.mahadasha === kundliData.dasha_timeline.vimshottari.current_mahadasha &&
+                                    period.antardasha === kundliData.dasha_timeline.vimshottari.current_antardasha &&
+                                    period.pratyantar === kundliData.dasha_timeline.vimshottari.current_pratyantar;
+
+                                  const prevPeriod = index > 0
+                                    ? kundliData.dasha_timeline.vimshottari.detailed_timeline[index - 1]
+                                    : null;
+                                  const showMaha = !prevPeriod || prevPeriod.mahadasha !== period.mahadasha;
+                                  const showAntara = !prevPeriod || prevPeriod.antardasha !== period.antardasha || showMaha;
+
+                                  return (
+                                    <tr
+                                      key={`${period.mahadasha}-${period.antardasha}-${period.pratyantar}-${index}`}
+                                      className={`
+                                        ${isCurrentPeriod ? styles.currentDetailedRow : ''}
+                                        ${showMaha ? styles.mahadashaGroupStart : ''}
+                                      `}
+                                    >
+                                      <td className={styles.mahadashaCell}>
+                                        {showMaha && <strong>{period.mahadasha}</strong>}
+                                      </td>
+                                      <td className={styles.antardashaCell}>
+                                        {showAntara && <strong>{period.antardasha}</strong>}
+                                      </td>
+                                      <td className={styles.pratyantarCell}>
+                                        {period.pratyantar}
+                                        {isCurrentPeriod && (
+                                          <span className="badge bg-success ms-2">Current</span>
+                                        )}
+                                      </td>
+                                      <td>{formatDate(period.start_date)}</td>
+                                      <td>{formatDate(period.end_date)}</td>
+                                      <td>{formatDuration(period.duration_years)}</td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       )}

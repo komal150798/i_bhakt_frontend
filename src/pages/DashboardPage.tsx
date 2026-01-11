@@ -7,6 +7,7 @@ import { getTwinState } from '../common/api/twinApi'
 import { getEntitlements, checkFeatureAccess } from '../common/api/entitlementsApi'
 import { getKarmaDashboard } from '../common/api/karmaApi'
 import ManifestationDashboard from '../components/Manifestation/ManifestationDashboard'
+import LocationAutocomplete from '../components/common/LocationAutocomplete'
 
 // Digital twin image path - user should place the image at frontend/public/digital-twin.png
 // Files in the public folder are served at the root path
@@ -4460,12 +4461,15 @@ const DashboardPage: React.FC = () => {
 								
 								<label style={{ display: 'grid', gap: 8 }}>
 									<span style={{ fontSize: 13, color: '#e5e7eb', fontWeight: 600 }}>Place of Birth <span style={{ color: '#f87171' }}>*</span></span>
-									<input
-										type="text"
+									<LocationAutocomplete
 										value={digitalTwinForm.placeOfBirth}
-										onChange={(e) => setDigitalTwinForm(prev => ({ ...prev, placeOfBirth: e.target.value }))}
-										placeholder="e.g., Delhi, India"
-										required
+										onChange={(value) => setDigitalTwinForm(prev => ({ ...prev, placeOfBirth: value }))}
+										onLocationSelect={(locationData) => setDigitalTwinForm(prev => ({
+											...prev,
+											placeOfBirth: locationData.placeName,
+										}))}
+										placeholder="Search city, state..."
+										inputClassName=""
 										style={{
 											padding: '12px 14px',
 											borderRadius: 10,

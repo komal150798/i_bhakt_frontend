@@ -304,6 +304,57 @@
   font-weight: 600;
 }
 
+/* Dasha Section */
+.dashaSection {
+  margin-top: var(--spacing-xl);
+}
+
+.subSectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: var(--spacing-md);
+}
+
+.dashaTimeline {
+  background: var(--bg-color);
+  border: 1px solid var(--border-light);
+  border-radius: var(--button-radius);
+  padding: var(--spacing-md);
+}
+
+.dashaTimeline table {
+  margin-bottom: 0;
+}
+
+.dashaTimeline th {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border-light);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: #f7fafc;
+}
+
+.dashaTimeline td {
+  font-size: 0.9rem;
+  color: #1a202c;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.currentDashaRow {
+  background: linear-gradient(90deg, rgba(72, 187, 120, 0.2), rgba(72, 187, 120, 0.1)) !important;
+}
+
+.currentDashaRow td {
+  color: #22543d;
+  font-weight: 600;
+}
+
 /* Houses Section */
 .housesSection {
   margin-top: var(--spacing-xl);
@@ -351,6 +402,112 @@
   color: var(--muted-text-color);
 }
 
+/* ============================================
+   Detailed Dasha Timeline Section
+   ============================================ */
+
+.detailedDashaTimeline {
+  margin-top: var(--spacing-xl);
+  background: var(--bg-color);
+  border: 1px solid var(--border-light);
+  border-radius: var(--button-radius);
+  padding: var(--spacing-lg);
+}
+
+.dashaSubtext {
+  font-size: 0.9rem;
+  color: var(--muted-text-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.detailedDashaTableWrapper {
+  max-height: 500px;
+  overflow-y: auto;
+  border-radius: var(--button-radius);
+  border: 1px solid var(--border-light);
+}
+
+.detailedDashaTable {
+  margin-bottom: 0;
+  font-size: 0.85rem;
+}
+
+.detailedDashaHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.detailedDashaHeader th {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2b6cb0, #3182ce);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  white-space: nowrap;
+}
+
+.detailedDashaTable td {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+  color: #1a202c;
+}
+
+.mahadashaCell {
+  font-weight: 600;
+  color: #92400e;
+  background: rgba(251, 191, 36, 0.12);
+}
+
+.antardashaCell {
+  font-weight: 500;
+  color: #1e40af;
+}
+
+.pratyantarCell {
+  color: #374151;
+}
+
+.mahadashaGroupStart {
+  border-top: 2px solid var(--primary-color) !important;
+}
+
+.mahadashaGroupStart td {
+  padding-top: var(--spacing-sm);
+}
+
+.currentDetailedRow {
+  background: linear-gradient(90deg, rgba(72, 187, 120, 0.2), rgba(72, 187, 120, 0.1)) !important;
+}
+
+.currentDetailedRow td {
+  color: #22543d;
+  font-weight: 600;
+}
+
+/* Scrollbar styling for detailed dasha table */
+.detailedDashaTableWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.detailedDashaTableWrapper::-webkit-scrollbar-track {
+  background: var(--bg-color);
+  border-radius: 4px;
+}
+
+.detailedDashaTableWrapper::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.detailedDashaTableWrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .highlightCard {
@@ -375,5 +532,26 @@
   .planetCard,
   .houseCard {
     margin-bottom: var(--spacing-md);
+  }
+
+  .detailedDashaTimeline {
+    padding: var(--spacing-md);
+  }
+
+  .detailedDashaTableWrapper {
+    max-height: 400px;
+  }
+
+  .detailedDashaTable {
+    font-size: 0.75rem;
+  }
+
+  .detailedDashaHeader th {
+    font-size: 0.7rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .detailedDashaTable td {
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
 }

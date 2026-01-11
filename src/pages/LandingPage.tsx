@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
+import LocationAutocomplete from '../components/common/LocationAutocomplete';
 import AOS from 'aos';
 
 type FormState = {
@@ -11,6 +12,9 @@ type FormState = {
   dateOfBirth: string;
   timeOfBirth: string;
   placeOfBirth: string;
+  latitude: number | null;
+  longitude: number | null;
+  timezone: string;
   gender: string;
   otpCode: string;
 };
@@ -22,6 +26,9 @@ const initialForm: FormState = {
   dateOfBirth: '',
   timeOfBirth: '',
   placeOfBirth: '',
+  latitude: null,
+  longitude: null,
+  timezone: 'Asia/Kolkata',
   gender: '',
   otpCode: '',
 };
@@ -124,6 +131,28 @@ const LandingPage: React.FC = () => {
 
   const handleFormChange = (field: keyof FormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setError(null);
+  };
+
+  // Handle location autocomplete
+  const handleLocationChange = (value: string) => {
+    setForm((prev) => ({ ...prev, placeOfBirth: value }));
+    setError(null);
+  };
+
+  const handleLocationSelect = (locationData: {
+    placeName: string;
+    latitude: number;
+    longitude: number;
+    timezone?: string;
+  }) => {
+    setForm((prev) => ({
+      ...prev,
+      placeOfBirth: locationData.placeName,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      timezone: locationData.timezone || 'Asia/Kolkata',
+    }));
     setError(null);
   };
 
@@ -359,14 +388,20 @@ const LandingPage: React.FC = () => {
                             <label className="form-label fw-semibold">Place of Birth</label>
                             <div className="input-group-cosmic">
                               <i className="bi bi-geo-alt input-icon"></i>
-                              <input
-                                type="text"
-                                className="form-control cosmic-input"
-                                placeholder="City, Country"
+                              <LocationAutocomplete
                                 value={form.placeOfBirth}
-                                onChange={(e) => handleFormChange('placeOfBirth', e.target.value)}
+                                onChange={handleLocationChange}
+                                onLocationSelect={handleLocationSelect}
+                                placeholder="Search city, country..."
+                                inputClassName="form-control cosmic-input"
                               />
                             </div>
+                            {form.latitude && form.longitude && (
+                              <small className="text-muted mt-1 d-block">
+                                <i className="bi bi-geo-alt-fill me-1"></i>
+                                {form.latitude.toFixed(4)}°, {form.longitude.toFixed(4)}°
+                              </small>
+                            )}
                           </div>
                         </>
                       )}

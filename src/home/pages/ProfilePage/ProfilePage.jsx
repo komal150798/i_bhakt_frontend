@@ -4,6 +4,7 @@ import { useLanguage } from '../../../common/i18n/LanguageContext';
 import { useToast } from '../../../common/hooks/useToast';
 import { Navigate } from 'react-router-dom';
 import { getCustomerProfile, updateCustomerProfile } from '../../../common/api/customerApi';
+import LocationAutocomplete from '../../../components/common/LocationAutocomplete';
 import styles from './ProfilePage.module.css';
 
 function ProfilePage() {
@@ -70,6 +71,21 @@ function ProfilePage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  // Handle location autocomplete
+  const handleLocationChange = (value) => {
+    setFormData((prev) => ({ ...prev, place_name: value }));
+  };
+
+  const handleLocationSelect = (locationData) => {
+    setFormData((prev) => ({
+      ...prev,
+      place_name: locationData.placeName,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      timezone: locationData.timezone || prev.timezone || 'Asia/Kolkata',
     }));
   };
 
@@ -216,45 +232,19 @@ function ProfilePage() {
                       <label className="form-label">
                         {t('profile.placeOfBirth') || 'Place of Birth'}
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="place_name"
+                      <LocationAutocomplete
                         value={formData.place_name}
-                        onChange={handleInputChange}
-                        placeholder="e.g., Mumbai, India"
+                        onChange={handleLocationChange}
+                        onLocationSelect={handleLocationSelect}
+                        placeholder={t('profile.placePlaceholder') || 'Search city, state...'}
+                        inputClassName="form-control"
                       />
-                    </div>
-
-                    <div className="row">
-                      <div className="col-md-6 mb-3">
-                        <label className="form-label">
-                          {t('profile.latitude') || 'Latitude'}
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          name="latitude"
-                          value={formData.latitude}
-                          onChange={handleInputChange}
-                          step="any"
-                          placeholder="e.g., 19.0760"
-                        />
-                      </div>
-                      <div className="col-md-6 mb-3">
-                        <label className="form-label">
-                          {t('profile.longitude') || 'Longitude'}
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          name="longitude"
-                          value={formData.longitude}
-                          onChange={handleInputChange}
-                          step="any"
-                          placeholder="e.g., 72.8777"
-                        />
-                      </div>
+                      {formData.latitude && formData.longitude && (
+                        <small className="text-muted mt-1 d-block">
+                          <i className="bi bi-geo-alt-fill me-1"></i>
+                          Coordinates: {Number(formData.latitude).toFixed(4)}°, {Number(formData.longitude).toFixed(4)}°
+                        </small>
+                      )}
                     </div>
 
                     <div className="row">

@@ -2,6 +2,7 @@ import httpClient from './httpClient';
 
 const HOME_ENDPOINTS = {
   KUNDLI: '/kundli',
+  KUNDLI_PDF: '/kundli/pdf',
   HOROSCOPE: '/horoscope',
   MATCHMAKING: '/matchmaking',
   TAROT: '/tarot',
@@ -12,12 +13,30 @@ const HOME_ENDPOINTS = {
 export const homeApi = {
   // Kundli
   generateKundli: async (kundliData) => {
-    const response = await httpClient.post(HOME_ENDPOINTS.KUNDLI, kundliData);
+    const response = await httpClient.post(HOME_ENDPOINTS.KUNDLI, kundliData, {
+      timeout: 60000, // 60 seconds timeout for AI-based Kundli calculation
+    });
     return response.data;
   },
 
   getKundli: async (kundliId) => {
     const response = await httpClient.get(`${HOME_ENDPOINTS.KUNDLI}/${kundliId}`);
+    return response.data;
+  },
+
+  /**
+   * Download Kundli PDF report (authenticated users only)
+   * @param {Object} kundliData - Complete kundli data including dasha information
+   * @returns {Promise<Blob>} PDF file as blob
+   */
+  downloadKundliPdf: async (kundliData) => {
+    const response = await httpClient.post(HOME_ENDPOINTS.KUNDLI_PDF, kundliData, {
+      responseType: 'blob',
+      timeout: 60000, // 60 seconds timeout for PDF generation
+      headers: {
+        'Accept': 'application/pdf',
+      },
+    });
     return response.data;
   },
 
