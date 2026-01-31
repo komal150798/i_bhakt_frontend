@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../../common/hooks/useAuth';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
@@ -11,6 +11,7 @@ import styles from './LoginPage.module.css';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, loginWithTokens } = useAuth();
   const { t } = useLanguage();
   const { showSuccess, showError } = useToast();
@@ -49,7 +50,9 @@ function LoginPage() {
       showSuccess('Login successful', {
         description: 'Welcome back to I-Bhakt!',
       });
-      navigate('/');
+      // Redirect to the page user was trying to access, or home page
+      const from = location.state?.from || '/';
+      navigate(from, { replace: true });
     } catch (err) {
       const errorMessage = handleApiError(err, { defaultMessage: 'Login failed. Please check your credentials.' });
       setError(errorMessage);
@@ -102,7 +105,9 @@ function LoginPage() {
       });
       // Use loginWithTokens to store in localStorage and update state
       loginWithTokens(result.access_token, result.refresh_token, result.user);
-      navigate('/');
+      // Redirect to the page user was trying to access, or home page
+      const from = location.state?.from || '/';
+      navigate(from, { replace: true });
     } catch (err) {
       setOtpError(err.message || 'Invalid or expired OTP. Please try again.');
     } finally {
@@ -135,7 +140,9 @@ function LoginPage() {
         description: 'Welcome back to I-Bhakt!',
       });
       
-      navigate('/');
+      // Redirect to the page user was trying to access, or home page
+      const from = location.state?.from || '/';
+      navigate(from, { replace: true });
     } catch (err) {
       console.error('Google Login Failed:', err);
       const errorMessage = handleApiError(err, { defaultMessage: 'Google login failed. Please try again.' });

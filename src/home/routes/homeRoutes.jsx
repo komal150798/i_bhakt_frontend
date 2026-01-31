@@ -7,7 +7,8 @@ import LoginPage from '../pages/LoginPage/LoginPage';
 import SignupPage from '../pages/SignupPage/SignupPage';
 import ReferPage from '../pages/ReferPage/ReferPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
-import ManifestationPage from '../pages/ManifestationPage/ManifestationPage';
+// Use the correct ManifestationPage with Dashboard (not the form screen)
+import ManifestationPage from '../../pages/ManifestationPage';
 
 export const homeRoutes = [
   {

@@ -2,6 +2,11 @@ import React from 'react';
 import ManifestationDashboard from '../components/Manifestation/ManifestationDashboard';
 
 function ManifestationPage() {
+  // Ensure dashboard shows first - this is the main manifestation page
+  React.useEffect(() => {
+    console.log('[ManifestationPage] Rendering dashboard view');
+  }, []);
+
   return (
     <div style={{
       minHeight: '100vh',

@@ -11,6 +11,7 @@ function ManifestationDashboard() {
   const [viewMode, setViewMode] = useState('active'); // 'active' or 'archived'
 
   useEffect(() => {
+    console.log('[ManifestationDashboard] Component mounted - fetching dashboard');
     fetchDashboard();
   }, []);
 
@@ -21,11 +22,11 @@ function ManifestationDashboard() {
       setDashboard(data);
     } catch (error) {
       console.error('Failed to fetch dashboard:', error);
-      // Don't show alert for auth errors (they redirect to login)
+      // Don't show alert for auth errors (they redirect to login via ProtectedRoute)
       if (!error.message.includes('Authentication') && !error.message.includes('Session expired')) {
         alert('Failed to load manifestation dashboard: ' + error.message);
       }
-      // Set empty dashboard state on error
+      // Set empty dashboard state on error to prevent redirect
       setDashboard({
         summary: {
           top_resonance: 0,
@@ -35,6 +36,7 @@ function ManifestationDashboard() {
         },
         manifestations: [],
       });
+      // Don't throw error - stay on page
     } finally {
       setLoading(false);
     }
@@ -73,15 +75,23 @@ function ManifestationDashboard() {
 
   const handleToggleLock = async (manifestationId, currentLockStatus) => {
     try {
-      await manifestationApi.toggleLockManifestation(manifestationId);
-      const message = currentLockStatus
+      const response = await manifestationApi.toggleLockManifestation(manifestationId);
+      const message = response?.message || (currentLockStatus
         ? 'Manifestation unlocked. It will no longer be included in dashboard calculations.'
-        : 'Manifestation locked. It will now be included in dashboard calculations.';
-      alert(message);
-      fetchDashboard();
+        : 'Manifestation locked. It will now be included in dashboard calculations.');
+      
+      // Refresh dashboard without navigation
+      await fetchDashboard();
+      
+      // Show success message (optional - can remove alert if you prefer)
+      console.log('Lock toggled successfully:', message);
     } catch (error) {
       console.error('Failed to toggle lock:', error);
-      alert('Failed to toggle lock: ' + error.message);
+      // Only show error if it's not an auth error (auth errors are handled by ProtectedRoute)
+      if (!error.message.includes('Authentication') && !error.message.includes('Session expired')) {
+        alert('Failed to toggle lock: ' + error.message);
+      }
+      // Don't navigate on error - stay on page
     }
   };
 

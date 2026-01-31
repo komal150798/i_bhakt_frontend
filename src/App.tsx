@@ -16,6 +16,7 @@ import PricingPolicyPage from './pages/PricingPolicyPage'
 import DisclaimerPage from './pages/DisclaimerPage'
 import ContactPage from './pages/ContactPage'
 import PricingPage from './pages/PricingPage'
+import LoginPage from './home/pages/LoginPage/LoginPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
@@ -76,17 +77,45 @@ type ProtectedRouteProps = {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-	const { token } = useAuth()
+	const { token, setToken } = useAuth()
 	const location = useLocation()
-	// Check both context and localStorage to avoid race conditions during navigation
-	const localToken = typeof window !== 'undefined' ? localStorage.getItem('ibhakt_token') : null
-	const hasToken = token || localToken
+	const [, forceUpdate] = React.useReducer(x => x + 1, 0)
+	
+	// Always check localStorage directly on every render (most reliable)
+	// Don't rely on state which might be stale
+	const checkToken = React.useCallback(() => {
+		if (typeof window === 'undefined') return null
+		return localStorage.getItem('ibhakt_token')
+	}, [])
+	
+	// Listen for auth events to trigger re-render
+	React.useEffect(() => {
+		const handleAuthLogin = () => {
+			forceUpdate() // Force re-render to re-check token
+		}
+		
+		const handleAuthLogout = () => {
+			setToken(null)
+			forceUpdate()
+		}
+		
+		window.addEventListener('auth:login', handleAuthLogin)
+		window.addEventListener('auth:logout', handleAuthLogout)
+		
+		return () => {
+			window.removeEventListener('auth:login', handleAuthLogin)
+			window.removeEventListener('auth:logout', handleAuthLogout)
+		}
+	}, [setToken])
+	
+	// Check token directly from localStorage (always fresh)
+	const currentToken = checkToken()
+	const hasToken = !!(currentToken || token)
 	
 	if (!hasToken) {
-		// Redirect to home page (login might not exist, so redirect to home)
-		// The user can login from there
-		return <Navigate to="/" replace />
+		return <Navigate to="/login" replace state={{ from: location.pathname }} />
 	}
+	
 	return children
 }
 
@@ -132,6 +161,7 @@ const AppContentInner: React.FC = () => {
 					
 					{/* Public routes */}
 					<Route path="/" element={<HomePage />} />
+					<Route path="/login" element={<LoginPage />} />
 					<Route path="/landing" element={<LandingPage />} />
 					<Route path="/pricing" element={<PricingPage />} />
 					
@@ -154,15 +184,7 @@ const AppContentInner: React.FC = () => {
 							</ProtectedRoute>
 						}
 					/>
-					<Route
-						path="/manifestation"
-						element={
-							<ProtectedRoute>
-								<ManifestationPage />
-							</ProtectedRoute>
-						}
-					/>
-					{/* Alias route for /manifestations (plural) */}
+					{/* Manifestation route - only /manifestations (plural) */}
 					<Route
 						path="/manifestations"
 						element={

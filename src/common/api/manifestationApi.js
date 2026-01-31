@@ -42,7 +42,9 @@ async function apiRequest(url, options = {}) {
       console.error('Manifestation API: 401 Unauthorized - clearing tokens');
       localStorage.removeItem('ibhakt_token');
       localStorage.removeItem('ibhakt_refresh_token');
-      window.location.href = '/login';
+      // Don't do hard redirect - let React Router handle it via ProtectedRoute
+      // Dispatch event to notify auth context if needed
+      window.dispatchEvent(new Event('auth:logout'));
       throw new Error('Session expired. Please login again.');
     }
 

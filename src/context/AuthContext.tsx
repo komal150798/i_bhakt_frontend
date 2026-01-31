@@ -43,6 +43,68 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		return Number.isFinite(parsed) ? parsed : null
 	})
 
+	// Sync function to update state from localStorage
+	const syncFromLocalStorage = React.useCallback(() => {
+		const currentToken = window.localStorage.getItem('ibhakt_token')
+		if (currentToken !== tokenState) {
+			setTokenState(currentToken)
+		}
+		
+		// Try to sync user data from ibhakt_user (used by common AuthContext)
+		const userData = window.localStorage.getItem('ibhakt_user')
+		if (userData) {
+			try {
+				const user = JSON.parse(userData)
+				// Map user data to profile
+				setProfileState(prev => {
+					if (prev) return prev // Don't overwrite if already set
+					return {
+						fullName: user.full_name || user.name || user.fullName,
+						email: user.email,
+						phoneNumber: user.phone_number || user.phoneNumber,
+						dateOfBirth: user.date_of_birth || user.dateOfBirth,
+						timeOfBirth: user.time_of_birth || user.timeOfBirth,
+						placeOfBirth: user.place_of_birth || user.placeOfBirth,
+						gender: user.gender,
+					}
+				})
+				if (user.id) {
+					setUserIdState(prev => prev || Number(user.id))
+				}
+			} catch (e) {
+				console.warn('Failed to parse user data:', e)
+			}
+		}
+	}, [tokenState])
+
+	// Listen for auth events
+	React.useEffect(() => {
+		const handleAuthLogout = () => {
+			setTokenState(null)
+			setProfileState(null)
+			setUserIdState(null)
+		}
+		
+		const handleAuthLogin = () => {
+			syncFromLocalStorage()
+		}
+		
+		window.addEventListener('auth:logout', handleAuthLogout)
+		window.addEventListener('auth:login', handleAuthLogin)
+		
+		// Initial sync on mount
+		syncFromLocalStorage()
+		
+		// Poll for localStorage changes (since storage event doesn't fire for same-tab changes)
+		const interval = setInterval(syncFromLocalStorage, 1000) // Check every 1 second
+		
+		return () => {
+			window.removeEventListener('auth:logout', handleAuthLogout)
+			window.removeEventListener('auth:login', handleAuthLogin)
+			clearInterval(interval)
+		}
+	}, [syncFromLocalStorage])
+
 	const setToken = (value: string | null) => {
 		setTokenState(value)
 		if (value) {

@@ -125,6 +125,9 @@ export function AuthProvider({ children }) {
       setToken(access_token);
       setUser(userData);
 
+      // Dispatch event to notify other auth contexts
+      window.dispatchEvent(new Event('auth:login'));
+
       // Debug: Verify state
       console.log('📊 Auth State Updated:', { 
         hasToken: !!access_token, 
@@ -237,6 +240,9 @@ export function AuthProvider({ children }) {
       // Update state
       setToken(accessToken);
       setUser(userData);
+
+      // Dispatch event to notify other auth contexts
+      window.dispatchEvent(new Event('auth:login'));
 
       // Debug: Verify state
       console.log('📊 Auth State Updated:', { hasToken: !!accessToken, hasUser: !!userData });

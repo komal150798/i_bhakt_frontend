@@ -14,9 +14,50 @@ const Header: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(() => 
+    typeof window !== 'undefined' ? localStorage.getItem('ibhakt_token') : null
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const isAuthenticated = !!token || !!localStorage.getItem('ibhakt_token');
+  // Sync with localStorage and auth events
+  useEffect(() => {
+    const updateAuthState = () => {
+      const currentToken = typeof window !== 'undefined' ? localStorage.getItem('ibhakt_token') : null;
+      if (currentToken !== authToken) {
+        setAuthToken(currentToken);
+        if (currentToken && !token) {
+          setToken(currentToken);
+        }
+      }
+    };
+
+    const handleAuthLogin = () => {
+      updateAuthState();
+    };
+
+    const handleAuthLogout = () => {
+      setAuthToken(null);
+      setToken(null);
+    };
+
+    // Initial check
+    updateAuthState();
+
+    // Listen for auth events
+    window.addEventListener('auth:login', handleAuthLogin);
+    window.addEventListener('auth:logout', handleAuthLogout);
+
+    // Poll for changes (since storage event doesn't fire for same-tab changes)
+    const interval = setInterval(updateAuthState, 500);
+
+    return () => {
+      window.removeEventListener('auth:login', handleAuthLogin);
+      window.removeEventListener('auth:logout', handleAuthLogout);
+      clearInterval(interval);
+    };
+  }, [authToken, token, setToken]);
+
+  const isAuthenticated = !!token || !!authToken;
   const isAdmin = location.pathname.startsWith('/admin');
 
   useEffect(() => {
@@ -149,8 +190,12 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === '/manifestation' ? 'active' : ''}`} to="/manifestation" onClick={closeNav}>
-                {t('nav.manifestation')}
+              <Link 
+                className={`nav-link ${location.pathname === '/manifestations' ? 'active' : ''}`}
+                to="/manifestations"
+                onClick={closeNav}
+              >
+                {t('nav.manifestations')}
               </Link>
             </li>
             <li className="nav-item">
@@ -212,7 +257,11 @@ const Header: React.FC = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link className="dropdown-item" to="/manifestation" onClick={() => setIsUserMenuOpen(false)}>
+                    <Link 
+                      className="dropdown-item" 
+                      to="/manifestations"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
                       <i className="bi bi-heart-pulse me-2"></i>
                       {t('nav.myManifestation')}
                     </Link>

@@ -7,8 +7,10 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
     description: '',
   });
   const [loading, setLoading] = useState(false);
+  const [calculating, setCalculating] = useState(false);
   const [errors, setErrors] = useState({});
   const [isViewMode, setIsViewMode] = useState(false);
+  const [resonanceResult, setResonanceResult] = useState(null);
 
   useEffect(() => {
     if (manifestation) {
@@ -17,14 +19,16 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
       setFormData({
         description: manifestation.description || '',
       });
+      setResonanceResult(null);
     } else {
-      // Add mode
+      // Add mode - reset everything
       setIsViewMode(false);
       setFormData({
         description: '',
       });
+      setResonanceResult(null);
+      setErrors({});
     }
-    setErrors({});
   }, [manifestation]);
 
   const handleChange = (e) => {
@@ -54,6 +58,53 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleCalculate = async () => {
+    if (!formData.description || formData.description.trim().length < 15) {
+      setErrors({
+        description: 'Description must be at least 15 characters long.',
+      });
+      return;
+    }
+
+    try {
+      setCalculating(true);
+      setErrors({});
+      const result = await manifestationApi.calculateResonance(formData.description.trim());
+      setResonanceResult(result);
+    } catch (error) {
+      console.error('Failed to calculate resonance:', error);
+      setErrors({ description: error.message || 'Failed to calculate resonance score.' });
+    } finally {
+      setCalculating(false);
+    }
+  };
+
+  const handleLock = async () => {
+    if (!resonanceResult || !formData.description.trim()) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await manifestationApi.createManifestation({
+        description: formData.description.trim(),
+      });
+      // Close modal and refresh dashboard
+      onSuccess();
+    } catch (error) {
+      console.error('Failed to lock manifestation:', error);
+      alert('Failed to lock manifestation: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClear = () => {
+    setFormData({ description: '' });
+    setResonanceResult(null);
+    setErrors({});
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,24 +114,14 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
       return;
     }
 
-    if (!validate()) {
+    // If no result yet, calculate first
+    if (!resonanceResult) {
+      await handleCalculate();
       return;
     }
 
-    try {
-      setLoading(true);
-      await manifestationApi.createManifestation({
-        description: formData.description.trim(),
-      });
-
-      alert('Manifestation added successfully!');
-      onSuccess();
-    } catch (error) {
-      console.error('Failed to create manifestation:', error);
-      alert('Failed to create manifestation: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
+    // If result exists, lock it
+    await handleLock();
   };
 
   return (
@@ -418,38 +459,234 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
             )}
           </div>
         ) : (
-          // Add Mode - Form
-          <form onSubmit={handleSubmit} className={styles.form}>
+          // Add Mode - Form with Calculate and Lock flow
+          <div className={styles.form}>
             <div className={styles.formGroup}>
-              <label htmlFor="description">
-                Description / Intent <span className={styles.required}>*</span>
-              </label>
+              <h2 style={{ 
+                fontSize: 24, 
+                fontWeight: 700, 
+                color: '#fbbf24', 
+                marginBottom: 20,
+                textAlign: 'center'
+              }}>
+                Describe Your Manifestation
+              </h2>
               <textarea
                 id="description"
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Add details and feelings"
-                rows={5}
-                required
+                placeholder="I have become CM of Maharashtra in 2029"
+                rows={6}
+                style={{
+                  width: '100%',
+                  padding: '16px',
+                  background: 'rgba(30, 41, 59, 0.8)',
+                  border: '2px solid rgba(251, 191, 36, 0.3)',
+                  borderRadius: '8px',
+                  color: '#f8fafc',
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
+                  minHeight: '120px'
+                }}
               />
-              <small className={styles.helpText}>
-                Minimum 15 characters. Be specific about your intention.
-              </small>
+              {formData.description.length > 0 && formData.description.length < 15 && (
+                <div style={{ 
+                  marginTop: 8, 
+                  fontSize: 12, 
+                  color: '#94a3b8' 
+                }}>
+                  {formData.description.length}/15 minimum
+                </div>
+              )}
               {errors.description && (
                 <span className={styles.error}>{errors.description}</span>
               )}
             </div>
 
-            <div className={styles.formActions}>
-              <button type="button" onClick={onClose} className={styles.cancelButton}>
-                Cancel
-              </button>
-              <button type="submit" className={styles.submitButton} disabled={loading}>
-                {loading ? 'Creating...' : 'Save'}
-              </button>
-            </div>
-          </form>
+            {!resonanceResult ? (
+              // Show Calculate button
+              <div className={styles.formActions}>
+                <button 
+                  type="button" 
+                  onClick={onClose} 
+                  className={styles.cancelButton}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handleCalculate} 
+                  className={styles.submitButton} 
+                  disabled={calculating || formData.description.trim().length < 15}
+                  style={{
+                    background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+                    color: 'white',
+                    width: '100%',
+                    maxWidth: '400px'
+                  }}
+                >
+                  {calculating ? 'Calculating...' : 'Calculate Resonance Score & Generate Reading'}
+                </button>
+              </div>
+            ) : (
+              // Show Results and Lock button
+              <>
+                <div style={{
+                  marginTop: 24,
+                  padding: '20px',
+                  background: 'rgba(15, 23, 42, 0.8)',
+                  border: '1px solid rgba(251, 191, 36, 0.3)',
+                  borderRadius: '12px',
+                  marginBottom: 20
+                }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center',
+                    marginBottom: 16
+                  }}>
+                    <h3 style={{ 
+                      fontSize: 20, 
+                      fontWeight: 700, 
+                      color: '#fbbf24',
+                      margin: 0
+                    }}>
+                      Manifestation Resonance Score
+                    </h3>
+                    <button 
+                      onClick={handleClear}
+                      style={{
+                        padding: '8px 16px',
+                        background: 'transparent',
+                        border: '1px solid rgba(251, 191, 36, 0.3)',
+                        borderRadius: '6px',
+                        color: '#94a3b8',
+                        cursor: 'pointer',
+                        fontSize: 12
+                      }}
+                    >
+                      Clear & Enter New
+                    </button>
+                  </div>
+
+                  {/* Resonance Score Display */}
+                  <div style={{
+                    textAlign: 'center',
+                    marginBottom: 20
+                  }}>
+                    <div style={{
+                      fontSize: 48,
+                      fontWeight: 700,
+                      color: '#fbbf24',
+                      marginBottom: 8
+                    }}>
+                      {resonanceResult.resonance_score || 0}%
+                    </div>
+                    <div style={{
+                      fontSize: 14,
+                      color: '#94a3b8',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em'
+                    }}>
+                      Your Manifestation Resonance
+                    </div>
+                  </div>
+
+                  {/* Category */}
+                  {resonanceResult.category_label && (
+                    <div style={{
+                      marginTop: 16,
+                      padding: '12px',
+                      background: 'rgba(251, 191, 36, 0.1)',
+                      borderRadius: '8px'
+                    }}>
+                      <div style={{ 
+                        fontSize: 11, 
+                        color: '#94a3b8', 
+                        textTransform: 'uppercase',
+                        marginBottom: 4
+                      }}>
+                        Category
+                      </div>
+                      <div style={{ 
+                        fontSize: 16, 
+                        color: '#fbbf24',
+                        fontWeight: 600
+                      }}>
+                        {resonanceResult.category_label}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Lock Manifestation Section */}
+                <div style={{
+                  padding: '20px',
+                  background: 'rgba(15, 23, 42, 0.8)',
+                  border: '2px solid rgba(251, 191, 36, 0.3)',
+                  borderRadius: '12px',
+                  marginBottom: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: 16
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ 
+                      fontSize: 20, 
+                      fontWeight: 700, 
+                      color: '#fbbf24',
+                      marginBottom: 8,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8
+                    }}>
+                      🔒 Lock Your Manifestation
+                    </div>
+                    <p style={{ 
+                      margin: 0, 
+                      fontSize: 14, 
+                      color: '#cbd5e1',
+                      lineHeight: 1.6
+                    }}>
+                      Lock this manifestation to add actionable tips to your Daily Alignment Tips.
+                      These tips will help you align with your Dasha periods and improve your karma.
+                    </p>
+                  </div>
+                  <button 
+                    onClick={handleLock}
+                    disabled={loading}
+                    style={{
+                      padding: '12px 24px',
+                      background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.85))',
+                      color: '#0f172a',
+                      border: '2px solid rgba(251, 191, 36, 0.8)',
+                      borderRadius: '8px',
+                      fontWeight: 700,
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                      fontSize: 14,
+                      whiteSpace: 'nowrap',
+                      opacity: loading ? 0.6 : 1
+                    }}
+                  >
+                    {loading ? 'Locking...' : '🔒 Lock Manifestation'}
+                  </button>
+                </div>
+
+                <div className={styles.formActions}>
+                  <button 
+                    type="button" 
+                    onClick={onClose} 
+                    className={styles.cancelButton}
+                  >
+                    Close
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         )}
       </div>
     </div>

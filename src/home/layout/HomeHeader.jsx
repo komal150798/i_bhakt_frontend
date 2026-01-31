@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   { path: '/kundli', key: 'nav.kundli' },
   { path: '/horoscope', key: 'nav.dailyHoroscope' },
   { path: '/karma', key: 'nav.karma' },
-  { path: '/manifestation', key: 'nav.manifestation' },
+  { path: '/manifestations', key: 'nav.manifestations' },
   { path: '/services', key: 'nav.services' },
   { path: '/contact', key: 'nav.contact' },
 ];
