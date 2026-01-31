@@ -4,6 +4,7 @@
 node_modules/
 dist/
 build/
+tsconfig.tsbuildinfo
 .scannerwork/
 
 # Compiled Java class files
