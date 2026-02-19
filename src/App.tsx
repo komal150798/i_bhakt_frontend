@@ -17,6 +17,7 @@ import DisclaimerPage from './pages/DisclaimerPage'
 import ContactPage from './pages/ContactPage'
 import PricingPage from './pages/PricingPage'
 import LoginPage from './home/pages/LoginPage/LoginPage'
+import SignupPage from './home/pages/SignupPage/SignupPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
@@ -50,7 +51,7 @@ class ErrorBoundary extends React.Component<
 					<button
 						onClick={() => {
 							this.setState({ hasError: false, error: null })
-							window.location.reload()
+							globalThis.window.location.reload()
 						}}
 						style={{
 							padding: '12px 24px',
@@ -84,7 +85,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 	// Always check localStorage directly on every render (most reliable)
 	// Don't rely on state which might be stale
 	const checkToken = React.useCallback(() => {
-		if (typeof window === 'undefined') return null
+		if (!globalThis.window) return null;
 		return localStorage.getItem('ibhakt_token')
 	}, [])
 	
@@ -99,12 +100,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 			forceUpdate()
 		}
 		
-		window.addEventListener('auth:login', handleAuthLogin)
-		window.addEventListener('auth:logout', handleAuthLogout)
+		globalThis.window.addEventListener('auth:login', handleAuthLogin)
+		globalThis.window.addEventListener('auth:logout', handleAuthLogout)
 		
 		return () => {
-			window.removeEventListener('auth:login', handleAuthLogin)
-			window.removeEventListener('auth:logout', handleAuthLogout)
+			globalThis.window.removeEventListener('auth:login', handleAuthLogin)
+			globalThis.window.removeEventListener('auth:logout', handleAuthLogout)
 		}
 	}, [setToken])
 	
@@ -184,15 +185,11 @@ const AppContentInner: React.FC = () => {
 							</ProtectedRoute>
 						}
 					/>
-					{/* Manifestation route - only /manifestations (plural) */}
-					<Route
-						path="/manifestations"
-						element={
-							<ProtectedRoute>
-								<ManifestationPage />
-							</ProtectedRoute>
-						}
-					/>
+					{/* Manifestation route - public for Instagram traffic */}
+					<Route path="/manifestations" element={<ManifestationPage />} />
+
+					{/* Signup route */}
+					<Route path="/signup" element={<SignupPage />} />
 					
 					{/* Legal Pages */}
 					<Route path="/about" element={<AboutPage />} />

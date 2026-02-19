@@ -3,16 +3,29 @@ import { manifestationApi } from '../../common/api/manifestationApi';
 import ManifestationModal from './ManifestationModal';
 import styles from './ManifestationDashboard.module.css';
 
+const PENDING_KEY = 'ibhakt_pending_manifestation';
+
 function ManifestationDashboard() {
   const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedManifestation, setSelectedManifestation] = useState(null);
   const [viewMode, setViewMode] = useState('active'); // 'active' or 'archived'
+  const [pendingDescription, setPendingDescription] = useState('');
 
   useEffect(() => {
     console.log('[ManifestationDashboard] Component mounted - fetching dashboard');
     fetchDashboard();
+
+    // Check for pending manifestation from Instagram/social flow
+    const pending = localStorage.getItem(PENDING_KEY);
+    if (pending) {
+      setPendingDescription(pending);
+      localStorage.removeItem(PENDING_KEY);
+      // Auto-open modal with the pending text
+      setSelectedManifestation(null);
+      setShowModal(true);
+    }
   }, []);
 
   const fetchDashboard = async () => {
@@ -427,6 +440,7 @@ function ManifestationDashboard() {
       {showModal && (
         <ManifestationModal
           manifestation={selectedManifestation}
+          initialDescription={pendingDescription}
           onClose={handleModalClose}
           onSuccess={handleModalClose}
         />

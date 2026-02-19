@@ -1,11 +1,9 @@
 import React from 'react';
 import ManifestationDashboard from '../components/Manifestation/ManifestationDashboard';
+import ManifestationResonanceScreen from '../components/Manifestation/ManifestationResonanceScreen';
 
 function ManifestationPage() {
-  // Ensure dashboard shows first - this is the main manifestation page
-  React.useEffect(() => {
-    console.log('[ManifestationPage] Rendering dashboard view');
-  }, []);
+  const isLoggedIn = !!localStorage.getItem('ibhakt_token');
 
   return (
     <div style={{
@@ -14,7 +12,7 @@ function ManifestationPage() {
       color: '#f8fafc',
       padding: '24px',
     }}>
-      <ManifestationDashboard />
+      {isLoggedIn ? <ManifestationDashboard /> : <ManifestationResonanceScreen />}
     </div>
   );
 }

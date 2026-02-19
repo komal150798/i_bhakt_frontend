@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../common/hooks/useAuth';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
 import Loader from '../../../common/components/Loader/Loader';
@@ -7,6 +7,7 @@ import styles from './SignupPage.module.css';
 
 function SignupPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { register } = useAuth();
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
@@ -48,8 +49,9 @@ function SignupPage() {
         password: formData.password,
       });
 
-      // Navigate to home page after successful registration
-      navigate('/');
+      // Navigate to the page user was trying to access, or home page
+      const from = location.state?.from || '/';
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
     } finally {

@@ -245,7 +245,8 @@ function LoginPage() {
                 {isLoading ? <Loader size="sm" /> : 'Login'}
               </button>
               <p className={styles.signupLink}>
-                Don't have an account? <Link to="/signup">Sign up</Link>
+                Don't have an account?{' '}
+                <Link to="/signup" state={{ from: location.state?.from }}>Sign up</Link>
               </p>
             </form>
           )}

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { manifestationApi } from '../../common/api/manifestationApi';
 import styles from './ManifestationModal.module.css';
 
-function ManifestationModal({ manifestation, onClose, onSuccess }) {
+function ManifestationModal({ manifestation, initialDescription, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
     description: '',
   });
@@ -21,15 +21,15 @@ function ManifestationModal({ manifestation, onClose, onSuccess }) {
       });
       setResonanceResult(null);
     } else {
-      // Add mode - reset everything
+      // Add mode - pre-fill with pending text from social media flow
       setIsViewMode(false);
       setFormData({
-        description: '',
+        description: initialDescription || '',
       });
       setResonanceResult(null);
       setErrors({});
     }
-  }, [manifestation]);
+  }, [manifestation, initialDescription]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

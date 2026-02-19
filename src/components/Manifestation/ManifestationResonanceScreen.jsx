@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { manifestationApi } from '../../common/api/manifestationApi';
 import styles from './ManifestationResonanceScreen.module.css';
+
+const PENDING_KEY = 'ibhakt_pending_manifestation';
 
 function ManifestationResonanceScreen() {
   const navigate = useNavigate();
@@ -10,17 +12,34 @@ function ManifestationResonanceScreen() {
   const [result, setResult] = useState(null);
   const [activeTab, setActiveTab] = useState('resonance');
   const [error, setError] = useState(null);
+  const hasAutoSubmitted = useRef(false);
 
-  const handleCalculate = async () => {
-    if (!description.trim() || description.trim().length < 15) {
+  const isLoggedIn = () => !!localStorage.getItem('ibhakt_token');
+
+  // On mount: check for pending manifestation saved before login redirect
+  useEffect(() => {
+    const pending = localStorage.getItem(PENDING_KEY);
+    if (pending) {
+      setDescription(pending);
+      // If user just came back from auth, auto-submit
+      if (isLoggedIn() && !hasAutoSubmitted.current) {
+        hasAutoSubmitted.current = true;
+        localStorage.removeItem(PENDING_KEY);
+        doCalculate(pending);
+      }
+    }
+  }, []);
+
+  const doCalculate = async (text) => {
+    const desc = (text || '').trim();
+    if (desc.length < 15) {
       setError('Description must be at least 15 characters long.');
       return;
     }
-
     setLoading(true);
     setError(null);
     try {
-      const data = await manifestationApi.calculateResonance(description.trim());
+      const data = await manifestationApi.calculateResonance(desc);
       setResult(data);
       setActiveTab('resonance');
     } catch (err) {
@@ -30,23 +49,47 @@ function ManifestationResonanceScreen() {
     }
   };
 
+  const handleCalculate = async () => {
+    if (!description.trim() || description.trim().length < 15) {
+      setError('Description must be at least 15 characters long.');
+      return;
+    }
+
+    // If not logged in, save text and redirect to login
+    if (!isLoggedIn()) {
+      localStorage.setItem(PENDING_KEY, description.trim());
+      navigate('/login', { state: { from: '/manifestations' } });
+      return;
+    }
+
+    doCalculate(description);
+  };
+
   const handleClear = () => {
     setDescription('');
     setResult(null);
     setError(null);
     setActiveTab('resonance');
+    localStorage.removeItem(PENDING_KEY);
   };
 
   const handleLock = async () => {
     if (!result) return;
-    // Create manifestation from result
+
+    // If not logged in, save text and redirect to login
+    if (!isLoggedIn()) {
+      localStorage.setItem(PENDING_KEY, description.trim());
+      navigate('/login', { state: { from: '/manifestations' } });
+      return;
+    }
+
     try {
       setLoading(true);
       await manifestationApi.createManifestation({
         description: description.trim(),
       });
       // Redirect to dashboard after successful lock
-      navigate('/manifestation');
+      navigate('/dashboard');
     } catch (err) {
       setError('Failed to lock manifestation: ' + err.message);
       setLoading(false);
