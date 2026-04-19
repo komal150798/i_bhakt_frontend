@@ -18,10 +18,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const savedMainTheme = localStorage.getItem('theme') as Theme;
     if (savedMainTheme) return savedMainTheme;
     
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    return 'light';
+    return 'dark';
   });
 
   useEffect(() => {

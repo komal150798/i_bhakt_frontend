@@ -3,7 +3,7 @@
  * Handles all digital twin-related API calls
  */
 
-import httpClient from './httpClient';
+import httpClient from '../../api/httpClient';
 
 /**
  * Get current digital twin state

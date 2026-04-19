@@ -5,8 +5,8 @@ const FOOTER_LINKS = {
   quick: [
     { path: '/', label: 'Home' },
     { path: '/kundli', label: 'Kundli' },
-    { path: '/horoscope', label: 'Horoscope' },
-    { path: '/refer', label: 'Refer & Earn' },
+    { path: '/manifestations', label: 'Manifestations' },
+    { path: '/karma', label: 'Karma' },
   ],
   legal: [
     { path: '/terms', label: 'Terms' },
@@ -16,10 +16,8 @@ const FOOTER_LINKS = {
 };
 
 const SOCIAL_LINKS = [
-  { icon: 'bi-facebook', url: '#', label: 'Facebook' },
-  { icon: 'bi-twitter', url: '#', label: 'Twitter' },
-  { icon: 'bi-instagram', url: '#', label: 'Instagram' },
-  { icon: 'bi-youtube', url: '#', label: 'YouTube' },
+  { icon: 'bi-instagram', url: 'https://www.instagram.com/ibhakt.app', label: 'Instagram' },
+  { icon: 'bi-youtube', url: 'https://youtube.com/@ibhakt', label: 'YouTube' },
 ];
 
 function HomeFooter() {
@@ -30,10 +28,10 @@ function HomeFooter() {
       <div className="container">
         <div className="row g-4">
           <div className="col-lg-4">
-            <h5 className={styles.logo}>AstroVerse</h5>
+            <h5 className={styles.logo}>iBhakt</h5>
             <p className={styles.description}>
-              Your trusted companion for accurate astrology predictions, kundli generation,
-              and spiritual guidance.
+              Your cosmic companion for Kundli generation, manifestation tracking,
+              and karma insights — powered by Vedic wisdom and modern technology.
             </p>
           </div>
 

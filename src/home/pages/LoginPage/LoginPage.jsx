@@ -190,6 +190,7 @@ function LoginPage() {
             >
               Username / Password
             </button>
+            {/* OTP tab hidden until OTP integration is complete
             <button
               type="button"
               className={`${styles.tab} ${activeTab === 'otp' ? styles.tabActive : ''}`}
@@ -197,6 +198,7 @@ function LoginPage() {
             >
               OTP Login
             </button>
+            */}
             <button
               type="button"
               className={`${styles.tab} ${activeTab === 'google' ? styles.tabActive : ''}`}
@@ -251,8 +253,8 @@ function LoginPage() {
             </form>
           )}
 
-          {/* OTP Login Form */}
-          {activeTab === 'otp' && (
+          {/* OTP Login Form - hidden until OTP integration is complete */}
+          {activeTab === 'otp' && false && (
             <div className={styles.form}>
               {!otpSent ? (
                 <form onSubmit={handleSendOtp}>

@@ -1,9 +1,24 @@
-import { Link } from 'react-router-dom';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
 import styles from './ReferBanner.module.css';
 
 function ReferBanner() {
   const { t } = useLanguage();
+
+  const handleInvite = async () => {
+    const shareUrl = window.location.origin;
+    const shareText = 'Check out iBhakt - Generate your Kundli, manifest your desires, and track your karma journey!';
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'iBhakt', text: shareText, url: shareUrl });
+      } catch (err) {
+        // User cancelled share
+      }
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      alert('Link copied to clipboard!');
+    }
+  };
 
   return (
     <section className={styles.referSection}>
@@ -17,9 +32,9 @@ function ReferBanner() {
                 <p className="lead mb-4">
                   {t('refer.subtitle')}
                 </p>
-                <Link to="/refer" className="btn btn-accent btn-lg rounded-pill px-5">
+                <button onClick={handleInvite} className="btn btn-cosmic btn-lg rounded-pill px-5">
                   {t('refer.inviteNow')}
-                </Link>
+                </button>
               </div>
             </div>
           </div>

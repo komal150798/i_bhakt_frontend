@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
 import styles from './HeroCarousel.module.css';
 
@@ -7,24 +8,15 @@ function HeroCarousel() {
   const SLIDES = [
     {
       id: 1,
-      titleKey: 'home.heroTitle',
-      subtitleKey: 'home.heroSubtitle',
-      buttons: [
-        { labelKey: 'home.generateKundli', variant: 'primary' },
-        { labelKey: 'home.talkToAstrologer', variant: 'outline-accent' },
-      ],
+      titleKey: 'home.heroTitle2',
+      subtitleKey: 'home.heroSubtitle2',
+      buttons: [{ labelKey: 'home.startManifesting', variant: 'primary', link: '/manifestations' }],
     },
     {
       id: 2,
-      titleKey: 'home.heroTitle2',
-      subtitleKey: 'home.heroSubtitle2',
-      buttons: [{ labelKey: 'home.viewHoroscope', variant: 'primary' }],
-    },
-    {
-      id: 3,
       titleKey: 'home.heroTitle3',
       subtitleKey: 'home.heroSubtitle3',
-      buttons: [{ labelKey: 'home.checkCompatibility', variant: 'primary' }],
+      buttons: [{ labelKey: 'home.trackKarma', variant: 'primary', link: '/karma' }],
     },
   ];
 
@@ -67,12 +59,13 @@ function HeroCarousel() {
                     </p>
                     <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
                       {slide.buttons.map((button, btnIndex) => (
-                        <button
+                        <Link
                           key={btnIndex}
-                          className={`btn btn-${button.variant === 'primary' ? 'primary' : 'outline-primary'} btn-lg rounded-pill px-5`}
+                          to={button.link}
+                          className="btn btn-cosmic btn-lg rounded-pill px-5"
                         >
                           {t(button.labelKey)}
-                        </button>
+                        </Link>
                       ))}
                     </div>
                   </div>

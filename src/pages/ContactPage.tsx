@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AOS from 'aos';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -11,6 +13,7 @@ const ContactPage: React.FC = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     AOS.refresh();
@@ -19,14 +22,29 @@ const ContactPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setSubmitting(false);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_URL}/home/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to send message');
+      }
+
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
       setTimeout(() => setSubmitted(false), 5000);
-    }, 1000);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -76,8 +94,8 @@ const ContactPage: React.FC = () => {
                       </div>
                       <div>
                         <h5 className="mb-1">Phone</h5>
-                        <a href="tel:+911234567890" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
-                          +91 123 456 7890
+                        <a href="tel:+919767149042" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
+                          +91 9767149042
                         </a>
                       </div>
                     </div>
@@ -92,8 +110,8 @@ const ContactPage: React.FC = () => {
                       <div>
                         <h5 className="mb-1">Address</h5>
                         <p className="mb-0" style={{ color: 'var(--text-secondary)' }}>
-                          123 Spiritual Street,<br />
-                          Mumbai, Maharashtra 400001<br />
+                          Jagruti Colony,<br />
+                          Narendra nagar, Nagpur, Maharashtra 440015<br />
                           India
                         </p>
                       </div>
@@ -105,12 +123,12 @@ const ContactPage: React.FC = () => {
                   <div>
                     <h5 className="mb-3">Follow Us</h5>
                     <div className="d-flex gap-3">
-                      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+                      <a href="https://www.instagram.com/ibhakt.app" target="_blank" rel="noopener noreferrer" 
                          className="btn btn-outline-light rounded-circle"
                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderColor: 'var(--input-border)' }}>
                         <i className="bi bi-instagram"></i>
                       </a>
-                      <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                      <a href="https://youtube.com/@ibhakt" target="_blank" rel="noopener noreferrer"
                          className="btn btn-outline-light rounded-circle"
                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderColor: 'var(--input-border)' }}>
                         <i className="bi bi-youtube"></i>
@@ -134,6 +152,13 @@ const ContactPage: React.FC = () => {
                     <div className="alert alert-success" role="alert">
                       <i className="bi bi-check-circle-fill me-2"></i>
                       Thank you! Your message has been sent. We'll get back to you soon.
+                    </div>
+                  )}
+
+                  {error && (
+                    <div className="alert alert-danger" role="alert">
+                      <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                      {error}
                     </div>
                   )}
 

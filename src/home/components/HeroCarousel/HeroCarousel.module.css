@@ -48,7 +48,17 @@
   text-shadow: var(--shadow-glow);
   font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
   letter-spacing: 0.08em;
+  line-height: 1.4;
+  overflow: visible;
   margin-bottom: var(--spacing-lg);
+}
+
+/* Devanagari font needs more line-height and different font family */
+:global([data-lang="hi"]) .title,
+:global([data-lang="mr"]) .title {
+  font-family: 'Noto Sans Devanagari', 'Mukta', 'Poppins', sans-serif;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
 }
 
 .subtitle {

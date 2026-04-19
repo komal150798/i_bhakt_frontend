@@ -69,45 +69,33 @@ const Footer: React.FC = () => {
             <h5 className="text-gradient mb-3 fw-bold">{t('footer.quickLinks')}</h5>
             <ul className="list-unstyled">
               <li className="mb-2">
-                <Link to="/kundli" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
+                <Link to="/" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
+                  <i className="bi bi-house me-2"></i>
+                  Home
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/dashboard" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
+                  <i className="bi bi-speedometer2 me-2"></i>
+                  Dashboard
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/manifestations" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
                   <i className="bi bi-stars me-2"></i>
-                  {t('nav.kundli')}
+                  Manifestations
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/dosha" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
-                  <i className="bi bi-circle me-2"></i>
-                  {t('footer.dosha')}
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/yog" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
-                  <i className="bi bi-infinity me-2"></i>
-                  {t('footer.yog')}
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/marriage" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
-                  <i className="bi bi-heart me-2"></i>
-                  {t('footer.marriage')}
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/numerology" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
-                  <i className="bi bi-123 me-2"></i>
-                  {t('footer.numerology')}
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/tarot" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
-                  <i className="bi bi-suit-spade me-2"></i>
-                  {t('footer.tarot')}
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/blog" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
+                <Link to="/karma-ledger" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
                   <i className="bi bi-journal-text me-2"></i>
-                  {t('footer.blog')}
+                  Karma Ledger
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/pricing" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
+                  <i className="bi bi-tag me-2"></i>
+                  Pricing
                 </Link>
               </li>
             </ul>
@@ -153,7 +141,7 @@ const Footer: React.FC = () => {
             <h5 className="text-gradient mb-3 fw-bold">{t('footer.followUs')}</h5>
             <div className="d-flex gap-3 mb-4">
               <a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/ibhakt.app" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn btn-outline-light rounded-circle"
@@ -170,7 +158,7 @@ const Footer: React.FC = () => {
                 <i className="bi bi-instagram"></i>
               </a>
               <a 
-                href="https://youtube.com" 
+                href="https://youtube.com/@ibhakt" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn btn-outline-light rounded-circle"

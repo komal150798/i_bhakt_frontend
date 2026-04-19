@@ -219,7 +219,7 @@ const Header: React.FC = () => {
               className="btn btn-link p-2"
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              style={{ display: 'none', color: 'var(--text-primary)', border: 'none' }}
+              style={{ color: 'var(--text-primary)', border: 'none' }}
             >
               {theme === 'light' ? (
                 <i className="bi bi-moon-stars-fill" style={{ fontSize: '1.25rem' }}></i>

@@ -3,7 +3,7 @@
  * Handles plan entitlements and feature access checking
  */
 
-import httpClient from './httpClient';
+import httpClient from '../../api/httpClient';
 
 /**
  * Get all user entitlements based on current plan

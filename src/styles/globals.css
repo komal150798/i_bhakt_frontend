@@ -43,6 +43,16 @@ h1, h2, h3 {
   margin-bottom: var(--spacing-md);
 }
 
+/* Devanagari headings need more line-height and proper font */
+[data-lang="hi"] h1, [data-lang="hi"] h2, [data-lang="hi"] h3,
+[data-lang="hi"] h4, [data-lang="hi"] h5, [data-lang="hi"] h6,
+[data-lang="mr"] h1, [data-lang="mr"] h2, [data-lang="mr"] h3,
+[data-lang="mr"] h4, [data-lang="mr"] h5, [data-lang="mr"] h6 {
+  font-family: 'Noto Sans Devanagari', 'Mukta', 'Poppins', sans-serif;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
 h4, h5, h6 {
   font-family: 'Cormorant Garamond', serif;
   letter-spacing: 0.04em;

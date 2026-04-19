@@ -10,10 +10,10 @@ const NAV_ITEMS = [
   { path: '/', key: 'nav.home' },
   { path: '/about', key: 'nav.aboutUs' },
   { path: '/kundli', key: 'nav.kundli' },
-  { path: '/horoscope', key: 'nav.dailyHoroscope' },
+  // { path: '/horoscope', key: 'nav.dailyHoroscope' }, // Hidden until integrated
   { path: '/karma', key: 'nav.karma' },
   { path: '/manifestations', key: 'nav.manifestations' },
-  { path: '/services', key: 'nav.services' },
+  // { path: '/services', key: 'nav.services' }, // Hidden until integrated
   { path: '/contact', key: 'nav.contact' },
 ];
 

@@ -38,10 +38,16 @@
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
+  color: var(--text-color);
 }
 
 .card:hover {
   box-shadow: var(--shadow-md);
+}
+
+/* Form Labels */
+.form-label {
+  color: var(--text-color);
 }
 
 /* Form Controls */

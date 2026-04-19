@@ -15,24 +15,24 @@ function FeatureSection() {
     },
     {
       id: 2,
-      icon: '📅',
-      titleKey: 'features.dailyHoroscope.title',
-      descriptionKey: 'features.dailyHoroscope.description',
-      link: '/horoscope',
+      icon: '✨',
+      titleKey: 'features.manifestation.title',
+      descriptionKey: 'features.manifestation.description',
+      link: '/manifestations',
     },
     {
       id: 3,
-      icon: '💑',
-      titleKey: 'features.matchmaking.title',
-      descriptionKey: 'features.matchmaking.description',
-      link: '/matchmaking',
+      icon: '⚖️',
+      titleKey: 'features.karmaLedger.title',
+      descriptionKey: 'features.karmaLedger.description',
+      link: '/karma',
     },
     {
       id: 4,
-      icon: '🔮',
-      titleKey: 'features.tarotReading.title',
-      descriptionKey: 'features.tarotReading.description',
-      link: '/tarot',
+      icon: '🧘',
+      titleKey: 'features.cosmicGuidance.title',
+      descriptionKey: 'features.cosmicGuidance.description',
+      link: '/about',
     },
   ];
 
@@ -41,8 +41,8 @@ function FeatureSection() {
       <div className="container py-5">
         <div className="row mb-5">
           <div className="col-lg-8 mx-auto text-center">
-            <h2 className="display-5 fw-bold mb-3">{t('features.title')}</h2>
-            <p className="lead text-muted">
+            <h2 className="display-5 fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>{t('features.title')}</h2>
+            <p className="lead" style={{ color: 'var(--text-secondary)' }}>
               {t('features.subtitle')}
             </p>
           </div>
@@ -55,8 +55,8 @@ function FeatureSection() {
                 <div className={`card h-100 ${styles.featureCard}`}>
                   <div className="card-body text-center p-4">
                     <div className={styles.icon}>{feature.icon}</div>
-                    <h5 className="card-title fw-bold mb-3">{t(feature.titleKey)}</h5>
-                    <p className="card-text text-muted">{t(feature.descriptionKey)}</p>
+                    <h5 className="card-title fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>{t(feature.titleKey)}</h5>
+                    <p className="card-text" style={{ color: 'var(--text-secondary)' }}>{t(feature.descriptionKey)}</p>
                   </div>
                 </div>
               </Link>

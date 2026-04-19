@@ -22,35 +22,34 @@
     "contact": "Contact"
   },
   "home": {
-    "heroTitle": "Unlock Your Destiny with Astrology",
-    "heroSubtitle": "Kundli, Horoscope, and personalized guidance from expert astrologers.",
+    "heroTitle": "Discover Your Cosmic Blueprint",
+    "heroSubtitle": "Generate your Kundli, manifest your desires, and track your karma journey with Vedic wisdom.",
     "generateKundli": "Generate Free Kundli",
-    "talkToAstrologer": "Talk to Astrologer",
-    "heroTitle2": "Daily Horoscope, Accurate & Insightful",
-    "heroSubtitle2": "Stay ahead with daily, weekly, and monthly predictions.",
-    "viewHoroscope": "View Today's Horoscope",
-    "heroTitle3": "Matchmaking & Compatibility",
-    "heroSubtitle3": "Find your perfect life partner with Vedic astrology.",
-    "checkCompatibility": "Check Compatibility"
+    "startManifesting": "Start Manifesting",
+    "trackKarma": "Track Your Karma",
+    "heroTitle2": "Manifest Your Deepest Desires",
+    "heroSubtitle2": "Align your intentions with cosmic energies and measure your manifestation resonance.",
+    "heroTitle3": "Track Your Karma, Transform Your Life",
+    "heroSubtitle3": "Every action shapes your destiny. Build positive karma through conscious living."
   },
   "features": {
-    "title": "Our Services",
-    "subtitle": "Comprehensive astrological services to guide your life journey",
+    "title": "What iBhakt Offers",
+    "subtitle": "Vedic wisdom meets modern technology to guide your spiritual journey",
     "freeKundli": {
       "title": "Free Kundli",
-      "description": "Generate your complete birth chart with accurate planetary positions and houses."
+      "description": "Generate your complete birth chart with accurate planetary positions, nakshatras, and dasha periods."
     },
-    "dailyHoroscope": {
-      "title": "Daily Horoscope",
-      "description": "Get daily, weekly, and monthly predictions tailored to your zodiac sign."
+    "manifestation": {
+      "title": "Manifestation",
+      "description": "Set powerful intentions, measure your resonance with cosmic energies, and manifest your desires."
     },
-    "matchmaking": {
-      "title": "Matchmaking",
-      "description": "Check compatibility with your partner using advanced astrological matching."
+    "karmaLedger": {
+      "title": "Karma Ledger",
+      "description": "Track your daily actions, understand their karmic impact, and build positive karma consciously."
     },
-    "tarotReading": {
-      "title": "Tarot Reading",
-      "description": "Get insights into your future through mystical tarot card readings."
+    "cosmicGuidance": {
+      "title": "Cosmic Guidance",
+      "description": "Receive personalized insights based on your Kundli to navigate life with clarity and purpose."
     }
   },
   "kundli": {
