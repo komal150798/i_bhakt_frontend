@@ -122,8 +122,8 @@ function KarmaPage() {
       });
 
       setActionText('');
+      closeAddPanel();
       await refreshDashboard();
-      // Keep panel open with cleared text so user can add another
     } catch (error) {
       const errorMessage = handleApiError(error);
       showError(t('karma.errors.addFailed'), {
