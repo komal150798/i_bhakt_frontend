@@ -88,8 +88,13 @@ function ManifestationResonanceScreen() {
       await manifestationApi.createManifestation({
         description: description.trim(),
       });
-      // Redirect to dashboard after successful lock
-      navigate('/dashboard');
+      // Clear form and stay on page ready for a new manifestation
+      setDescription('');
+      setResult(null);
+      setError(null);
+      setActiveTab('resonance');
+      localStorage.removeItem(PENDING_KEY);
+      setLoading(false);
     } catch (err) {
       setError('Failed to lock manifestation: ' + err.message);
       setLoading(false);

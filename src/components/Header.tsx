@@ -126,7 +126,7 @@ const Header: React.FC = () => {
                 background: 'transparent'
               }} 
             />
-            <span className="fw-bold text-gradient">iBhakt Admin</span>
+            <span className="fw-bold text-gradient brand-mark">iBhakt Admin</span>
           </Link>
         </div>
       </nav>
@@ -164,7 +164,7 @@ const Header: React.FC = () => {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           />
-          <span className="fw-bold text-gradient">iBhakt</span>
+          <span className="fw-bold text-gradient brand-mark">iBhakt</span>
         </Link>
 
         <button
@@ -185,17 +185,12 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === '/kundli' ? 'active' : ''}`} to="/kundli" onClick={closeNav}>
-                {t('nav.kundli')}
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link 
                 className={`nav-link ${location.pathname === '/manifestations' ? 'active' : ''}`}
                 to="/manifestations"
                 onClick={closeNav}
               >
-                {t('nav.manifestations')}
+                {t('nav.manifestation')}
               </Link>
             </li>
             <li className="nav-item">

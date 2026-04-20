@@ -248,7 +248,8 @@ const Footer: React.FC = () => {
         <div className="row align-items-center">
           <div className="col-md-6 mb-3 mb-md-0">
             <p className="mb-0 text-muted">
-              &copy; {new Date().getFullYear()} <span className="text-gradient fw-bold">iBhakt</span>. {t('footer.copyright')}.
+              &copy; {new Date().getFullYear()}{' '}
+              <span className="text-gradient fw-bold brand-mark">iBhakt</span>. {t('footer.copyright')}.
             </p>
           </div>
           <div className="col-md-6 text-md-end">

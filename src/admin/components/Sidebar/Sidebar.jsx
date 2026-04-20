@@ -21,7 +21,7 @@ function Sidebar() {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logo}>
-        <Link to="/admin">I-Bhakt Admin</Link>
+        <Link to="/admin">iBhakt Admin</Link>
       </div>
       <nav className={styles.nav}>
         <ul className={styles.menu}>

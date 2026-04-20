@@ -5,7 +5,6 @@ import styles from './Header.module.css';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Home' },
-  { path: '/kundli', label: 'Kundli' },
   { path: '/horoscope', label: 'Daily Horoscope' },
   { path: '/refer', label: 'Refer & Earn' },
 ];

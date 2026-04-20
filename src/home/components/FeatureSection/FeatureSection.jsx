@@ -2,16 +2,28 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
 import styles from './FeatureSection.module.css';
 
+function renderTitleWithBrand(text) {
+  return text.split(/(iBhakt)/g).map((part, i) =>
+    part === 'iBhakt' ? (
+      <span key={i} className="brand-mark">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
 function FeatureSection() {
   const { t } = useLanguage();
 
   const FEATURES = [
     {
       id: 1,
-      icon: '🔯',
-      titleKey: 'features.freeKundli.title',
-      descriptionKey: 'features.freeKundli.description',
-      link: '/kundli',
+      iconClass: 'bi-person-bounding-box',
+      titleKey: 'features.cosmicDigitalTwin.title',
+      descriptionKey: 'features.cosmicDigitalTwin.description',
+      link: '/manifestations',
     },
     {
       id: 2,
@@ -41,7 +53,9 @@ function FeatureSection() {
       <div className="container py-5">
         <div className="row mb-5">
           <div className="col-lg-8 mx-auto text-center">
-            <h2 className="display-5 fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>{t('features.title')}</h2>
+            <h2 className="display-5 fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+              {renderTitleWithBrand(t('features.title'))}
+            </h2>
             <p className="lead" style={{ color: 'var(--text-secondary)' }}>
               {t('features.subtitle')}
             </p>
@@ -54,7 +68,13 @@ function FeatureSection() {
               <Link to={feature.link} className={styles.cardLink}>
                 <div className={`card h-100 ${styles.featureCard}`}>
                   <div className="card-body text-center p-4">
-                    <div className={styles.icon}>{feature.icon}</div>
+                    <div className={styles.icon}>
+                      {feature.iconClass ? (
+                        <i className={`bi ${feature.iconClass}`} aria-hidden />
+                      ) : (
+                        feature.icon
+                      )}
+                    </div>
                     <h5 className="card-title fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>{t(feature.titleKey)}</h5>
                     <p className="card-text" style={{ color: 'var(--text-secondary)' }}>{t(feature.descriptionKey)}</p>
                   </div>

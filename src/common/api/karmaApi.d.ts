@@ -50,8 +50,7 @@ export interface KarmaSummary {
 }
 
 /**
- * Add a new karma action
- * Uses new /app/karma/input endpoint
+ * Add a new karma action (web: POST /customer/karma/add; app clients use /app/karma/input).
  * @param karmaData - { action_text, timestamp? }
  * @returns Promise<KarmaEntry> Created karma entry
  */
@@ -59,10 +58,10 @@ export function addKarmaAction(karmaData: KarmaData): Promise<KarmaEntry>;
 
 /**
  * Get karma dashboard summary for authenticated user
- * Uses new /app/karma/dashboard endpoint with streak data
+ * Web: POST /customer/karma/dashboard only (app route is for native clients).
  * @returns Promise<KarmaDashboard> Karma dashboard data with streak information
  */
-export function getKarmaDashboard(): Promise<any>;
+export function getKarmaDashboard(options?: { force?: boolean }): Promise<any>;
 
 /**
  * Get karma summary for a user

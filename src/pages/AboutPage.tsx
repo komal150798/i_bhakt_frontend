@@ -13,7 +13,9 @@ const AboutPage: React.FC = () => {
           <div className="col-lg-10">
             {/* Hero Section */}
             <div className="text-center mb-5" data-aos="fade-up">
-              <h1 className="display-3 mb-4">About iBhakt</h1>
+              <h1 className="display-3 mb-4">
+                About <span className="brand-mark">iBhakt</span>
+              </h1>
               <p className="lead text-muted">
                 Your cosmic companion for spiritual growth and manifestation
               </p>
@@ -41,13 +43,12 @@ const AboutPage: React.FC = () => {
                   <div className="cosmic-card h-100">
                     <div className="d-flex align-items-start gap-3">
                       <div className="flex-shrink-0">
-                        <i className="bi bi-stars" style={{ fontSize: '2.5rem', color: 'var(--cosmic-purple)' }}></i>
+                        <i className="bi bi-person-bounding-box" style={{ fontSize: '2.5rem', color: 'var(--cosmic-purple)' }}></i>
                       </div>
                       <div>
-                        <h4 className="mb-2">Kundli Generation</h4>
+                        <h4 className="mb-2">Cosmic Digital Twin</h4>
                         <p className="text-muted mb-0">
-                          Generate your complete astrological birth chart with detailed planetary positions, 
-                          houses, and dasha periods based on Vedic astrology principles.
+                          Create a real-time, interactive digital model of your personal cosmic state, combining your natal chart and planetary transits to help visualize alignment, simulate future scenarios, and guide conscious growth.
                         </p>
                       </div>
                     </div>

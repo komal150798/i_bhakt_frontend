@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import * as authApi from '../api/authApi';
 
 const AuthContext = createContext();
@@ -11,11 +11,16 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const hasLoadedRef = useRef(false);
 
   /**
    * Load authentication state from localStorage on app startup
    */
   const loadFromStorage = useCallback(async () => {
+    // Prevent double call from React StrictMode
+    if (hasLoadedRef.current) return;
+    hasLoadedRef.current = true;
+
     try {
       const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
       const storedUser = localStorage.getItem(USER_STORAGE_KEY);
@@ -25,7 +30,18 @@ export function AuthProvider({ children }) {
         return;
       }
 
-      // Validate token by fetching current user
+      // Set stored user immediately for instant UI (no flash)
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setToken(storedToken);
+          setUser(parsedUser);
+        } catch (e) {
+          // Invalid JSON, ignore
+        }
+      }
+
+      // Validate token in background
       try {
         const userData = await authApi.getCurrentUser(storedToken);
         setToken(storedToken);

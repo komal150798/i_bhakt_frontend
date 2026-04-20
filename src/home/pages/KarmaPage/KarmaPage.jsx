@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../common/hooks/useAuth';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
@@ -6,48 +6,93 @@ import { useToast } from '../../../common/hooks/useToast';
 import { handleApiError } from '../../../common/utils/apiErrorHandler';
 import * as karmaApi from '../../../common/api/karmaApi';
 import Loader from '../../../common/components/Loader/Loader';
+import { KarmaDashboardBody } from '../KarmaDashboard/KarmaDashboardBody';
+import dashStyles from '../KarmaDashboard/KarmaDashboardPage.module.css';
 import styles from './KarmaPage.module.css';
 
 function KarmaPage() {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { t } = useLanguage();
   const { showSuccess, showError } = useToast();
 
   const [actionText, setActionText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [karmaSummary, setKarmaSummary] = useState(null);
-  const [isLoadingSummary, setIsLoadingSummary] = useState(false);
+  const [dashboardData, setDashboardData] = useState(null);
+  const [isLoadingDashboard, setIsLoadingDashboard] = useState(false);
+  const [showAddPanel, setShowAddPanel] = useState(false);
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!isAuthenticated || !user) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, user, navigate]);
-
-  // Load karma summary on mount
-  useEffect(() => {
-    if (user?.id) {
-      loadKarmaSummary();
-    }
-  }, [user?.id]);
-
-  const loadKarmaSummary = async () => {
+  /** Refresh after add karma (intentional; no abort). */
+  const refreshDashboard = useCallback(async () => {
     if (!user?.id) return;
 
-    setIsLoadingSummary(true);
+    setIsLoadingDashboard(true);
     try {
-      // Don't pass user_id - backend will use authenticated user's ID from token
-      const summary = await karmaApi.getKarmaSummary();
-      setKarmaSummary(summary);
+      const data = await karmaApi.getKarmaDashboard({ force: true });
+      setDashboardData(data);
     } catch (error) {
-      console.warn('Failed to load karma summary:', error);
-      // Don't show error toast for summary - it's optional
+      console.warn('Failed to load karma dashboard:', error);
+      const errorMessage = handleApiError(error);
+      showError(t('karma.dashboard.loadFailed'), {
+        description: errorMessage,
+      });
+      setDashboardData(null);
     } finally {
-      setIsLoadingSummary(false);
+      setIsLoadingDashboard(false);
     }
-  };
+  }, [user?.id, showError, t]);
+
+  useEffect(() => {
+    if (!isAuthLoading && (!isAuthenticated || !user)) {
+      navigate('/login');
+    }
+  }, [isAuthLoading, isAuthenticated, user, navigate]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    let cancelled = false;
+
+    setIsLoadingDashboard(true);
+    karmaApi
+      .getKarmaDashboard()
+      .then((data) => {
+        if (!cancelled) setDashboardData(data);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.warn('Failed to load karma dashboard:', error);
+        const errorMessage = handleApiError(error);
+        showError(t('karma.dashboard.loadFailed'), {
+          description: errorMessage,
+        });
+        setDashboardData(null);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoadingDashboard(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, showError, t]);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setShowAddPanel(false);
+    };
+    if (showAddPanel) {
+      window.addEventListener('keydown', onKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [showAddPanel]);
+
+  const openAddPanel = () => setShowAddPanel(true);
+
+  const closeAddPanel = () => setShowAddPanel(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +113,7 @@ function KarmaPage() {
     setIsSubmitting(true);
 
     try {
-      const result = await karmaApi.addKarmaAction({
+      await karmaApi.addKarmaAction({
         action_text: actionText.trim(),
       });
 
@@ -76,11 +121,9 @@ function KarmaPage() {
         description: t('karma.success.addedDesc'),
       });
 
-      // Clear form
       setActionText('');
-
-      // Navigate to dashboard after successful addition
-      navigate('/karma/dashboard');
+      await refreshDashboard();
+      // Keep panel open with cleared text so user can add another
     } catch (error) {
       const errorMessage = handleApiError(error);
       showError(t('karma.errors.addFailed'), {
@@ -91,51 +134,93 @@ function KarmaPage() {
     }
   };
 
-  if (!isAuthenticated || !user) {
-    return null; // Will redirect
+  if (isAuthLoading) {
+    return (
+      <div className={styles.mainCard}>
+        <div className={styles.mainCardLoader}>
+          <Loader />
+        </div>
+      </div>
+    );
   }
 
+  if (!isAuthenticated || !user) {
+    return null;
+  }
+
+  const mainBlock = isLoadingDashboard ? (
+    <div className={styles.mainCard}>
+      <div className={styles.mainCardLoader}>
+        <Loader />
+      </div>
+    </div>
+  ) : !dashboardData ? (
+    <div className={dashStyles.container}>
+      <div className={dashStyles.errorCard}>
+        <p>{t('karma.dashboard.noData')}</p>
+        <button type="button" onClick={openAddPanel} className={dashStyles.addKarmaBtn}>
+          {t('karma.dashboard.addFirstKarma')}
+        </button>
+      </div>
+    </div>
+  ) : (
+    <KarmaDashboardBody dashboardData={dashboardData} onAddKarma={openAddPanel} embedded />
+  );
+
   return (
-    <div className={styles.karmaPage}>
-      <div className={styles.container}>
-        {/* Header */}
-        <div className={styles.header}>
-          <h1 className={styles.title}>{t('karma.title')}</h1>
-          <p className={styles.subtitle}>{t('karma.subtitle')}</p>
-        </div>
+    <div className={styles.karmaShell}>
+      <div className={styles.shellInner}>
+        <header className={styles.pageHeader}>
+          <div>
+            <h1 className={styles.pageTitle}>{t('karma.dashboard.title')}</h1>
+            <p className={styles.pageSubtitle}>{t('karma.subtitle')}</p>
+          </div>
+          <button type="button" className={styles.headerAddBtn} onClick={openAddPanel}>
+            <span className={styles.headerAddIcon}>+</span>
+            {t('karma.sidebar.addKarma')}
+          </button>
+        </header>
 
-        <div className={styles.content}>
-          {/* Add Karma Form */}
-          <div className={styles.formSection}>
-            <div className={styles.card}>
-              <h2 className={styles.cardTitle}>{t('karma.form.title')}</h2>
-              <p className={styles.cardDescription}>{t('karma.form.description')}</p>
+        <main className={styles.mainFull}>{mainBlock}</main>
+      </div>
 
-              <form onSubmit={handleSubmit} className={styles.form}>
-                {/* Action Text */}
-                <div className={styles.formGroup}>
-                  <label htmlFor="actionText" className={styles.label}>
+      {showAddPanel && (
+        <div
+          className={styles.panelOverlay}
+          role="presentation"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeAddPanel();
+          }}
+        >
+          <aside className={styles.panel} role="dialog" aria-modal="true" aria-labelledby="karma-panel-title">
+            <div className={styles.panelHeader}>
+              <h2 id="karma-panel-title" className={styles.panelTitle}>
+                {t('karma.form.title')}
+              </h2>
+              <button type="button" className={styles.panelClose} onClick={closeAddPanel} aria-label={t('karma.panel.close')}>
+                ×
+              </button>
+            </div>
+            <div className={styles.panelBody}>
+              <p className={styles.panelIntro}>{t('karma.form.description')}</p>
+              <form onSubmit={handleSubmit} className={styles.panelForm}>
+                <div className={styles.panelFormGroup}>
+                  <label htmlFor="karmaActionText" className={styles.panelLabel}>
                     {t('karma.form.actionText')} <span className={styles.required}>*</span>
                   </label>
                   <textarea
-                    id="actionText"
-                    className={styles.textarea}
+                    id="karmaActionText"
+                    className={styles.panelTextarea}
                     value={actionText}
                     onChange={(e) => setActionText(e.target.value)}
                     placeholder={t('karma.form.actionTextPlaceholder')}
-                    rows={4}
+                    rows={5}
                     required
                     disabled={isSubmitting}
                   />
-                  <small className={styles.helpText}>{t('karma.form.actionTextHelp')}</small>
+                  <small className={styles.panelHelp}>{t('karma.form.actionTextHelp')}</small>
                 </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className={styles.submitBtn}
-                  disabled={isSubmitting || !actionText.trim()}
-                >
+                <button type="submit" className={styles.panelSubmit} disabled={isSubmitting || !actionText.trim()}>
                   {isSubmitting ? (
                     <>
                       <Loader size="sm" />
@@ -147,69 +232,17 @@ function KarmaPage() {
                 </button>
               </form>
             </div>
-          </div>
-
-          {/* Karma Summary */}
-          {isLoadingSummary ? (
-            <div className={styles.summarySection}>
-              <div className={styles.card}>
-                <Loader />
-              </div>
-            </div>
-          ) : karmaSummary ? (
-            <div className={styles.summarySection}>
-              <div className={styles.card}>
-                <h2 className={styles.cardTitle}>{t('karma.summary.title')}</h2>
-
-                {/* Karma Score */}
-                {karmaSummary.karma_score && (
-                  <div className={styles.scoreCard}>
-                    <div className={styles.scoreLabel}>{t('karma.summary.score')}</div>
-                    <div className={styles.scoreValue}>
-                      {karmaSummary.karma_score.current_score || 0}
-                      <span className={styles.scoreMax}>/100</span>
-                    </div>
-                    {karmaSummary.karma_score.trend && (
-                      <div className={styles.scoreTrend}>
-                        {karmaSummary.karma_score.trend > 0 ? '↑' : karmaSummary.karma_score.trend < 0 ? '↓' : '→'}{' '}
-                        {Math.abs(karmaSummary.karma_score.trend || 0)} points
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Recent Actions */}
-                {karmaSummary.recent_actions && karmaSummary.recent_actions.length > 0 && (
-                  <div className={styles.recentActions}>
-                    <h3 className={styles.sectionTitle}>{t('karma.summary.recentActions')}</h3>
-                    <div className={styles.actionsList}>
-                      {karmaSummary.recent_actions.slice(0, 5).map((action) => (
-                        <div key={action.id} className={styles.actionItem}>
-                          <div className={styles.actionText}>{action.text}</div>
-                          <div className={styles.actionMeta}>
-                            <span className={`${styles.actionType} ${styles[action.karma_type?.toLowerCase()]}`}>
-                              {action.karma_type || 'neutral'}
-                            </span>
-                            {action.score && (
-                              <span className={styles.actionScore}>
-                                {action.score > 0 ? '+' : ''}
-                                {action.score}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : null}
+          </aside>
         </div>
-      </div>
+      )}
+
+      {!showAddPanel && (
+        <button type="button" className={styles.floatingAdd} onClick={openAddPanel} aria-label={t('karma.sidebar.addKarma')}>
+          +
+        </button>
+      )}
     </div>
   );
 }
 
 export default KarmaPage;
-

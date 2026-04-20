@@ -5,6 +5,18 @@
   background: var(--bg-color);
 }
 
+/* Used when dashboard is embedded inside /karma shell */
+.embeddedRoot {
+  width: 100%;
+}
+
+.embeddedRange {
+  margin: 0 0 var(--spacing-lg);
+  font-size: 0.95rem;
+  color: var(--muted-text-color);
+  text-align: center;
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;

@@ -89,7 +89,10 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
       await manifestationApi.createManifestation({
         description: formData.description.trim(),
       });
-      // Close modal and refresh dashboard
+      // Clear form and close modal
+      setFormData({ description: '' });
+      setResonanceResult(null);
+      setErrors({});
       onSuccess();
     } catch (error) {
       console.error('Failed to lock manifestation:', error);

@@ -1,6 +1,6 @@
 {
   "common": {
-    "logo": "I-Bhakt",
+    "logo": "iBhakt",
     "login": "Login",
     "signup": "Sign Up",
     "logout": "Logout",
@@ -35,9 +35,9 @@
   "features": {
     "title": "What iBhakt Offers",
     "subtitle": "Vedic wisdom meets modern technology to guide your spiritual journey",
-    "freeKundli": {
-      "title": "Free Kundli",
-      "description": "Generate your complete birth chart with accurate planetary positions, nakshatras, and dasha periods."
+    "cosmicDigitalTwin": {
+      "title": "Cosmic Digital Twin",
+      "description": "Create a real-time, interactive digital model of your personal cosmic state, combining your natal chart and planetary transits to help visualize alignment, simulate future scenarios, and guide conscious growth."
     },
     "manifestation": {
       "title": "Manifestation",
@@ -166,6 +166,19 @@
   "karma": {
     "title": "Karma Engine",
     "subtitle": "Track your actions and build positive karma. Every action matters.",
+    "sidebar": {
+      "title": "Karma",
+      "navLabel": "Karma navigation",
+      "overview": "Overview",
+      "addKarma": "Add Karma",
+      "openDashboard": "Karma Dashboard"
+    },
+    "panel": {
+      "close": "Close"
+    },
+    "overview": {
+      "emptyHint": "Log your first action to see your karma summary here."
+    },
     "form": {
       "title": "Add Karma Action",
       "description": "Describe an action you performed today. Our AI will classify it and update your karma score.",

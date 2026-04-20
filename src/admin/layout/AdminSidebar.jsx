@@ -44,8 +44,8 @@ function AdminSidebar({ isOpen, onClose }) {
         <div className={styles.sidebarHeader}>
           {!collapsed && (
             <div className={styles.logo}>
-              <img src="/ibhakt_logo.jpeg" alt="I-Bhakt" className={styles.logoImage} />
-              <span className={styles.logoText}>I-Bhakt</span>
+              <img src="/ibhakt_logo.jpeg" alt="iBhakt" className={styles.logoImage} />
+              <span className={`${styles.logoText} brand-mark`}>iBhakt</span>
             </div>
           )}
           <button

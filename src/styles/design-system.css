@@ -104,6 +104,15 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
+/* Mixed-case product name inside decorative headings (Cinzel, etc.) */
+.brand-mark {
+  font-family: 'Poppins', 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-variant: normal;
+  text-transform: none;
+  font-feature-settings: normal;
+  letter-spacing: 0.02em;
+}
+
 /* ========================================
    GLASS MORPHISM
    ======================================== */
@@ -174,6 +183,12 @@ h1, h2, h3, h4, h5, h6 {
    ======================================== */
 
 .btn-cosmic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  min-height: 3rem;
   background: var(--cosmic-gradient);
   border: none;
   color: white;
@@ -211,6 +226,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-cosmic-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  min-height: 3rem;
   background: transparent;
   border: 2px solid;
   border-image: var(--cosmic-gradient) 1;

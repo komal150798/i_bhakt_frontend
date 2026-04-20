@@ -41,9 +41,11 @@
 }
 
 .title {
-  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  font-family: var(--font-family, 'Poppins', 'Inter', system-ui, sans-serif);
   font-size: 2rem;
   font-weight: 700;
+  font-variant: normal;
+  text-transform: none;
   text-align: center;
   color: var(--text-color);
   margin-bottom: var(--spacing-sm);
@@ -176,6 +178,8 @@
   justify-content: center;
   gap: var(--spacing-sm);
   box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+  box-sizing: border-box;
+  min-height: 3rem;
 }
 
 .primaryButton:hover:not(:disabled) {

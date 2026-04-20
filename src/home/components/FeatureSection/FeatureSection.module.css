@@ -66,6 +66,13 @@
   margin-bottom: var(--spacing-md);
   filter: drop-shadow(0 4px 8px rgba(251, 191, 36, 0.3));
   transition: transform var(--transition-base);
+  color: var(--primary-color);
+}
+
+.icon i {
+  font-size: 1em;
+  line-height: 1;
+  vertical-align: -0.125em;
 }
 
 .featureCard:hover .icon {

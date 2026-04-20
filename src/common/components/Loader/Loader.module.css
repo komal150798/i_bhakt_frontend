@@ -11,11 +11,13 @@
   z-index: 9999;
 }
 
+/* No extra padding — parent buttons/cards control spacing (xl padding caused huge button jump) */
 .inline {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xl);
+  padding: 0;
+  line-height: 0;
 }
 
 .spinner {

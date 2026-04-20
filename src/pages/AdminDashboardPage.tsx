@@ -108,7 +108,9 @@ export default function AdminDashboardPage() {
 		<div style={pageStyle}>
 			<div style={headerStyle}>
 				<div>
-					<h1 style={titleStyle}>iBhakt Admin Dashboard</h1>
+					<h1 style={titleStyle}>
+						<span className="brand-mark">iBhakt</span> Admin Dashboard
+					</h1>
 					<p style={subtitleStyle}>Welcome, {adminInfo?.username}</p>
 				</div>
 				<button onClick={handleLogout} style={logoutButtonStyle}>

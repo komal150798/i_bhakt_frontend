@@ -8,7 +8,7 @@ function AdminFooter() {
     <footer className={styles.footer}>
       <div className={styles.content}>
         <p className={styles.copyright}>
-          © {currentYear} I-Bhakt Admin. All rights reserved.
+          © {currentYear} iBhakt Admin. All rights reserved.
         </p>
         {buildVersion && (
           <p className={styles.version}>v{buildVersion}</p>

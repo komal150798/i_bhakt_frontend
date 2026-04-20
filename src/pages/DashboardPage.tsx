@@ -3454,7 +3454,9 @@ const DashboardPage: React.FC = () => {
 				<div style={planModalOverlayStyle} onClick={() => setShowPlanModal(false)}>
 					<div style={planModalContentStyle} onClick={e => e.stopPropagation()}>
 						<div style={planModalHeaderStyle}>
-							<h2 style={planModalTitleStyle}>iBhakt Plan Structure</h2>
+							<h2 style={planModalTitleStyle}>
+								<span className="brand-mark">iBhakt</span> Plan Structure
+							</h2>
 													<button
 														type="button"
 								style={planModalCloseButtonStyle}

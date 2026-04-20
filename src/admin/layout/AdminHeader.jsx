@@ -33,8 +33,8 @@ function AdminHeader({ onMenuToggle }) {
           <i className="bi bi-list"></i>
         </button>
         <div className={styles.logo}>
-          <img src="/ibhakt_logo.jpeg" alt="I-Bhakt" className={styles.logoImage} />
-          <span className={styles.logoText}>I-Bhakt Admin</span>
+          <img src="/ibhakt_logo.jpeg" alt="iBhakt" className={styles.logoImage} />
+          <span className={`${styles.logoText} brand-mark`}>iBhakt Admin</span>
         </div>
         <div className={styles.pageTitle}>{pageTitle}</div>
       </div>

@@ -4,7 +4,6 @@ import styles from './Footer.module.css';
 const FOOTER_LINKS = {
   quick: [
     { path: '/', label: 'Home' },
-    { path: '/kundli', label: 'Kundli' },
     { path: '/horoscope', label: 'Horoscope' },
     { path: '/refer', label: 'Refer & Earn' },
   ],
@@ -77,7 +76,7 @@ function Footer() {
         <div className="row">
           <div className="col-12 text-center">
             <p className={styles.copyright}>
-              &copy; {currentYear} ibhakt. All rights reserved.
+              &copy; {currentYear} iBhakt. All rights reserved.
             </p>
           </div>
         </div>

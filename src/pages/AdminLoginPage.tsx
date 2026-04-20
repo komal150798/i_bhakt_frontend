@@ -91,7 +91,9 @@ export default function AdminLoginPage() {
 		<div style={pageStyle}>
 			<div style={containerStyle}>
 				<div style={headerStyle}>
-					<h1 style={titleStyle}>iBhakt Admin Portal</h1>
+					<h1 style={titleStyle}>
+						<span className="brand-mark">iBhakt</span> Admin Portal
+					</h1>
 					<p style={subtitleStyle}>Sign in to manage the application</p>
 				</div>
 
@@ -208,6 +210,12 @@ const inputStyle: React.CSSProperties = {
 }
 
 const buttonStyle = (loading: boolean): React.CSSProperties => ({
+	display: 'inline-flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	gap: 8,
+	boxSizing: 'border-box',
+	minHeight: 48,
 	background: loading
 		? 'rgba(59, 130, 246, 0.5)'
 		: 'linear-gradient(135deg, #3b82f6, #2563eb)',

@@ -171,6 +171,12 @@
 
 .cancelButton,
 .submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  min-height: 2.75rem;
   padding: 10px 20px;
   border: none;
   border-radius: 6px;

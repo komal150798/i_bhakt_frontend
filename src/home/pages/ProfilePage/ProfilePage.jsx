@@ -197,6 +197,9 @@ function ProfilePage() {
                     <div className="mb-3">
                       <label className="form-label">
                         {t('profile.dateOfBirth') || 'Date of Birth'} *
+                        {profile?.date_of_birth && (
+                          <i className="bi bi-lock-fill ms-2 text-muted" title="Birth details cannot be changed once set"></i>
+                        )}
                       </label>
                       <input
                         type="date"
@@ -205,15 +208,21 @@ function ProfilePage() {
                         value={formData.date_of_birth}
                         onChange={handleInputChange}
                         required
+                        disabled={!!profile?.date_of_birth}
                       />
                       <small className="text-muted">
-                        Required for personalized horoscope and kundli
+                        {profile?.date_of_birth
+                          ? 'Birth date cannot be changed once set'
+                          : 'Required for personalized horoscope and kundli'}
                       </small>
                     </div>
 
                     <div className="mb-3">
                       <label className="form-label">
                         {t('profile.timeOfBirth') || 'Time of Birth'}
+                        {profile?.time_of_birth && (
+                          <i className="bi bi-lock-fill ms-2 text-muted" title="Birth details cannot be changed once set"></i>
+                        )}
                       </label>
                       <input
                         type="time"
@@ -222,27 +231,47 @@ function ProfilePage() {
                         value={formData.time_of_birth}
                         onChange={handleInputChange}
                         step="1"
+                        disabled={!!profile?.time_of_birth}
                       />
                       <small className="text-muted">
-                        Format: HH:MM:SS (e.g., 10:30:00)
+                        {profile?.time_of_birth
+                          ? 'Birth time cannot be changed once set'
+                          : 'Format: HH:MM:SS (e.g., 10:30:00)'}
                       </small>
                     </div>
 
                     <div className="mb-3">
                       <label className="form-label">
                         {t('profile.placeOfBirth') || 'Place of Birth'}
+                        {profile?.place_name && (
+                          <i className="bi bi-lock-fill ms-2 text-muted" title="Birth details cannot be changed once set"></i>
+                        )}
                       </label>
-                      <LocationAutocomplete
-                        value={formData.place_name}
-                        onChange={handleLocationChange}
-                        onLocationSelect={handleLocationSelect}
-                        placeholder={t('profile.placePlaceholder') || 'Search city, state...'}
-                        inputClassName="form-control"
-                      />
+                      {profile?.place_name ? (
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={formData.place_name}
+                          disabled
+                        />
+                      ) : (
+                        <LocationAutocomplete
+                          value={formData.place_name}
+                          onChange={handleLocationChange}
+                          onLocationSelect={handleLocationSelect}
+                          placeholder={t('profile.placePlaceholder') || 'Search city, state...'}
+                          inputClassName="form-control"
+                        />
+                      )}
                       {formData.latitude && formData.longitude && (
                         <small className="text-muted mt-1 d-block">
                           <i className="bi bi-geo-alt-fill me-1"></i>
                           Coordinates: {Number(formData.latitude).toFixed(4)}°, {Number(formData.longitude).toFixed(4)}°
+                        </small>
+                      )}
+                      {profile?.place_name && (
+                        <small className="text-muted">
+                          Birth place cannot be changed once set
                         </small>
                       )}
                     </div>
@@ -315,13 +344,22 @@ function ProfilePage() {
                 ) : (
                   <div className={styles.profileSection}>
                     <div className={styles.avatarSection}>
-                      <div className={styles.avatar}>
-                        {profile?.first_name
-                          ? profile.first_name[0].toUpperCase()
-                          : user?.name
-                          ? user.name[0].toUpperCase()
-                          : user?.email?.[0].toUpperCase() || 'U'}
-                      </div>
+                      {profile?.avatar_url ? (
+                        <img
+                          src={profile.avatar_url}
+                          alt="Profile"
+                          className={styles.avatar}
+                          style={{ objectFit: 'cover', background: 'none' }}
+                        />
+                      ) : (
+                        <div className={styles.avatar}>
+                          {profile?.first_name
+                            ? profile.first_name[0].toUpperCase()
+                            : user?.name
+                            ? user.name[0].toUpperCase()
+                            : user?.email?.[0].toUpperCase() || 'U'}
+                        </div>
+                      )}
                       <h2 className={styles.userName}>
                         {profile?.first_name && profile?.last_name
                           ? `${profile.first_name} ${profile.last_name}`

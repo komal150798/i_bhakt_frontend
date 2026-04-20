@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
       <div className="container">
         <Link className="navbar-brand d-flex align-items-center" to="/" onClick={closeNav}>
           <i className="bi bi-stars me-2" style={{ fontSize: '1.5rem', color: 'var(--cosmic-purple)' }}></i>
-          <span className="fw-bold text-gradient">iBhakt</span>
+          <span className="fw-bold text-gradient brand-mark">iBhakt</span>
         </Link>
 
         <button

@@ -9,10 +9,10 @@ import styles from './HomeHeader.module.css';
 const NAV_ITEMS = [
   { path: '/', key: 'nav.home' },
   { path: '/about', key: 'nav.aboutUs' },
-  { path: '/kundli', key: 'nav.kundli' },
+  // { path: '/kundli', key: 'nav.kundli' }, // Hidden
   // { path: '/horoscope', key: 'nav.dailyHoroscope' }, // Hidden until integrated
   { path: '/karma', key: 'nav.karma' },
-  { path: '/manifestations', key: 'nav.manifestations' },
+  { path: '/manifestations', key: 'nav.manifestation' },
   // { path: '/services', key: 'nav.services' }, // Hidden until integrated
   { path: '/contact', key: 'nav.contact' },
 ];
@@ -98,10 +98,10 @@ function HomeHeader() {
           <Link to="/" className={styles.logo}>
             <img 
               src="/ibhakt_logo.jpeg" 
-              alt="I-Bhakt Logo" 
+              alt="iBhakt logo" 
               className={styles.logoImage}
             />
-            <span className={styles.logoText}>I-Bhakt</span>
+            <span className={`${styles.logoText} brand-mark`}>iBhakt</span>
           </Link>
 
           {/* Mobile Menu Toggle */}
@@ -135,8 +135,8 @@ function HomeHeader() {
 
           {/* Right Side Actions */}
           <div className={`${styles.rightActions} ${isMobileMenuOpen ? styles.rightActionsOpen : ''}`}>
-            {/* Language Selector */}
-            <div className={styles.languageSelector}>
+            {/* Language Selector - hidden until multi-language is ready */}
+            {/* <div className={styles.languageSelector}>
               <select
                 className={styles.languageSelect}
                 value={language}
@@ -149,7 +149,7 @@ function HomeHeader() {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             {/* Theme Toggle */}
             <div style={{ display: 'none' }}>

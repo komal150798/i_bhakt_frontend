@@ -4,7 +4,6 @@ import styles from './HomeFooter.module.css';
 const FOOTER_LINKS = {
   quick: [
     { path: '/', label: 'Home' },
-    { path: '/kundli', label: 'Kundli' },
     { path: '/manifestations', label: 'Manifestations' },
     { path: '/karma', label: 'Karma' },
   ],
@@ -28,7 +27,7 @@ function HomeFooter() {
       <div className="container">
         <div className="row g-4">
           <div className="col-lg-4">
-            <h5 className={styles.logo}>iBhakt</h5>
+            <h5 className={`${styles.logo} brand-mark`}>iBhakt</h5>
             <p className={styles.description}>
               Your cosmic companion for Kundli generation, manifestation tracking,
               and karma insights — powered by Vedic wisdom and modern technology.
@@ -75,7 +74,7 @@ function HomeFooter() {
         <div className="row">
           <div className="col-12 text-center">
             <p className={styles.copyright}>
-              &copy; {currentYear} ibhakt. All rights reserved.
+              &copy; {currentYear} iBhakt. All rights reserved.
             </p>
           </div>
         </div>

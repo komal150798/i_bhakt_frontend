@@ -481,7 +481,7 @@ const LandingPage: React.FC = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-6 mb-4">
-              <h5 className="text-gradient mb-3">iBhakt</h5>
+              <h5 className="text-gradient mb-3 brand-mark">iBhakt</h5>
               <p className="text-muted">Your cosmic companion for spiritual growth and manifestation.</p>
             </div>
             <div className="col-md-6 text-md-end">

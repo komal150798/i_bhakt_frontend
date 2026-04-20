@@ -48,7 +48,7 @@ function LoginPage() {
       // Use the login function from AuthContext which handles token storage
       await login({ email: username, password });
       showSuccess('Login successful', {
-        description: 'Welcome back to I-Bhakt!',
+        description: 'Welcome back to iBhakt!',
       });
       // Redirect to the page user was trying to access, or home page
       const from = location.state?.from || '/';
@@ -137,7 +137,7 @@ function LoginPage() {
       loginWithTokens(result.access_token, result.refresh_token, result.user);
       
       showSuccess('Login successful', {
-        description: 'Welcome back to I-Bhakt!',
+        description: 'Welcome back to iBhakt!',
       });
       
       // Redirect to the page user was trying to access, or home page
@@ -178,7 +178,7 @@ function LoginPage() {
     <div className={styles.loginPage}>
       <div className={styles.container}>
         <div className={styles.card}>
-          <h1 className={styles.title}>Welcome to I-Bhakt</h1>
+          <h1 className={styles.title}>Welcome to iBhakt</h1>
           <p className={styles.subtitle}>Choose how you want to login</p>
 
           {/* Tab Switcher */}

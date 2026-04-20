@@ -22,8 +22,7 @@ function getAuthToken() {
 }
 
 /**
- * Add a new karma action
- * Uses new /app/karma/input endpoint
+ * Add a new karma action (web — customer API only; /app/karma/input is for native apps).
  * @param {Object} karmaData - { action_text, timestamp? }
  * @returns {Promise<Object>} Created karma entry
  */
@@ -33,29 +32,6 @@ export async function addKarmaAction(karmaData) {
     throw new Error('Authentication required');
   }
 
-  // Try new app endpoint first
-  try {
-    const response = await fetch(`${BASE_URL}/app/karma/input`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        action_text: karmaData.action_text,
-        timestamp: karmaData.timestamp || new Date().toISOString(),
-      }),
-    });
-
-    if (response.ok) {
-      const responseData = await response.json();
-      return responseData.data || responseData;
-    }
-  } catch (error) {
-    console.warn('New karma input endpoint failed, trying legacy endpoint:', error);
-  }
-
-  // Fallback to legacy endpoint
   const response = await fetch(`${BASE_URL}${ENDPOINTS.ADD_KARMA}`, {
     method: 'POST',
     headers: {
@@ -78,53 +54,56 @@ export async function addKarmaAction(karmaData) {
   return data;
 }
 
+/** Single in-flight dashboard request — avoids duplicate HTTP when React mounts effects twice (StrictMode). */
+let karmaDashboardInFlight = null;
+
 /**
- * Get karma dashboard summary for authenticated user
- * Uses new /app/karma/dashboard endpoint with streak data
- * @returns {Promise<Object>} Karma dashboard data with streak information
+ * Get karma dashboard summary for authenticated user (web).
+ * @param {{ force?: boolean }} [options] - `force: true` skips dedupe (e.g. after adding karma).
+ * @returns {Promise<Object>} Karma dashboard data
  */
-export async function getKarmaDashboard() {
-  const token = getAuthToken();
-  if (!token) {
-    throw new Error('Authentication required');
+export async function getKarmaDashboard(options = {}) {
+  const { force = false } = options;
+
+  if (!force && karmaDashboardInFlight) {
+    return karmaDashboardInFlight;
   }
 
-  // Try new app endpoint first
-  try {
-    const response = await fetch(`${BASE_URL}/app/karma/dashboard`, {
-      method: 'GET',
+  const run = (async () => {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('Authentication required');
+    }
+
+    const response = await fetch(`${BASE_URL}/customer/karma/dashboard`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify({}),
     });
 
-    if (response.ok) {
-      const responseData = await response.json();
-      return responseData.data || responseData;
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Failed to get karma dashboard' }));
+      throw new Error(error.message || 'Failed to get karma dashboard');
     }
-  } catch (error) {
-    console.warn('New karma dashboard endpoint failed, trying legacy endpoint:', error);
+
+    const responseData = await response.json();
+    const data = responseData.data || responseData;
+    return data;
+  })();
+
+  if (!force) {
+    karmaDashboardInFlight = run;
+    void run.finally(() => {
+      if (karmaDashboardInFlight === run) {
+        karmaDashboardInFlight = null;
+      }
+    });
   }
 
-  // Fallback to legacy endpoint
-  const response = await fetch(`${BASE_URL}/customer/karma/dashboard`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({}),
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Failed to get karma dashboard' }));
-    throw new Error(error.message || 'Failed to get karma dashboard');
-  }
-
-  const responseData = await response.json();
-  const data = responseData.data || responseData;
-  return data;
+  return run;
 }
 
 /**
