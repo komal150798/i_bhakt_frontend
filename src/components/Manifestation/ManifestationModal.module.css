@@ -63,7 +63,7 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #fbbf24;
+  color: var(--primary-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -102,7 +102,7 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #fbbf24;
+  color: var(--primary-color);
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -131,7 +131,7 @@
 .formGroup select:focus,
 .formGroup textarea:focus {
   outline: none;
-  border-color: #fbbf24;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
   background: rgba(15, 23, 42, 0.95);
 }
@@ -270,7 +270,7 @@
 .scoreValue {
   font-size: 28px;
   font-weight: 700;
-  color: #fbbf24;
+  color: var(--primary-color);
 }
 
 .tipGroup {
@@ -281,7 +281,7 @@
   margin: 0 0 12px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #fbbf24;
+  color: var(--primary-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -324,7 +324,7 @@
 }
 
 .energyState strong {
-  color: #fbbf24;
+  color: var(--primary-color);
 }
 
 @media (max-width: 768px) {

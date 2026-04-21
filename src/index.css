@@ -1,3 +1,5 @@
+/* Theme tokens first so design-system can reference shared variables */
+@import './styles/variables.css';
 /* Design System - Must be before Bootstrap to allow overrides */
 @import './styles/design-system.css';
 /* Mobile Responsiveness */
@@ -47,16 +49,16 @@
 
 @keyframes pulseGlow {
 	0%, 100% {
-		box-shadow: 
-			0 0 40px rgba(250, 204, 21, 0.5),
+		box-shadow:
+			0 0 40px rgba(201, 168, 76, 0.45),
 			0 8px 32px rgba(0, 0, 0, 0.5),
-			inset 0 0 30px rgba(251, 191, 36, 0.2);
+			inset 0 0 30px rgba(201, 168, 76, 0.15);
 	}
 	50% {
-		box-shadow: 
-			0 0 60px rgba(250, 204, 21, 0.8),
+		box-shadow:
+			0 0 56px rgba(201, 168, 76, 0.65),
 			0 12px 40px rgba(0, 0, 0, 0.6),
-			inset 0 0 40px rgba(251, 191, 36, 0.35);
+			inset 0 0 40px rgba(201, 168, 76, 0.22);
 	}
 }
 
@@ -64,22 +66,22 @@
 	0%, 100% {
 		opacity: 1;
 		transform: scale(1) rotate(0deg);
-		filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.8)) drop-shadow(0 0 30px rgba(251, 191, 36, 0.6));
+		filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.75)) drop-shadow(0 0 28px rgba(61, 122, 140, 0.45));
 	}
 	25% {
 		opacity: 0.9;
 		transform: scale(1.1) rotate(90deg);
-		filter: drop-shadow(0 0 20px rgba(250, 204, 21, 1)) drop-shadow(0 0 40px rgba(251, 191, 36, 0.8));
+		filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.95)) drop-shadow(0 0 36px rgba(61, 122, 140, 0.55));
 	}
 	50% {
 		opacity: 1;
 		transform: scale(1.15) rotate(180deg);
-		filter: drop-shadow(0 0 25px rgba(250, 204, 21, 1)) drop-shadow(0 0 50px rgba(251, 191, 36, 1));
+		filter: drop-shadow(0 0 24px rgba(201, 168, 76, 1)) drop-shadow(0 0 44px rgba(61, 122, 140, 0.6));
 	}
 	75% {
 		opacity: 0.9;
 		transform: scale(1.1) rotate(270deg);
-		filter: drop-shadow(0 0 20px rgba(250, 204, 21, 1)) drop-shadow(0 0 40px rgba(251, 191, 36, 0.8));
+		filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.95)) drop-shadow(0 0 36px rgba(61, 122, 140, 0.55));
 	}
 }
 

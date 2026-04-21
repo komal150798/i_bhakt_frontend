@@ -172,7 +172,9 @@ function KarmaPage() {
       <div className={styles.shellInner}>
         <header className={styles.pageHeader}>
           <div>
-            <h1 className={styles.pageTitle}>{t('karma.dashboard.title')}</h1>
+            <h1 className={`page-hero-heading page-hero-heading--compact ${styles.pageTitle}`}>
+              {t('karma.dashboard.title')}
+            </h1>
             <p className={styles.pageSubtitle}>{t('karma.subtitle')}</p>
           </div>
           <button type="button" className={styles.headerAddBtn} onClick={openAddPanel}>

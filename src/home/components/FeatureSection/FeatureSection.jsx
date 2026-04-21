@@ -53,7 +53,7 @@ function FeatureSection() {
       <div className="container py-5">
         <div className="row mb-5">
           <div className="col-lg-8 mx-auto text-center">
-            <h2 className="display-5 fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+            <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">
               {renderTitleWithBrand(t('features.title'))}
             </h2>
             <p className="lead" style={{ color: 'var(--text-secondary)' }}>

@@ -20,21 +20,24 @@ const NAV_ITEMS = [
 function HomeHeader() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout, token } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
 
-  // Debug: Log auth state
   useEffect(() => {
-    console.log('🏠 Header Auth State:', {
-      hasUser: !!user,
-      hasToken: !!token,
-      isAuthenticated,
-      user: user ? { id: user.id, name: user.name, email: user.email } : null,
-    });
-  }, [user, token, isAuthenticated]);
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isMobileMenuOpen]);
 
   const isActive = (path) => {
     if (path === '/') {

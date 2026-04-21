@@ -12,13 +12,13 @@ const TermsPage: React.FC = () => {
         <div className="row justify-content-center">
           <div className="col-lg-10">
             <div className="text-center mb-5" data-aos="fade-up">
-              <h1 className="display-3 mb-4">Terms & Conditions</h1>
+              <h1 className="page-hero-heading fw-bold mb-4">Terms & Conditions</h1>
               <p className="text-muted">Last updated: {new Date().toLocaleDateString()}</p>
             </div>
 
             <div className="cosmic-card" data-aos="fade-up">
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">1. Acceptance of Terms</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. Acceptance of Terms</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   By accessing and using iBhakt, you accept and agree to be bound by these Terms and Conditions. 
                   If you do not agree, please do not use our services.
@@ -26,7 +26,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">2. Services</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">2. Services</h2>
                 <p className="mb-3" style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   iBhakt provides astrological services including:
                 </p>
@@ -39,7 +39,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">3. User Accounts</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">3. User Accounts</h2>
                 <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
                   <li>You are responsible for maintaining account security</li>
                   <li>You must provide accurate and complete information</li>
@@ -49,7 +49,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">4. Payment Terms</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">4. Payment Terms</h2>
                 <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
                   <li>Subscription fees are billed according to selected plan</li>
                   <li>Payments are processed through secure third-party providers</li>
@@ -59,7 +59,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">5. Intellectual Property</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">5. Intellectual Property</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   All content on iBhakt, including text, graphics, logos, and software, is the property of iBhakt 
                   or its licensors and is protected by copyright and trademark laws. You may not reproduce, distribute, 
@@ -68,7 +68,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">6. Prohibited Uses</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">6. Prohibited Uses</h2>
                 <p className="mb-2" style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   You agree not to:
                 </p>
@@ -82,7 +82,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">7. Disclaimer</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">7. Disclaimer</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   Astrological services are for entertainment and guidance purposes only. Results are not guaranteed, 
                   and you should not base important life decisions solely on astrological information. Consult qualified 
@@ -91,7 +91,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">8. Limitation of Liability</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">8. Limitation of Liability</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   iBhakt shall not be liable for any indirect, incidental, special, or consequential damages arising 
                   from use of our services. Our total liability shall not exceed the amount paid by you in the past 12 months.
@@ -99,7 +99,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">9. Termination</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">9. Termination</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   We reserve the right to suspend or terminate your account if you violate these terms. You may cancel 
                   your subscription at any time through your account settings.
@@ -107,7 +107,7 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">10. Changes to Terms</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">10. Changes to Terms</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   We may update these Terms and Conditions from time to time. Continued use after changes constitutes 
                   acceptance of the updated terms.
@@ -115,13 +115,20 @@ const TermsPage: React.FC = () => {
               </section>
 
               <section>
-                <h2 className="text-gradient mb-3">11. Contact Information</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">11. Contact Information</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   For questions about these Terms, contact us:
                 </p>
-                <div className="p-3 rounded" style={{ background: 'var(--bg-secondary)' }}>
-                  <p className="mb-1"><strong>Email:</strong> legal@ibhakt.com</p>
-                  <p className="mb-0"><strong>Address:</strong> 123 Spiritual Street, Mumbai, Maharashtra 400001</p>
+                <div
+                  className="p-3 rounded"
+                  style={{ background: 'var(--bg-secondary)', color: 'var(--text-color)' }}
+                >
+                  <p className="mb-1" style={{ color: 'var(--text-color)' }}>
+                    <strong>Email:</strong> legal@ibhakt.com
+                  </p>
+                  <p className="mb-0" style={{ color: 'var(--text-color)' }}>
+                    <strong>Address:</strong> 123 Spiritual Street, Mumbai, Maharashtra 400001
+                  </p>
                 </div>
               </section>
             </div>

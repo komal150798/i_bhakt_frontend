@@ -141,7 +141,9 @@ function ProfilePage() {
             <div className="card">
               <div className="card-body p-4 p-md-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                  <h1>{t('profile.title') || 'My Profile'}</h1>
+                  <h1 className="page-hero-heading page-hero-heading--compact fw-bold">
+                    {t('profile.title') || 'My Profile'}
+                  </h1>
                   {!isEditing && (
                     <button
                       className="btn btn-primary"

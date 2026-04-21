@@ -12,13 +12,13 @@ const RefundPolicyPage: React.FC = () => {
         <div className="row justify-content-center">
           <div className="col-lg-10">
             <div className="text-center mb-5" data-aos="fade-up">
-              <h1 className="display-3 mb-4">Refund & Cancellation Policy</h1>
+              <h1 className="page-hero-heading fw-bold mb-4">Refund & Cancellation Policy</h1>
               <p className="text-muted">Last updated: {new Date().toLocaleDateString()}</p>
             </div>
 
             <div className="cosmic-card" data-aos="fade-up">
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">1. Refund Eligibility</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. Refund Eligibility</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   Refunds may be issued under the following circumstances:
                 </p>
@@ -31,7 +31,7 @@ const RefundPolicyPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">2. Non-Refundable Services</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">2. Non-Refundable Services</h2>
                 <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
                   <li>One-time Kundli generation (once delivered)</li>
                   <li>Manifestation analysis reports (once generated)</li>
@@ -41,14 +41,14 @@ const RefundPolicyPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">3. Cancellation Process</h2>
-                <h5 className="mb-2">Subscription Cancellation</h5>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">3. Cancellation Process</h2>
+                <h5 className="legal-subhead mb-2">Subscription Cancellation</h5>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   You can cancel your subscription at any time through your account settings. Cancellation will take 
                   effect at the end of your current billing period. You will continue to have access until the period ends.
                 </p>
 
-                <h5 className="mb-2 mt-4">Service Cancellation</h5>
+                <h5 className="legal-subhead mb-2 mt-4">Service Cancellation</h5>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   To cancel a scheduled service, contact us at least 24 hours before the scheduled time. Cancellation 
                   requests received later may not be eligible for refund.
@@ -56,7 +56,7 @@ const RefundPolicyPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">4. Refund Processing</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">4. Refund Processing</h2>
                 <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
                   <li>Refund requests must be submitted via email or account dashboard</li>
                   <li>Processing time: 5-10 business days</li>
@@ -66,7 +66,7 @@ const RefundPolicyPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">5. Partial Refunds</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">5. Partial Refunds</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   In cases where services are partially delivered, we may issue partial refunds based on:
                 </p>
@@ -78,7 +78,7 @@ const RefundPolicyPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">6. Chargebacks</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">6. Chargebacks</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   If you initiate a chargeback without first contacting us, your account may be suspended. Please 
                   contact our support team to resolve any billing issues before disputing charges.
@@ -86,11 +86,20 @@ const RefundPolicyPage: React.FC = () => {
               </section>
 
               <section>
-                <h2 className="text-gradient mb-3">7. Contact for Refunds</h2>
-                <div className="p-3 rounded" style={{ background: 'var(--bg-secondary)' }}>
-                  <p className="mb-1"><strong>Email:</strong> refunds@ibhakt.com</p>
-                  <p className="mb-1"><strong>Phone:</strong> +91 123 456 7890</p>
-                  <p className="mb-0"><strong>Response Time:</strong> Within 24-48 hours</p>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">7. Contact for Refunds</h2>
+                <div
+                  className="p-3 rounded"
+                  style={{ background: 'var(--bg-secondary)', color: 'var(--text-color)' }}
+                >
+                  <p className="mb-1" style={{ color: 'var(--text-color)' }}>
+                    <strong>Email:</strong> refunds@ibhakt.com
+                  </p>
+                  <p className="mb-1" style={{ color: 'var(--text-color)' }}>
+                    <strong>Phone:</strong> +91 123 456 7890
+                  </p>
+                  <p className="mb-0" style={{ color: 'var(--text-color)' }}>
+                    <strong>Response Time:</strong> Within 24-48 hours
+                  </p>
                 </div>
               </section>
             </div>

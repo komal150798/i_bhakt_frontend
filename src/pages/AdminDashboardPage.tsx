@@ -1832,7 +1832,7 @@ function ReferralsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { g
 				<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24 }}>
 					<div style={{ padding: 16, background: '#1e293b', borderRadius: 8 }}>
 						<div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 4 }}>Pending Referrals</div>
-						<div style={{ fontSize: 24, fontWeight: 'bold', color: '#fbbf24' }}>{stats.total_pending_referrals}</div>
+						<div style={{ fontSize: 24, fontWeight: 'bold', color: '#c9a84c' }}>{stats.total_pending_referrals}</div>
 					</div>
 					<div style={{ padding: 16, background: '#1e293b', borderRadius: 8 }}>
 						<div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 4 }}>Completed Referrals</div>
@@ -1897,7 +1897,7 @@ function ReferralsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { g
 											borderRadius: 4,
 											fontSize: 11,
 											background: ref.status === 'completed' ? 'rgba(52, 211, 153, 0.2)' : 'rgba(251, 191, 36, 0.2)',
-											color: ref.status === 'completed' ? '#34d399' : '#fbbf24',
+											color: ref.status === 'completed' ? '#34d399' : '#c9a84c',
 										}}>
 											{ref.status}
 										</span>

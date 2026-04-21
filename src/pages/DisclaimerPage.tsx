@@ -12,13 +12,13 @@ const DisclaimerPage: React.FC = () => {
         <div className="row justify-content-center">
           <div className="col-lg-10">
             <div className="text-center mb-5" data-aos="fade-up">
-              <h1 className="display-3 mb-4">Disclaimer</h1>
+              <h1 className="page-hero-heading fw-bold mb-4">Disclaimer</h1>
               <p className="text-muted">Last updated: {new Date().toLocaleDateString()}</p>
             </div>
 
             <div className="cosmic-card" data-aos="fade-up">
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">1. Nature of Services</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. Nature of Services</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   iBhakt provides astrological services, spiritual guidance, and manifestation tools based on 
                   traditional Vedic astrology principles. Our services are intended for:
@@ -32,7 +32,7 @@ const DisclaimerPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">2. Not Professional Advice</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">2. Not Professional Advice</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   <strong>Important:</strong> Astrological readings and guidance provided by iBhakt are not substitutes 
                   for professional advice. You should NOT:
@@ -46,7 +46,7 @@ const DisclaimerPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">3. No Guarantees</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">3. No Guarantees</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   We do not guarantee:
                 </p>
@@ -59,7 +59,7 @@ const DisclaimerPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">4. Personal Responsibility</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">4. Personal Responsibility</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   You are solely responsible for:
                 </p>
@@ -72,7 +72,7 @@ const DisclaimerPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">5. Calculation Accuracy</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">5. Calculation Accuracy</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   While we use established Vedic astrology calculations and algorithms, results depend on:
                 </p>
@@ -85,7 +85,7 @@ const DisclaimerPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">6. Third-Party Services</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">6. Third-Party Services</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   Our platform may contain links to third-party services or websites. We are not responsible for:
                 </p>
@@ -98,7 +98,7 @@ const DisclaimerPage: React.FC = () => {
               </section>
 
               <section className="mb-5">
-                <h2 className="text-gradient mb-3">7. Technology Limitations</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">7. Technology Limitations</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                   While we strive for accuracy, our platform:
                 </p>
@@ -111,12 +111,20 @@ const DisclaimerPage: React.FC = () => {
               </section>
 
               <section>
-                <div className="alert alert-warning" role="alert" style={{ background: 'rgba(246, 200, 110, 0.1)', borderColor: '#f6c86e' }}>
-                  <h5 className="alert-heading">
-                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                <div
+                  className="alert alert-warning"
+                  role="alert"
+                  style={{
+                    background: 'rgba(201, 168, 76, 0.1)',
+                    borderColor: 'rgba(201, 168, 76, 0.45)',
+                    color: 'var(--text-color)',
+                  }}
+                >
+                  <h5 className="alert-heading legal-subhead">
+                    <i className="bi bi-exclamation-triangle-fill me-2" style={{ color: 'var(--primary-color)' }}></i>
                     Final Notice
                   </h5>
-                  <p className="mb-0" style={{ lineHeight: '1.8' }}>
+                  <p className="mb-0" style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                     By using iBhakt services, you acknowledge that you have read, understood, and agree to this 
                     disclaimer. Use our services at your own discretion and judgment.
                   </p>

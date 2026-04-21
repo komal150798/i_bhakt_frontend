@@ -23,7 +23,9 @@ export function KarmaDashboardBody({ dashboardData, onAddKarma, embedded = false
       <div className={styles.container}>
         {!embedded && (
           <div className={styles.header}>
-            <h1 className={styles.title}>{t('karma.dashboard.title')}</h1>
+            <h1 className={`page-hero-heading page-hero-heading--compact ${styles.title}`}>
+              {t('karma.dashboard.title')}
+            </h1>
             <p className={styles.subtitle}>
               {t('karma.dashboard.subtitle', {
                 from: overall.time_range.from,

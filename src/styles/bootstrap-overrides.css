@@ -83,12 +83,12 @@
   background-color: var(--bg-elevated);
   border-color: var(--primary-color);
   color: var(--text-color);
-  box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(201, 168, 76, 0.22);
 }
 
 [data-theme="dark"] .form-control:focus,
 [data-theme="dark"] .form-select:focus {
-  box-shadow: 0 0 0 0.2rem rgba(168, 85, 247, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(201, 168, 76, 0.28);
 }
 
 .form-control:disabled,

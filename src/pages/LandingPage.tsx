@@ -437,7 +437,7 @@ const LandingPage: React.FC = () => {
         <section className="section-spacing position-relative" style={{ zIndex: 1, background: 'var(--bg-secondary)' }}>
           <div className="container">
             <div className="text-center mb-5" data-aos="fade-up">
-              <h2 className="display-4 mb-3">Powerful Features</h2>
+              <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">Powerful Features</h2>
               <p className="lead text-muted">Everything you need for spiritual transformation</p>
             </div>
 

@@ -4,7 +4,7 @@
 
 .loginPage {
   min-height: 100vh;
-  background: linear-gradient(180deg, #050608 0%, #0B0F19 50%, #111827 100%);
+  background: var(--gradient-bg);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -14,7 +14,7 @@ const FreePlanBanner: React.FC<FreePlanBannerProps> = ({ onUpgrade }) => {
          style={{ 
            background: 'linear-gradient(135deg, rgba(123, 47, 247, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%)',
            border: '2px solid',
-           borderImage: 'linear-gradient(135deg, #7b2ff7, #4facfe, #f6c86e) 1',
+           borderImage: 'linear-gradient(135deg, #1a4a5a, #c9a84c, #dfc98f) 1',
          }}>
       <div className="row align-items-center">
         <div className="col-md-8">

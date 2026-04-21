@@ -30,12 +30,7 @@
 }
 
 .title {
-  font-family: 'Cinzel Decorative', 'Cormorant Garamond', serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-soft);
   margin-bottom: var(--spacing-md);
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 .subtitle {
@@ -670,10 +665,6 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .title {
-    font-size: 2rem;
-  }
-
   .scoreHeroCard {
     flex-direction: column;
     text-align: center;

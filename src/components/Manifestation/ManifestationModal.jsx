@@ -158,7 +158,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
               <h2 style={{ 
                 fontSize: 24, 
                 fontWeight: 700, 
-                color: '#fbbf24', 
+                color: 'var(--primary-color)', 
                 marginBottom: 12,
                 textTransform: 'none',
                 letterSpacing: 'normal'
@@ -213,7 +213,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
                   <span style={{ 
                     fontSize: 14, 
                     fontWeight: 600, 
-                    color: '#fbbf24',
+                    color: 'var(--primary-color)',
                     textTransform: 'capitalize'
                   }}>
                     {manifestation.category_label || manifestation.category}
@@ -468,7 +468,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
               <h2 style={{ 
                 fontSize: 24, 
                 fontWeight: 700, 
-                color: '#fbbf24', 
+                color: 'var(--primary-color)', 
                 marginBottom: 20,
                 textAlign: 'center'
               }}>
@@ -553,7 +553,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
                     <h3 style={{ 
                       fontSize: 20, 
                       fontWeight: 700, 
-                      color: '#fbbf24',
+                      color: 'var(--primary-color)',
                       margin: 0
                     }}>
                       Manifestation Resonance Score
@@ -582,7 +582,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
                     <div style={{
                       fontSize: 48,
                       fontWeight: 700,
-                      color: '#fbbf24',
+                      color: 'var(--primary-color)',
                       marginBottom: 8
                     }}>
                       {resonanceResult.resonance_score || 0}%
@@ -615,7 +615,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
                       </div>
                       <div style={{ 
                         fontSize: 16, 
-                        color: '#fbbf24',
+                        color: 'var(--primary-color)',
                         fontWeight: 600
                       }}>
                         {resonanceResult.category_label}
@@ -640,7 +640,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
                     <div style={{ 
                       fontSize: 20, 
                       fontWeight: 700, 
-                      color: '#fbbf24',
+                      color: 'var(--primary-color)',
                       marginBottom: 8,
                       display: 'flex',
                       alignItems: 'center',

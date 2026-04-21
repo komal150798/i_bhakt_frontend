@@ -18,12 +18,6 @@
 
 .pageTitle {
   margin: 0 0 8px 0;
-  font-size: 32px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .pageSubtitle {

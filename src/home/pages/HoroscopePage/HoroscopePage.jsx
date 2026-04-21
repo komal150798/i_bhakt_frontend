@@ -141,7 +141,7 @@ function HoroscopePage() {
       <div className={styles.container}>
         {/* Header */}
         <div className={styles.header}>
-          <h1 className={styles.title}>{t('horoscope.title')}</h1>
+          <h1 className={`page-hero-heading page-hero-heading--compact ${styles.title}`}>{t('horoscope.title')}</h1>
           <p className={styles.subtitle}>{t('horoscope.subtitle')}</p>
         </div>
 

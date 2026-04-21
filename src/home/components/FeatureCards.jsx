@@ -38,7 +38,7 @@ function FeatureCards() {
       <div className="container py-5">
         <div className="row mb-5">
           <div className="col-lg-8 mx-auto text-center">
-            <h2 className="display-5 fw-bold mb-3">Our Services</h2>
+            <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">Our Services</h2>
             <p className="lead text-muted">
               Comprehensive astrological services to guide your life journey
             </p>

@@ -164,7 +164,9 @@ function ManifestationDashboard() {
       {/* Header with Create Button */}
       <div className={styles.pageHeader}>
         <div>
-          <h1 className={styles.pageTitle}>Manifestation Dashboard</h1>
+          <h1 className={`page-hero-heading page-hero-heading--compact ${styles.pageTitle}`}>
+            Manifestation Dashboard
+          </h1>
           <p className={styles.pageSubtitle}>Track your locked manifestations and their resonance scores</p>
         </div>
         <button className={styles.createButton} onClick={handleAddManifestation}>

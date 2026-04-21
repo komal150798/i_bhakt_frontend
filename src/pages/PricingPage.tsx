@@ -81,7 +81,7 @@ const PricingPage: React.FC = () => {
       <div className="container">
         {/* Hero Section */}
         <div className="text-center mb-5" data-aos="fade-up">
-          <h1 className="display-3 mb-4">Choose Your Spiritual Journey</h1>
+          <h1 className="page-hero-heading fw-bold mb-4">Choose Your Spiritual Journey</h1>
           <p className="lead text-muted mb-5">
             Select the plan that aligns with your spiritual growth goals
           </p>
@@ -95,7 +95,7 @@ const PricingPage: React.FC = () => {
                 className={`cosmic-card h-100 position-relative ${plan.highlighted ? 'border-gradient' : ''}`}
                 style={{
                   border: plan.highlighted ? '2px solid' : '1px solid var(--card-border)',
-                  borderImage: plan.highlighted ? 'linear-gradient(135deg, #7b2ff7, #4facfe, #f6c86e) 1' : undefined,
+                  borderImage: plan.highlighted ? 'linear-gradient(135deg, #1a4a5a, #c9a84c, #dfc98f) 1' : undefined,
                   transform: plan.highlighted ? 'scale(1.05)' : 'scale(1)',
                 }}
               >

@@ -57,7 +57,7 @@ const ContactPage: React.FC = () => {
         <div className="row justify-content-center">
           <div className="col-lg-10">
             <div className="text-center mb-5" data-aos="fade-up">
-              <h1 className="display-3 mb-4">Contact Us</h1>
+              <h1 className="page-hero-heading fw-bold mb-4">Contact Us</h1>
               <p className="lead text-muted">
                 We'd love to hear from you. Get in touch with our team.
               </p>

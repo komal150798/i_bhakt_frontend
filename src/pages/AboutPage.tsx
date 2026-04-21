@@ -13,7 +13,7 @@ const AboutPage: React.FC = () => {
           <div className="col-lg-10">
             {/* Hero Section */}
             <div className="text-center mb-5" data-aos="fade-up">
-              <h1 className="display-3 mb-4">
+              <h1 className="page-hero-heading fw-bold mb-4">
                 About <span className="brand-mark">iBhakt</span>
               </h1>
               <p className="lead text-muted">
@@ -23,7 +23,7 @@ const AboutPage: React.FC = () => {
 
             {/* Mission Section */}
             <section className="cosmic-card mb-5" data-aos="fade-up" data-aos-delay="100">
-              <h2 className="text-gradient mb-4">Our Mission</h2>
+              <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-4">Our Mission</h2>
               <p className="mb-3" style={{ fontSize: '1.1rem', lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                 At iBhakt, we believe that everyone has a unique cosmic blueprint that guides their journey through life. 
                 Our mission is to make ancient Vedic wisdom accessible to everyone, helping you understand your karma, 
@@ -37,7 +37,7 @@ const AboutPage: React.FC = () => {
 
             {/* Features Section */}
             <section className="mb-5" data-aos="fade-up" data-aos-delay="200">
-              <h2 className="text-gradient mb-4 text-center">What We Offer</h2>
+              <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-4 text-center">What We Offer</h2>
               <div className="row g-4">
                 <div className="col-md-6">
                   <div className="cosmic-card h-100">
@@ -110,7 +110,7 @@ const AboutPage: React.FC = () => {
 
             {/* Values Section */}
             <section className="cosmic-card-glass mb-5" data-aos="fade-up" data-aos-delay="300">
-              <h2 className="text-gradient mb-4">Our Values</h2>
+              <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-4">Our Values</h2>
               <div className="row g-4">
                 <div className="col-md-4">
                   <h5 className="mb-3">

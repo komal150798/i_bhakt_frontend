@@ -28,7 +28,7 @@ function ReferBanner() {
             <div className={`card ${styles.referCard}`}>
               <div className="card-body p-4 p-md-5 text-center">
                 <div className={styles.icon}>🎁</div>
-                <h2 className="display-5 fw-bold mb-3">{t('refer.title')}</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">{t('refer.title')}</h2>
                 <p className="lead mb-4">
                   {t('refer.subtitle')}
                 </p>

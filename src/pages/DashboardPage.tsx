@@ -16,7 +16,7 @@ import LocationAutocomplete from '../components/common/LocationAutocomplete'
 const getGlowColor = (cumulativeScore: number): string => {
 	if (cumulativeScore >= 50) {
 		// Very positive - Golden/Yellow
-		return '#fbbf24'
+		return '#c9a84c'
 	} else if (cumulativeScore >= 20) {
 		// Positive - Green
 		return '#34d399'
@@ -233,8 +233,8 @@ const DigitalTwinDisplay: React.FC<{
 									style={{
 										transform: `rotate(${-angle}deg)`, // Counter-rotate to keep symbol upright
 										fontSize: 24,
-										color: '#fbbf24',
-										filter: 'drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 16px #fbbf24)',
+										color: '#c9a84c',
+										filter: 'drop-shadow(0 0 8px #c9a84c) drop-shadow(0 0 16px #c9a84c)',
 										animation: 'sparklePulse 2s ease-in-out infinite',
 										fontWeight: 'bold',
 										textAlign: 'center',
@@ -306,9 +306,9 @@ const digitalTwinImageStyle: React.CSSProperties = {
 // Legacy component - kept for reference but not used
 const DigitalTwinFigure_Legacy: React.FC<{ cumulativeScore: number }> = ({ cumulativeScore }) => {
 	// Use golden-yellow color as per the image (not karma-based)
-	const goldenYellow = '#fbbf24' // Bright golden-yellow
-	const goldenYellowLight = '#fde68a' // Lighter gold
-	const goldenYellowDark = '#d97706' // Darker gold
+	const goldenYellow = '#c9a84c'
+	const goldenYellowLight = '#dcc685'
+	const goldenYellowDark = '#9d823c'
 	
 	// Center of figure
 	const centerX = 100
@@ -2637,7 +2637,7 @@ const DashboardPage: React.FC = () => {
 													background: 'rgba(15, 23, 42, 0.9)',
 													padding: 8,
 													borderRadius: 6,
-													border: `1px solid ${twinState.aura.color === 'gold' ? '#fbbf24' : twinState.aura.color === 'green' ? '#34d399' : '#60a5fa'}`,
+													border: `1px solid ${twinState.aura.color === 'gold' ? '#c9a84c' : twinState.aura.color === 'green' ? '#34d399' : '#60a5fa'}`,
 													fontSize: 10,
 												}}>
 													<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
@@ -3290,10 +3290,10 @@ const DashboardPage: React.FC = () => {
 								<div style={{ marginTop: 20, padding: 16, background: 'rgba(34, 211, 153, 0.1)', borderRadius: 8, border: '1px solid rgba(34, 211, 153, 0.2)' }}>
 									<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
 										<div style={{ fontSize: 14, fontWeight: 600, color: '#34d399' }}>🔥 Streak</div>
-										<div style={{ fontSize: 18, fontWeight: 700, color: '#fbbf24' }}>{karmaDashboard.streak.current_days} days</div>
+										<div style={{ fontSize: 18, fontWeight: 700, color: '#c9a84c' }}>{karmaDashboard.streak.current_days} days</div>
 									</div>
 									<div style={{ fontSize: 12, color: '#cbd5f5', marginBottom: 8 }}>
-										Level: <span style={{ color: '#fbbf24', fontWeight: 600 }}>{karmaDashboard.streak.level_name}</span>
+										Level: <span style={{ color: '#c9a84c', fontWeight: 600 }}>{karmaDashboard.streak.level_name}</span>
 									</div>
 									<div style={{ fontSize: 11, color: '#94a3b8' }}>
 										Longest: {karmaDashboard.streak.longest_days} days · Next level in {karmaDashboard.streak.next_level_threshold - karmaDashboard.streak.current_days} days
@@ -3672,7 +3672,7 @@ const DashboardPage: React.FC = () => {
 															</div>
 															{userReferrals.pending.length > 0 && (
 																<div style={{ marginTop: 8 }}>
-																	<div style={{ color: '#fbbf24', marginBottom: 4, fontSize: 10 }}>Pending Referrals:</div>
+																	<div style={{ color: '#c9a84c', marginBottom: 4, fontSize: 10 }}>Pending Referrals:</div>
 																	{userReferrals.pending.slice(0, 3).map((ref: any) => (
 																		<div key={ref.id} style={{ color: '#cbd5f5', fontSize: 10, marginTop: 2 }}>
 																			{ref.referral_type === 'email' ? '📧' : '📱'} {ref.referral_value}
@@ -5000,7 +5000,7 @@ const avatarEditIconStyle: React.CSSProperties = {
 
 const digitalTwinContainerStyle = (cumulativeScore: number): React.CSSProperties => {
 	// Use golden-yellow glow as per the image
-	const goldenGlow = '#fbbf24'
+	const goldenGlow = '#c9a84c'
 	return {
 		position: 'absolute',
 		top: '30%', // Shifted up by 20% on Y-axis (from 50% to 30%)
@@ -5052,7 +5052,7 @@ const manifestationTileTextContainerStyle: React.CSSProperties = {
 const manifestationTileTitleStyle: React.CSSProperties = {
 	fontSize: 18,
 	fontWeight: 800,
-	color: '#fbbf24',
+	color: '#c9a84c',
 	letterSpacing: '0.15em',
 	textTransform: 'uppercase',
 	textShadow: '0 0 12px rgba(251, 191, 36, 0.6)',
@@ -5066,7 +5066,7 @@ const manifestationTileSubtitleStyle: React.CSSProperties = {
 }
 
 const manifestationTileButtonStyle: React.CSSProperties = {
-	background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+	background: 'linear-gradient(135deg, #c9a84c, #9d823c)',
 	border: 'none',
 	color: '#0f172a',
 	padding: '10px 20px',
@@ -5248,7 +5248,7 @@ const manifestationProbabilityValueStyle: React.CSSProperties = {
 	fontSize: 64,
 	fontWeight: 900,
 	lineHeight: 1,
-	color: '#fbbf24',
+	color: '#c9a84c',
 	textShadow: '0 0 20px rgba(251, 191, 36, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3)',
 	letterSpacing: '-0.02em',
 }
@@ -5810,7 +5810,7 @@ const planCardListItemStyle: React.CSSProperties = {
 
 const planCardUnlocksStyle: React.CSSProperties = {
 	fontSize: 13,
-	color: '#fbbf24',
+	color: '#c9a84c',
 	lineHeight: 1.6,
 	marginTop: 8,
 	padding: '8px 12px',
@@ -5887,7 +5887,7 @@ const referralCodeTextStyle: React.CSSProperties = {
 	borderRadius: 8,
 	fontSize: 14,
 	fontWeight: 700,
-	color: '#fbbf24',
+	color: '#c9a84c',
 	letterSpacing: '0.1em',
 	flex: 1,
 	border: '1px solid rgba(251, 191, 36, 0.3)',
@@ -5909,7 +5909,7 @@ const upgradeButtonStyle: React.CSSProperties = {
 	width: '100%',
 	marginTop: 16,
 	padding: '12px 24px',
-	background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+	background: 'linear-gradient(135deg, #c9a84c, #9d823c)',
 	color: '#064e3b',
 	border: 'none',
 	borderRadius: 12,

@@ -66,13 +66,13 @@ function HeroCarousel() {
           <div className="container">
             <div className="row align-items-center min-vh-100">
               <div className="col-lg-8 mx-auto text-center">
-                <h1 className={`display-3 fw-bold mb-4 ${styles.title}`}>
+                <h1 className={`fw-bold mb-4 ${styles.title}`}>
                   {t(slide.titleKey)}
                 </h1>
                 <p className={`lead mb-5 ${styles.subtitle}`}>
                   {t(slide.subtitleKey)}
                 </p>
-                <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                <div className={styles.ctaRow}>
                   {slide.buttons.map((button, btnIndex) => (
                     <Link
                       key={btnIndex}

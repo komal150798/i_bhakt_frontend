@@ -45,7 +45,7 @@ function ReferPage() {
       <div className="container py-5">
         <div className="row">
           <div className="col-lg-8 mx-auto">
-            <h1 className="display-4 fw-bold mb-3 text-center">{t('refer.title')}</h1>
+            <h1 className="page-hero-heading fw-bold mb-3 text-center">{t('refer.title')}</h1>
             <p className="lead text-muted text-center mb-5">
               {t('refer.subtitle')}
             </p>

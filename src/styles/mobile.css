@@ -2,6 +2,33 @@
  * Mobile Responsiveness Enhancements
  */
 
+/* Narrow phones: page titles and hero-style headings stay readable */
+@media (max-width: 480px) {
+  .page-hero-heading {
+    font-size: clamp(1.6rem, 7vw, 2.35rem);
+  }
+
+  .page-hero-heading--compact {
+    font-size: clamp(1.3rem, 5.5vw, 2rem);
+  }
+}
+
+/* iOS: 16px+ on focused inputs avoids automatic zoom */
+@media (max-width: 767px) {
+  input.form-control,
+  textarea.form-control,
+  select.form-select,
+  .cosmic-input {
+    font-size: 1rem;
+    min-height: 48px;
+  }
+
+  textarea.form-control.cosmic-input,
+  textarea.cosmic-input {
+    min-height: 6rem;
+  }
+}
+
 /* Mobile Navbar Improvements */
 @media (max-width: 991px) {
   .glass-nav .navbar-collapse {

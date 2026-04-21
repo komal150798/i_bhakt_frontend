@@ -10,7 +10,7 @@
 .title {
   font-size: 28px;
   font-weight: 700;
-  color: #fbbf24;
+  color: var(--primary-color);
   margin-bottom: 24px;
   text-align: center;
 }
@@ -39,7 +39,7 @@
 
 .textInput:focus {
   outline: none;
-  border-color: #fbbf24;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
 }
 
@@ -102,7 +102,7 @@
 .resultsTitle {
   font-size: 24px;
   font-weight: 700;
-  color: #fbbf24;
+  color: var(--primary-color);
 }
 
 .clearButton {
@@ -146,7 +146,7 @@
 .lockText h3 {
   margin: 0 0 8px 0;
   font-size: 18px;
-  color: #fbbf24;
+  color: var(--primary-color);
 }
 
 .lockText p {
@@ -161,7 +161,7 @@
   background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(249, 115, 22, 0.15));
   border: 1px solid rgba(251, 191, 36, 0.4);
   border-radius: 8px;
-  color: #fbbf24;
+  color: var(--primary-color);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -356,7 +356,7 @@
 .dashaTitle {
   font-size: 22px;
   font-weight: 700;
-  color: #fbbf24;
+  color: var(--primary-color);
   margin-bottom: 8px;
 }
 
@@ -462,7 +462,7 @@
 .tabActive {
   background: rgba(251, 191, 36, 0.2);
   border-color: rgba(251, 191, 36, 0.4);
-  color: #fbbf24;
+  color: var(--primary-color);
 }
 
 .tabIcon {
@@ -479,7 +479,7 @@
 .tabContent h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #fbbf24;
+  color: var(--primary-color);
   margin-bottom: 16px;
 }
 

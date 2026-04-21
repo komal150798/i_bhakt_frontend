@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
-import './styles/variables.css'
+// variables.css loaded via index.css before design-system
 import './styles/globals.css'
 import './styles/bootstrap-overrides.css'
 
@@ -20,21 +20,31 @@ import HomeLayout from './home/layout/HomeLayout'
 // Home pages (loaded via homeRoutes)
 import { homeRoutes } from './home/routes/homeRoutes'
 
-// Standalone pages (not inside HomeLayout)
-import AdminLoginPage from './pages/AdminLoginPage'
-import AdminDashboardPage from './pages/AdminDashboardPage'
-import AboutPage from './pages/AboutPage'
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
-import TermsPage from './pages/TermsPage'
-import RefundPolicyPage from './pages/RefundPolicyPage'
-import PricingPolicyPage from './pages/PricingPolicyPage'
-import DisclaimerPage from './pages/DisclaimerPage'
-import ContactPage from './pages/ContactPage'
+// Standalone pages — code-split for faster first paint
+const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage'))
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'))
+const TermsPage = lazy(() => import('./pages/TermsPage'))
+const RefundPolicyPage = lazy(() => import('./pages/RefundPolicyPage'))
+const PricingPolicyPage = lazy(() => import('./pages/PricingPolicyPage'))
+const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage'))
+const ContactPage = lazy(() => import('./pages/ContactPage'))
 
 // Admin routes
 import { adminRoutes } from './admin/routes/adminRoutes.js'
 import AdminLayout from './admin/layout/AdminLayout'
 import AdminRoute from './admin/routes/AdminRoute'
+
+const RouteFallback: React.FC = () => (
+	<div
+		className="d-flex py-5 my-4 align-items-center justify-content-center text-muted"
+		role="status"
+		aria-live="polite"
+	>
+		Loading…
+	</div>
+)
 
 const ScrollToTop: React.FC = () => {
 	const { pathname } = useLocation()
@@ -54,17 +64,20 @@ function AdminProtectedRoute({ children }: { children: React.ReactElement }) {
 
 const AppContentInner: React.FC = () => {
 	useEffect(() => {
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 		AOS.init({
-			duration: 800,
+			duration: reduceMotion ? 0 : 800,
 			easing: 'ease-in-out',
 			once: true,
 			offset: 100,
+			disable: reduceMotion,
 		})
 	}, [])
 
 	return (
 		<>
 			<ScrollToTop />
+			<Suspense fallback={<RouteFallback />}>
 			<Routes>
 				{/* Admin Login */}
 				<Route path="/admin/login" element={<AdminLoginPage />} />
@@ -149,6 +162,7 @@ const AppContentInner: React.FC = () => {
 				{/* Catch-all */}
 				<Route path="*" element={<Navigate to="/" replace />} />
 			</Routes>
+			</Suspense>
 		</>
 	)
 }
