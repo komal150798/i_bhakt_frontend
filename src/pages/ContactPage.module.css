@@ -1,0 +1,64 @@
+/* Contact page — subtitle / helper tone matches .page-hero-subtitle (theme-aware) */
+
+.cardLead {
+  font-family: var(--font-body, 'Inter', 'Poppins', sans-serif);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.fieldTitle {
+  font-family: var(--font-body, 'Inter', 'Poppins', sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+}
+
+.formLabel {
+  font-family: var(--font-body, 'Inter', 'Poppins', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.alertSuccess {
+  border-radius: var(--card-radius, 18px);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  background: rgba(52, 163, 126, 0.14);
+  border: 1px solid rgba(52, 163, 126, 0.45);
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+}
+
+.alertDanger {
+  border-radius: var(--card-radius, 18px);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  background: rgba(224, 112, 112, 0.12);
+  border: 1px solid rgba(224, 112, 112, 0.45);
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+}
+
+.fieldError {
+  display: block;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--danger-color, #e07070);
+  margin-top: 0.35rem;
+}
+
+.inputInvalid {
+  border-color: var(--danger-color, #e07070) !important;
+  box-shadow: 0 0 0 0.15rem rgba(224, 112, 112, 0.22) !important;
+}

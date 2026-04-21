@@ -139,3 +139,10 @@
   background-color: var(--bg-color);
 }
 
+/* Cosmic marketing pages — hero line under title (Bootstrap text-muted can stay too dark / wrong token) */
+.cosmic-bg p.lead,
+.cosmic-bg p.lead.text-muted {
+  color: var(--text-secondary) !important;
+  -webkit-text-fill-color: var(--text-secondary) !important;
+}
+

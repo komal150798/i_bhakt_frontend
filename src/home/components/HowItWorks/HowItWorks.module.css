@@ -1,0 +1,232 @@
+.section {
+  position: relative;
+  scroll-margin-top: calc(var(--header-height) + 1rem);
+  background: linear-gradient(180deg, transparent 0%, rgba(6, 13, 24, 0.35) 40%, rgba(10, 22, 40, 0.5) 100%);
+  /* allow step connectors to extend into column gaps */
+  overflow: visible;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201, 168, 76, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+  max-width: 36rem;
+  color: var(--muted-text-color);
+  font-size: 1.05rem;
+}
+
+.track {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  overflow: visible;
+}
+
+@media (min-width: 992px) {
+  .track {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+}
+
+.step {
+  position: relative;
+  padding-bottom: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.step:last-child .connector {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .step {
+    padding-bottom: 0;
+    height: 100%;
+  }
+}
+
+.connector {
+  display: block;
+  position: absolute;
+  z-index: 0;
+  left: 1.85rem;
+  top: 4.5rem;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(201, 168, 76, 0.45) 0%, rgba(26, 74, 90, 0.35) 100%);
+  border-radius: 1px;
+}
+
+@media (min-width: 992px) {
+  .connector {
+    left: auto;
+    right: -0.5rem;
+    top: 3.25rem;
+    bottom: auto;
+    width: calc(100% + 0.5rem);
+    /* explicit block size — without height the horizontal rule collapses to 0 */
+    height: 2px;
+    min-height: 2px;
+    max-height: 2px;
+    line-height: 0;
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0.5) 0%, rgba(26, 74, 90, 0.25) 100%);
+    pointer-events: none;
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: flex-start;
+  flex: 1 1 auto;
+  width: 100%;
+  padding: var(--spacing-lg);
+  border-radius: var(--card-radius);
+  background: linear-gradient(145deg, rgba(15, 31, 54, 0.95) 0%, rgba(10, 22, 40, 0.88) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    border-color: rgba(201, 168, 76, 0.28);
+    /* Keep inset edge + outer shadow so hover doesn’t read as a harsh ring or expose connector gaps */
+    box-shadow: var(--shadow-lg), 0 0 24px rgba(201, 168, 76, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+.iconWrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 3.75rem;
+  height: 3.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(201, 168, 76, 0.18) 0%, rgba(26, 74, 90, 0.35) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .iconWrap {
+    animation: iconGlow 4s ease-in-out infinite;
+  }
+
+  .step:nth-child(2) .iconWrap {
+    animation-delay: 0.8s;
+  }
+
+  .step:nth-child(3) .iconWrap {
+    animation-delay: 1.6s;
+  }
+
+  .step:nth-child(4) .iconWrap {
+    animation-delay: 2.4s;
+  }
+}
+
+@keyframes iconGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 20px 2px rgba(201, 168, 76, 0.2);
+  }
+}
+
+.stepNum {
+  position: absolute;
+  top: -0.35rem;
+  right: -0.35rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  background: var(--gradient-primary);
+  color: var(--brand-navy);
+  box-shadow: var(--shadow-glow);
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: var(--primary-soft);
+}
+
+.body {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stepTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.stepDesc {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--muted-text-color);
+}
+
+[data-theme='light'] .section {
+  background: linear-gradient(180deg, transparent 0%, rgba(244, 245, 248, 0.9) 100%);
+}
+
+[data-theme='light'] .card {
+  background: var(--bg-elevated);
+  border-color: rgba(10, 22, 40, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconWrap {
+    animation: none;
+  }
+}
+
+[data-theme='light'] .card:hover {
+  border-color: rgba(10, 22, 40, 0.14);
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}

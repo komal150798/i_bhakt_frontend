@@ -44,7 +44,7 @@ function FeatureSection() {
       icon: '🧘',
       titleKey: 'features.cosmicGuidance.title',
       descriptionKey: 'features.cosmicGuidance.description',
-      link: '/about',
+      link: '/kundli',
     },
   ];
 
@@ -52,7 +52,7 @@ function FeatureSection() {
     <section className={styles.features}>
       <div className="container py-5">
         <div className="row mb-5">
-          <div className="col-lg-8 mx-auto text-center">
+          <div className="col-lg-8 mx-auto text-center" data-aos="fade-up">
             <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">
               {renderTitleWithBrand(t('features.title'))}
             </h2>
@@ -63,8 +63,13 @@ function FeatureSection() {
         </div>
 
         <div className="row g-4">
-          {FEATURES.map((feature) => (
-            <div key={feature.id} className="col-md-6 col-lg-3">
+          {FEATURES.map((feature, index) => (
+            <div
+              key={feature.id}
+              className="col-md-6 col-lg-3"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+            >
               <Link to={feature.link} className={styles.cardLink}>
                 <div className={`card h-100 ${styles.featureCard}`}>
                   <div className="card-body text-center p-4">

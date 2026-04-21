@@ -11,7 +11,7 @@ function KundliPage() {
         <div className="row">
           <div className="col-lg-8 mx-auto text-center mb-5">
             <h1 className="page-hero-heading fw-bold mb-3">{t('kundli.title')}</h1>
-            <p className="lead text-muted">
+            <p className="lead" style={{ color: 'var(--muted-text-color)', maxWidth: '40rem', margin: '0 auto' }}>
               {t('kundli.subtitle')}
             </p>
           </div>

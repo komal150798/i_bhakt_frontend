@@ -1,0 +1,89 @@
+.strip {
+  position: relative;
+  z-index: 1;
+  /* Sit fully below the hero so carousel dots (bottom ~2rem) are never covered */
+  margin-top: 0;
+  padding-top: clamp(2.25rem, 5vw, 3.75rem);
+  padding-bottom: var(--spacing-2xl);
+  border-top: 1px solid rgba(201, 168, 76, 0.14);
+  background: linear-gradient(180deg, rgba(6, 13, 24, 0.55) 0%, rgba(10, 22, 40, 0.2) 45%, transparent 100%);
+}
+
+@media (max-width: 768px) {
+  .strip {
+    padding-top: clamp(2rem, 6vw, 3rem);
+    padding-bottom: var(--spacing-xl);
+  }
+}
+
+[data-theme='light'] .strip {
+  border-top-color: rgba(10, 22, 40, 0.1);
+  background: linear-gradient(180deg, rgba(244, 245, 248, 0.95) 0%, transparent 100%);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 991px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--card-radius);
+  background: linear-gradient(145deg, rgba(15, 31, 54, 0.92) 0%, rgba(10, 22, 40, 0.88) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .item:hover {
+    border-color: rgba(201, 168, 76, 0.35);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+  }
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.35rem;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  box-shadow: 0 0 12px rgba(201, 168, 76, 0.55);
+}
+
+.text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted-text-color);
+  line-height: 1.45;
+}
+
+[data-theme='light'] .item {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(10, 22, 40, 0.1);
+}
+
+[data-theme='light'] .text {
+  color: var(--muted-text-color);
+}

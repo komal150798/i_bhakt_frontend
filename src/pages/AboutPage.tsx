@@ -1,7 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
+import { useTranslation } from '../common/hooks/useTranslation.js';
+import styles from './AboutPage.module.css';
+
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
+const FounderPhoto: React.FC<{ src: string; alt: string; initials: string }> = ({ src, alt, initials }) => {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <div className={styles.photoShell}>
+      {!failed ? (
+        <img
+          src={src}
+          alt={alt}
+          className={styles.photoImg}
+          loading="lazy"
+          width={320}
+          height={400}
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div className={styles.photoFallback} aria-hidden>
+          <span className={styles.photoInitials}>{initials}</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const AboutPage: React.FC = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     AOS.refresh();
   }, []);
@@ -16,21 +46,79 @@ const AboutPage: React.FC = () => {
               <h1 className="page-hero-heading fw-bold mb-4">
                 About <span className="brand-mark">iBhakt</span>
               </h1>
-              <p className="lead text-muted">
+              <p className="lead page-hero-subtitle">
                 Your cosmic companion for spiritual growth and manifestation
               </p>
             </div>
+
+            {/* Founders — Prachi Surve & Rahul Gudadhe; why created + vision */}
+            <section
+              className={`cosmic-card mb-5 ${styles.founderSection}`}
+              data-aos="fade-up"
+              data-aos-delay="80"
+              aria-labelledby="founder-section-title"
+            >
+              <p className={styles.founderEyebrow}>{t('aboutPage.founder.eyebrow')}</p>
+              <h2 id="founder-section-title" className={`page-hero-heading page-hero-heading--compact fw-bold text-center ${styles.founderTitle}`}>
+                {t('aboutPage.founder.sectionTitle')}
+              </h2>
+              <p className={styles.founderIntro}>{t('aboutPage.founder.intro')}</p>
+              <div className="row g-4 justify-content-center mb-2">
+                <div className="col-md-6 col-lg-5">
+                  <div className={styles.founderCard}>
+                    <FounderPhoto
+                      src={asset('images/founder-prachi.jpg')}
+                      alt={t('aboutPage.founder.prachi.photoAlt')}
+                      initials={t('aboutPage.founder.prachi.initials')}
+                    />
+                    <h3 className={styles.founderName}>{t('aboutPage.founder.prachi.name')}</h3>
+                    <p className={styles.founderRole}>{t('aboutPage.founder.prachi.role')}</p>
+                    <p className={styles.founderCardBio}>{t('aboutPage.founder.prachi.bio')}</p>
+                  </div>
+                </div>
+                <div className="col-md-6 col-lg-5">
+                  <div className={styles.founderCard}>
+                    <FounderPhoto
+                      src={asset('images/founder-rahul.jpg')}
+                      alt={t('aboutPage.founder.rahul.photoAlt')}
+                      initials={t('aboutPage.founder.rahul.initials')}
+                    />
+                    <h3 className={styles.founderName}>{t('aboutPage.founder.rahul.name')}</h3>
+                    <p className={styles.founderRole}>{t('aboutPage.founder.rahul.role')}</p>
+                    <p className={styles.founderCardBio}>{t('aboutPage.founder.rahul.bio')}</p>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.founderCalloutsWrap}>
+                <div className={styles.callouts}>
+                  <div className={styles.callout}>
+                    <h4 className={styles.calloutTitle}>
+                      <i className="bi bi-stars" aria-hidden />
+                      {t('aboutPage.founder.whyTitle')}
+                    </h4>
+                    <p className={styles.calloutBody}>{t('aboutPage.founder.whyBody')}</p>
+                  </div>
+                  <div className={styles.callout}>
+                    <h4 className={styles.calloutTitle}>
+                      <i className="bi bi-eye" aria-hidden />
+                      {t('aboutPage.founder.visionTitle')}
+                    </h4>
+                    <p className={styles.calloutBody}>{t('aboutPage.founder.visionBody')}</p>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             {/* Mission Section */}
             <section className="cosmic-card mb-5" data-aos="fade-up" data-aos-delay="100">
               <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-4">Our Mission</h2>
               <p className="mb-3" style={{ fontSize: '1.1rem', lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                At iBhakt, we believe that everyone has a unique cosmic blueprint that guides their journey through life. 
-                Our mission is to make ancient Vedic wisdom accessible to everyone, helping you understand your karma, 
+                At iBhakt, we believe that everyone has a unique cosmic blueprint that guides their journey through life.
+                Our mission is to make ancient Vedic wisdom accessible to everyone, helping you understand your karma,
                 align with cosmic energies, and manifest your deepest desires.
               </p>
               <p style={{ fontSize: '1.1rem', lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                We combine traditional astrology with modern technology to provide personalized insights that empower 
+                We combine traditional astrology with modern technology to provide personalized insights that empower
                 you to make informed decisions and live a life of purpose and fulfillment.
               </p>
             </section>
@@ -64,7 +152,7 @@ const AboutPage: React.FC = () => {
                       <div>
                         <h4 className="mb-2">Manifestation Resonance</h4>
                         <p className="text-muted mb-0">
-                          Measure how aligned your desires are with cosmic energies. Get personalized insights 
+                          Measure how aligned your desires are with cosmic energies. Get personalized insights
                           to enhance your manifestation journey and achieve your goals faster.
                         </p>
                       </div>
@@ -81,7 +169,7 @@ const AboutPage: React.FC = () => {
                       <div>
                         <h4 className="mb-2">Karma Tracking</h4>
                         <p className="text-muted mb-0">
-                          Track your daily actions and understand their karmic impact. Build positive karma 
+                          Track your daily actions and understand their karmic impact. Build positive karma
                           through conscious living and spiritual practices.
                         </p>
                       </div>
@@ -98,7 +186,7 @@ const AboutPage: React.FC = () => {
                       <div>
                         <h4 className="mb-2">Cosmic Guidance</h4>
                         <p className="text-muted mb-0">
-                          Receive daily personalized guidance based on your astrological chart and current 
+                          Receive daily personalized guidance based on your astrological chart and current
                           planetary transits to navigate life's challenges with wisdom.
                         </p>
                       </div>
@@ -165,10 +253,3 @@ const AboutPage: React.FC = () => {
 };
 
 export default AboutPage;
-
-
-
-
-
-
-

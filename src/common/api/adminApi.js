@@ -246,6 +246,32 @@ export const adminApi = {
     });
   },
 
+  // Testimonials (homepage — featured list is public; this is full admin list)
+  getTestimonialsAdmin: async () => {
+    const data = await adminApiRequest('/admin/testimonials');
+    return Array.isArray(data) ? data : [];
+  },
+
+  createTestimonial: async (payload) => {
+    return adminApiRequest('/admin/testimonials', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  updateTestimonial: async (id, payload) => {
+    return adminApiRequest(`/admin/testimonials/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  deleteTestimonial: async (id) => {
+    return adminApiRequest(`/admin/testimonials/${id}`, {
+      method: 'DELETE',
+    });
+  },
+
   // Settings
   getSettings: async () => {
     return adminApiRequest('/admin/config');

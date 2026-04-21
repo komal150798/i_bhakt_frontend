@@ -23,7 +23,7 @@ export const getFontFamily = (language) => {
       return "'Noto Sans Devanagari', 'Mukta', 'Poppins', sans-serif";
     case 'en':
     default:
-      return "'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+      return "'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif";
   }
 };
 

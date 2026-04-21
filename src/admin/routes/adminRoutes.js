@@ -23,6 +23,7 @@ import AdminUserListPage from '../pages/UserManagement/AdminUserListPage';
 import RoleListPage from '../pages/UserManagement/RoleListPage';
 import AdminSubscriptionsPage from '../pages/Subscriptions/AdminSubscriptionsPage';
 import AIPromptsPage from '../pages/Prompts/AIPromptsPage';
+import AdminTestimonialsPage from '../pages/Testimonials/AdminTestimonialsPage';
 
 // Component mapping for routes
 const componentMap = {
@@ -41,6 +42,7 @@ const componentMap = {
   'role-list': RoleListPage,
   'subscriptions': AdminSubscriptionsPage,
   'ai-prompts': AIPromptsPage,
+  testimonials: AdminTestimonialsPage,
   // Add future modules here:
   // 'sms-management': AdminSmsManagementPage,
   // 'email-management': AdminEmailManagementPage,

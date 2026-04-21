@@ -13,96 +13,84 @@ const PricingPolicyPage: React.FC = () => {
           <div className="col-lg-10">
             <div className="text-center mb-5" data-aos="fade-up">
               <h1 className="page-hero-heading fw-bold mb-4">Pricing Policy</h1>
-              <p className="text-muted">Last updated: {new Date().toLocaleDateString()}</p>
+              <p className="lead page-hero-subtitle">
+                How <span className="brand-mark">iBhakt</span> displays prices, taxes, and plan types for our spiritual-tech
+                platform.
+              </p>
+              <p className="small mb-0" style={{ color: 'var(--text-secondary)' }}>
+                Last updated: {new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
             </div>
 
             <div className="cosmic-card" data-aos="fade-up">
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. Pricing Structure</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. Scope</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  iBhakt offers multiple subscription plans and one-time service options. All prices are displayed 
-                  in INR (Indian Rupees) and may be subject to applicable taxes.
+                  This Pricing Policy describes how we present and bill for iBhakt services—including free and paid tiers,
+                  optional upgrades, and digital add-ons. The exact price, currency, and line items shown at checkout or
+                  in your account at the time of purchase prevail if they differ from marketing copy on the site.
                 </p>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">2. Subscription Plans</h2>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li><strong>Awaken Plan:</strong> Free tier with limited features</li>
-                  <li><strong>Karma Builder:</strong> Basic paid plan with enhanced features</li>
-                  <li><strong>Karma Pro:</strong> Advanced plan with premium features</li>
-                  <li><strong>Dharma Master:</strong> Premium plan with unlimited access</li>
-                </ul>
-                <p className="mt-3" style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  Plan features and pricing are subject to change. Current users will be notified 30 days before 
-                  any price changes to their active plan.
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">2. Plans and positioning</h2>
+                <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
+                  iBhakt is structured around progressive access to Kundli tools, manifestation features, karma tracking,
+                  and guidance. Marketing names for paid tiers may include <strong style={{ color: 'var(--text-color)' }}>Karma Builder</strong>,{' '}
+                  <strong style={{ color: 'var(--text-color)' }}>Karma Pro</strong>, and <strong style={{ color: 'var(--text-color)' }}>Dharma Master</strong>, alongside a free{' '}
+                  <strong style={{ color: 'var(--text-color)' }}>Awaken</strong> experience where we offer it. Features and
+                  limits per plan are described in the app and on our pricing or upgrade screens and may evolve as we ship
+                  improvements.
                 </p>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">3. One-Time Services</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">3. Currency and taxes</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  Individual services such as detailed Kundli reports, manifestation analysis, and personalized 
-                  consultations are available as one-time purchases at fixed prices displayed on our platform.
+                  Prices are generally quoted in <strong style={{ color: 'var(--text-color)' }}>Indian Rupees (INR)</strong>{' '}
+                  for customers in India. Applicable taxes—including GST where required—are calculated at checkout based on
+                  billing details and current regulations. Your payment receipt or invoice will show tax breakdown when
+                  issued by our payment partner or iBhakt as applicable.
                 </p>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">4. Payment Methods</h2>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Credit/Debit Cards</li>
-                  <li>UPI (Unified Payments Interface)</li>
-                  <li>Net Banking</li>
-                  <li>Digital Wallets (Paytm, PhonePe, etc.)</li>
-                  <li>Bank Transfer (for bulk orders)</li>
-                </ul>
-              </section>
-
-              <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">5. Pricing Changes</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">4. Payment methods</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  We reserve the right to modify pricing at any time. Changes will be:
-                </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Communicated via email to affected users</li>
-                  <li>Displayed prominently on our platform</li>
-                  <li>Effective for new purchases immediately</li>
-                  <li>Applied to renewals after current billing period</li>
-                </ul>
-              </section>
-
-              <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">6. Taxes</h2>
-                <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  All prices exclude applicable taxes (GST, VAT, etc.). Taxes will be calculated and added during 
-                  checkout based on your location and applicable tax laws.
+                  We use trusted payment processors. Available methods (cards, UPI, net banking, wallets, etc.) depend on
+                  your region and the integration shown at payment time. iBhakt does not store your full card number on our
+                  servers.
                 </p>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">7. Currency</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">5. Price changes</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  All transactions are processed in INR. If you pay in a different currency, conversion rates will 
-                  be applied by your payment provider, and we are not responsible for exchange rate fluctuations.
+                  We may change list prices or bundle features. When we change recurring subscription prices, we aim to
+                  give reasonable notice (for example by email or in-app message) before the change affects your next
+                  renewal. Continuing after notice usually means you accept the new price for subsequent renewal cycles.
+                </p>
+              </section>
+
+              <section className="mb-5">
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">6. Promotions and referrals</h2>
+                <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
+                  Limited-time offers, referral unlocks, or partner promotions may modify price or access. Each promotion
+                  has its own rules and expiry; conflicting terms are resolved in favor of the specific promotion text
+                  shown when you accept it.
                 </p>
               </section>
 
               <section>
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">8. Contact</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">7. Questions</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  For pricing inquiries, contact us:
+                  For billing or pricing questions, write to{' '}
+                  <a href="mailto:support@ibhakt.com" className="text-decoration-none" style={{ color: 'var(--primary-color)' }}>
+                    support@ibhakt.com
+                  </a>{' '}
+                  or use the Contact page on this site. For legal terms governing use of the platform, see our Terms of
+                  Use.
                 </p>
-                <div
-                  className="p-3 rounded"
-                  style={{ background: 'var(--bg-secondary)', color: 'var(--text-color)' }}
-                >
-                  <p className="mb-1" style={{ color: 'var(--text-color)' }}>
-                    <strong>Email:</strong> pricing@ibhakt.com
-                  </p>
-                  <p className="mb-0" style={{ color: 'var(--text-color)' }}>
-                    <strong>Phone:</strong> +91 123 456 7890
-                  </p>
-                </div>
               </section>
             </div>
           </div>
@@ -113,10 +101,3 @@ const PricingPolicyPage: React.FC = () => {
 };
 
 export default PricingPolicyPage;
-
-
-
-
-
-
-

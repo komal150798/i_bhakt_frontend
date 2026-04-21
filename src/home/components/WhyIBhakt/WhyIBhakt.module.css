@@ -1,0 +1,113 @@
+.section {
+  position: relative;
+  background: radial-gradient(ellipse 80% 50% at 50% 100%, rgba(26, 74, 90, 0.2) 0%, transparent 55%);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+  max-width: 38rem;
+  color: var(--muted-text-color);
+  font-size: 1.05rem;
+}
+
+.tableWrap {
+  max-width: 52rem;
+  margin: 0 auto;
+  border-radius: calc(var(--card-radius) + 4px);
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: linear-gradient(180deg, rgba(15, 31, 54, 0.98) 0%, rgba(10, 22, 40, 0.95) 100%);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.thOthers,
+.thIBhakt {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.22);
+}
+
+.thOthers {
+  width: 42%;
+  color: var(--muted-text-color);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.thIBhakt {
+  width: 58%;
+  color: var(--primary-soft);
+  background: linear-gradient(180deg, rgba(201, 168, 76, 0.12) 0%, rgba(26, 74, 90, 0.15) 100%);
+}
+
+.tdOthers,
+.tdIBhakt {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tdOthers {
+  color: var(--muted-text-color);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.tdIBhakt {
+  color: var(--text-color);
+  font-weight: 600;
+  text-align: center;
+  border-left: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+tbody tr:last-child .tdOthers,
+tbody tr:last-child .tdIBhakt {
+  border-bottom: none;
+}
+
+@media (max-width: 576px) {
+  .thOthers,
+  .thIBhakt,
+  .tdOthers,
+  .tdIBhakt {
+    padding: var(--spacing-md);
+    font-size: 0.875rem;
+  }
+}
+
+[data-theme='light'] .tableWrap {
+  background: var(--bg-elevated);
+  border-color: rgba(10, 22, 40, 0.12);
+}
+
+[data-theme='light'] .thOthers {
+  background: rgba(10, 22, 40, 0.04);
+  color: var(--muted-text-color);
+}
+
+[data-theme='light'] .tdOthers {
+  background: rgba(10, 22, 40, 0.03);
+}
+
+[data-theme='light'] .tdIBhakt {
+  border-left-color: rgba(10, 22, 40, 0.08);
+}

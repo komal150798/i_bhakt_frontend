@@ -30,11 +30,91 @@
     "heroTitle2": "Manifest Your Deepest Desires",
     "heroSubtitle2": "Align your intentions with cosmic energies and measure your manifestation resonance.",
     "heroTitle3": "Track Your Karma, Transform Your Life",
-    "heroSubtitle3": "Every action shapes your destiny. Build positive karma through conscious living."
+    "heroSubtitle3": "Every action shapes your destiny. Build positive karma through conscious living.",
+    "heroSlide1Title": "The AI Manifestation Platform Built on Your Birth Chart",
+    "heroSlide1Subtitle": "Turn Vedic precision into daily clarity—intentions, timing, and karma in one luxury workspace designed for real results.",
+    "heroSlide1CtaPrimary": "Start free — AI manifestations",
+    "heroSlide1CtaSecondary": "Free Kundli in 60 seconds",
+    "heroSlide2Title": "Manifest With Signals, Not Guesswork",
+    "heroSlide2Subtitle": "Our engine blends classical chart logic with modern AI so every session feels personal, grounded, and actionable.",
+    "heroSlide2CtaSecondary": "Create your account",
+    "heroSlide3Title": "Track Karma. Compound Blessings.",
+    "heroSlide3Subtitle": "Conscious deeds meet cosmic accounting—see patterns, correct course, and elevate your baseline energy.",
+    "ctaStartManifestation": "Start Manifestation",
+    "ctaExploreHowItWorks": "Explore How It Works"
+  },
+  "trust": {
+    "sectionLabel": "Trust and quality",
+    "trust1": "Lahiri ayanamsa · Swiss Ephemeris–grade calculations",
+    "trust2": "Private by design — your chart data stays yours",
+    "trust3": "Built for mobile — fast, smooth, thumb-friendly",
+    "trust4": "Transparent flows — no dark-pattern subscriptions"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "Your four-step path from intention to daily guidance",
+    "subtitle": "A clear, premium flow—goal first, then karma, your digital twin, and finally AI remedies you can act on every day.",
+    "step1Title": "Set Your Goal",
+    "step1Desc": "Define what you want to manifest with clarity. Your intention becomes the anchor for every insight that follows.",
+    "step2Title": "Karma Analysis",
+    "step2Desc": "See how your daily choices and patterns shape your path. Understand impact, balance debts, and build positive momentum.",
+    "step3Title": "Digital Twin Creation",
+    "step3Desc": "We synthesize your Kundli, transits, and karma signals into a living model of your cosmic state—your personal blueprint in motion.",
+    "step4Title": "AI Remedies & Daily Guidance",
+    "step4Desc": "Receive tailored rituals, prompts, and timing-aware nudges—ancient logic, modern delivery, one actionable roadmap."
+  },
+  "whyIBhakt": {
+    "eyebrow": "Why iBhakt",
+    "title": "Not another horoscope app",
+    "subtitle": "We built a goal achievement system on top of Vedic depth—so insight always turns into motion.",
+    "caption": "Comparison of typical astrology apps versus iBhakt",
+    "colOthers": "Others",
+    "colIBhakt": "iBhakt",
+    "row1Others": "Astrology advice",
+    "row1IBhakt": "Goal achievement system",
+    "row2Others": "Human only",
+    "row2IBhakt": "AI + ancient wisdom",
+    "row3Others": "Generic predictions",
+    "row3IBhakt": "Personalized digital twin",
+    "row4Others": "Passive reading",
+    "row4IBhakt": "Daily action roadmap"
+  },
+  "trustSection": {
+    "title": "Built on trust",
+    "subtitle": "Real seekers, real engineering, and respect for both your privacy and the tradition behind every line of code.",
+    "usersTitle": "1000+ users guided",
+    "usersText": "Seekers worldwide use iBhakt to align goals with chart-backed clarity—not one-off predictions.",
+    "aiTitle": "AI-powered system",
+    "aiText": "Models tuned to Vedic structure—houses, lords, dasha—so guidance stays grounded, not generic chat fluff.",
+    "secureTitle": "Secure & private",
+    "secureText": "Your birth data and manifestations are treated as sensitive by design. You stay in control of your journey.",
+    "wisdomTitle": "Ancient wisdom + modern technology",
+    "wisdomText": "Classical principles meet a luxury digital experience—readable, fast, and built for daily use."
+  },
+  "landingAi": {
+    "eyebrow": "AI + Vedic stack",
+    "title": "Your chart becomes the brain of your manifestation coach",
+    "subtitle": "iBhakt reads houses, lords, dasha windows, and lunar rhythm—then translates them into plain-language rituals, prompts, and next steps you can use today.",
+    "bullet1": "Context-aware AI that respects classical chart structure",
+    "bullet2": "Manifestation flows tuned to timing—not generic affirmations",
+    "bullet3": "Karma ledger + insights so progress feels measurable",
+    "cardTitle": "Ready when you are",
+    "cardBody": "Create a free account to sync your chart, save manifestations, and unlock deeper AI guidance as you grow.",
+    "ctaPrimary": "Get started free",
+    "ctaSecondary": "Explore manifestations",
+    "cardFoot": "No credit card to browse core flows. Upgrade only when you want more depth."
+  },
+  "kundliTeaser": {
+    "badge": "Free tool",
+    "title": "Working Kundli calculator — instant chart",
+    "subtitle": "Name, date, time, and birth place. We resolve coordinates, compute houses and planets, and render lagna, nakshatra, dasha, and more.",
+    "cta": "Open Kundli calculator",
+    "inlineCalculator": "Open the free Kundli calculator →",
+    "micro": "Tip: pick your city from search suggestions for maximum accuracy."
   },
   "features": {
-    "title": "What iBhakt Offers",
-    "subtitle": "Vedic wisdom meets modern technology to guide your spiritual journey",
+    "title": "One premium workspace for chart, coach, and karma",
+    "subtitle": "Engineered for seekers who want depth without chaos—dark luxury UI, crisp data, and AI that amplifies tradition instead of replacing it.",
     "cosmicDigitalTwin": {
       "title": "Cosmic Digital Twin",
       "description": "Create a real-time, interactive digital model of your personal cosmic state, combining your natal chart and planetary transits to help visualize alignment, simulate future scenarios, and guide conscious growth."
@@ -48,8 +128,8 @@
       "description": "Track your daily actions, understand their karmic impact, and build positive karma consciously."
     },
     "cosmicGuidance": {
-      "title": "Cosmic Guidance",
-      "description": "Receive personalized insights based on your Kundli to navigate life with clarity and purpose."
+      "title": "AI Cosmic Guidance",
+      "description": "Chart-native AI insights—timing, themes, and next steps grounded in your houses, lords, and dasha windows."
     }
   },
   "kundli": {
@@ -61,7 +141,8 @@
       "tob": "Time of Birth",
       "place": "Place of Birth",
       "submit": "Generate Kundli",
-      "generating": "Generating..."
+      "generating": "Generating...",
+      "placeHint": "Select your birth city from the suggestions so we can lock coordinates and timezone—best accuracy for your chart."
     },
     "results": {
       "title": "Kundli Results",
@@ -238,6 +319,31 @@
       "recommendations": "Recommendations",
       "weeklyChange": "Weekly Change",
       "addMoreKarma": "Add More Karma"
+    }
+  },
+  "aboutPage": {
+    "founder": {
+      "eyebrow": "From the founders",
+      "sectionTitle": "Why iBhakt exists",
+      "intro": "Prachi Surve and Rahul Gudadhe built iBhakt to bridge authentic Vedic insight and thoughtful technology—so seekers get depth, dignity, and practical guidance in one place.",
+      "prachi": {
+        "name": "Prachi Surve",
+        "role": "Co-founder",
+        "bio": "Shapes product vision and user trust—ensuring classical wisdom shows up clearly and respectfully in every experience.",
+        "photoAlt": "Prachi Surve, co-founder of iBhakt",
+        "initials": "PS"
+      },
+      "rahul": {
+        "name": "Rahul Gudadhe",
+        "role": "Co-founder",
+        "bio": "Leads technical direction and responsible AI—keeping the platform rigorous, transparent, and aligned with ethical use.",
+        "photoAlt": "Rahul Gudadhe, co-founder of iBhakt",
+        "initials": "RG"
+      },
+      "whyTitle": "Why iBhakt was created",
+      "whyBody": "Many people feel spiritual tools are either frozen in the past or reduced to shallow apps. We wanted a space where Kundli logic, manifestation practice, and karmic reflection could exist in one deliberate flow—powered by AI that respects scripture-informed reasoning and invites ethical, grounded use.",
+      "visionTitle": "Vision of a spiritual AI future",
+      "visionBody": "We imagine AI as a humble assistant to human wisdom: surfacing timing, patterns, and self-awareness while you stay in the driver’s seat. The long-term vision is a companion that helps you align intention with action, honor your lineage, and grow with transparency—never with fear, hype, or dependency."
     }
   }
 }

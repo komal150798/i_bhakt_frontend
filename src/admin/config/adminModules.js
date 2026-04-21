@@ -104,6 +104,15 @@ export const adminModules = [
     order: 40,
     category: 'content',
   },
+  {
+    id: 'testimonials',
+    label: 'Testimonials',
+    icon: 'bi-chat-quote',
+    path: 'testimonials',
+    permission: null,
+    order: 41,
+    category: 'content',
+  },
   
   // Master Data
   {

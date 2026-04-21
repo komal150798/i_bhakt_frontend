@@ -1,20 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
+import HomeCtaPair from '../HomeCtaPair/HomeCtaPair';
 import styles from './HeroCarousel.module.css';
 
 const SLIDES = [
   {
     id: 1,
-    titleKey: 'home.heroTitle2',
-    subtitleKey: 'home.heroSubtitle2',
-    buttons: [{ labelKey: 'home.startManifesting', link: '/manifestations' }],
+    titleKey: 'home.heroSlide1Title',
+    subtitleKey: 'home.heroSlide1Subtitle',
   },
   {
     id: 2,
-    titleKey: 'home.heroTitle3',
-    subtitleKey: 'home.heroSubtitle3',
-    buttons: [{ labelKey: 'home.trackKarma', link: '/karma' }],
+    titleKey: 'home.heroSlide2Title',
+    subtitleKey: 'home.heroSlide2Subtitle',
+  },
+  {
+    id: 3,
+    titleKey: 'home.heroSlide3Title',
+    subtitleKey: 'home.heroSlide3Subtitle',
   },
 ];
 
@@ -72,17 +75,7 @@ function HeroCarousel() {
                 <p className={`lead mb-5 ${styles.subtitle}`}>
                   {t(slide.subtitleKey)}
                 </p>
-                <div className={styles.ctaRow}>
-                  {slide.buttons.map((button, btnIndex) => (
-                    <Link
-                      key={btnIndex}
-                      to={button.link}
-                      className="btn btn-cosmic btn-lg rounded-pill px-5"
-                    >
-                      {t(button.labelKey)}
-                    </Link>
-                  ))}
-                </div>
+                <HomeCtaPair className={styles.ctaRow} />
               </div>
             </div>
           </div>

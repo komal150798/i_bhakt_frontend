@@ -1,0 +1,101 @@
+.section {
+  position: relative;
+  background: linear-gradient(180deg, rgba(6, 13, 24, 0.55) 0%, var(--bg-color) 100%);
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: min(90%, 720px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.35), transparent);
+  pointer-events: none;
+}
+
+.subtitle {
+  max-width: 32rem;
+  color: var(--muted-text-color);
+  font-size: 1.05rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+@media (min-width: 992px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 575px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  border-radius: var(--card-radius);
+  background: linear-gradient(160deg, rgba(15, 31, 54, 0.92) 0%, rgba(10, 22, 40, 0.88) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    border-color: rgba(201, 168, 76, 0.4);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    transform: translateY(-4px);
+  }
+}
+
+.iconRing {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto var(--spacing-lg);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, rgba(201, 168, 76, 0.25) 0%, rgba(26, 74, 90, 0.4) 70%);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+}
+
+.icon {
+  font-size: 1.65rem;
+  color: var(--primary-soft);
+}
+
+.cardTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-sm);
+  letter-spacing: 0.02em;
+}
+
+.cardText {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted-text-color);
+}
+
+[data-theme='light'] .card {
+  background: var(--bg-elevated);
+  border-color: rgba(10, 22, 40, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}

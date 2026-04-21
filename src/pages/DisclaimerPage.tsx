@@ -13,101 +13,74 @@ const DisclaimerPage: React.FC = () => {
           <div className="col-lg-10">
             <div className="text-center mb-5" data-aos="fade-up">
               <h1 className="page-hero-heading fw-bold mb-4">Disclaimer</h1>
-              <p className="text-muted">Last updated: {new Date().toLocaleDateString()}</p>
+              <p className="lead page-hero-subtitle">
+                Important limitations on how to use <span className="brand-mark">iBhakt</span>—astrology-inspired software,
+                not a substitute for professional judgment.
+              </p>
+              <p className="small mb-0" style={{ color: 'var(--text-secondary)' }}>
+                Last updated: {new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
             </div>
 
             <div className="cosmic-card" data-aos="fade-up">
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. Nature of Services</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. Nature of the service</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  iBhakt provides astrological services, spiritual guidance, and manifestation tools based on 
-                  traditional Vedic astrology principles. Our services are intended for:
+                  iBhakt provides software-based experiences grounded in classical Vedic chart logic, user-provided birth
+                  data, and—where indicated—AI-assisted language and suggestions. Outputs are intended for{' '}
+                  <strong style={{ color: 'var(--text-color)' }}>reflection, education, and spiritual exploration</strong>,
+                  not as commands or guarantees about the future.
                 </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Entertainment and personal reflection</li>
-                  <li>Spiritual guidance and self-awareness</li>
-                  <li>Cultural and traditional reference</li>
-                  <li>Complementary insights to your decision-making process</li>
-                </ul>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">2. Not Professional Advice</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">2. Not professional advice</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  <strong>Important:</strong> Astrological readings and guidance provided by iBhakt are not substitutes 
-                  for professional advice. You should NOT:
+                  Nothing on iBhakt is medical, legal, financial, or psychological advice. Do not delay or disregard
+                  professional care because of something you read in a chart, manifestation summary, or karma insight.
                 </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Make medical decisions based on astrological information</li>
-                  <li>Make financial investments solely on astrological predictions</li>
-                  <li>Make legal decisions without consulting qualified professionals</li>
-                  <li>Ignore professional medical, legal, or financial advice</li>
-                </ul>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">3. No Guarantees</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">3. AI and software limitations</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  We do not guarantee:
+                  Where features use AI, responses may be incomplete, approximate, or unsuitable for your situation. Models
+                  do not “know” you the way a human practitioner can. Automated text may occasionally be inaccurate or
+                  misphrased; always cross-check important life decisions with qualified people you trust.
                 </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Accuracy of astrological predictions or outcomes</li>
-                  <li>Results from following our guidance or recommendations</li>
-                  <li>Manifestation of desires based on our analysis</li>
-                  <li>Any specific outcomes from using our services</li>
-                </ul>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">4. Personal Responsibility</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">4. Chart accuracy and inputs</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  You are solely responsible for:
+                  Kundli and timing calculations depend on the accuracy of date, time, and place of birth you enter, the
+                  ephemeris and rules we implement, and interpretive choices common in Jyotish traditions. Different
+                  schools or human astrologers may reasonably disagree; iBhakt cannot represent every tradition at once.
                 </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Decisions made based on our services</li>
-                  <li>Actions taken after receiving guidance</li>
-                  <li>Interpreting astrological information</li>
-                  <li>Seeking appropriate professional advice when needed</li>
-                </ul>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">5. Calculation Accuracy</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">5. No outcome guarantees</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  While we use established Vedic astrology calculations and algorithms, results depend on:
+                  We do not promise results from rituals, intentions, karma logs, or any guidance shown in the app.
+                  Individual effort, context, and factors outside our control always apply.
                 </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Accuracy of birth details provided by you</li>
-                  <li>Different schools of thought in astrology</li>
-                  <li>Interpretation methods and traditions</li>
-                  <li>Complexity of astrological calculations</li>
-                </ul>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">6. Third-Party Services</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">6. Third parties</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  Our platform may contain links to third-party services or websites. We are not responsible for:
+                  Links, logins, or payments may involve third-party sites or processors. Their terms and privacy policies
+                  govern those interactions. iBhakt is not responsible for content on external websites.
                 </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>Content or accuracy of third-party websites</li>
-                  <li>Services provided by third parties</li>
-                  <li>Privacy practices of external sites</li>
-                  <li>Any issues arising from third-party interactions</li>
-                </ul>
               </section>
 
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">7. Technology Limitations</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">7. Availability</h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  While we strive for accuracy, our platform:
+                  The platform may be unavailable during maintenance or outages. We strive for reliability but do not
+                  warrant uninterrupted access.
                 </p>
-                <ul style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                  <li>May experience technical interruptions</li>
-                  <li>Uses automated calculations that may have limitations</li>
-                  <li>Cannot account for all variables in astrological analysis</li>
-                  <li>May require periodic updates and maintenance</li>
-                </ul>
               </section>
 
               <section>
@@ -122,11 +95,11 @@ const DisclaimerPage: React.FC = () => {
                 >
                   <h5 className="alert-heading legal-subhead">
                     <i className="bi bi-exclamation-triangle-fill me-2" style={{ color: 'var(--primary-color)' }}></i>
-                    Final Notice
+                    Your responsibility
                   </h5>
                   <p className="mb-0" style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                    By using iBhakt services, you acknowledge that you have read, understood, and agree to this 
-                    disclaimer. Use our services at your own discretion and judgment.
+                    By using iBhakt you confirm you have read this disclaimer and our Terms of Use. You use the product at
+                    your own discretion and remain responsible for decisions you make in real life.
                   </p>
                 </div>
               </section>
@@ -139,10 +112,3 @@ const DisclaimerPage: React.FC = () => {
 };
 
 export default DisclaimerPage;
-
-
-
-
-
-
-

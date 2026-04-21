@@ -232,7 +232,7 @@ function KundliForm() {
                         </label>
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control cosmic-input"
                           id="fullName"
                           name="fullName"
                           value={formData.fullName}
@@ -246,7 +246,7 @@ function KundliForm() {
                         </label>
                         <input
                           type="date"
-                          className="form-control"
+                          className="form-control cosmic-input"
                           id="dateOfBirth"
                           name="dateOfBirth"
                           value={formData.dateOfBirth}
@@ -260,7 +260,7 @@ function KundliForm() {
                         </label>
                         <input
                           type="time"
-                          className="form-control"
+                          className="form-control cosmic-input"
                           id="timeOfBirth"
                           name="timeOfBirth"
                           value={formData.timeOfBirth}
@@ -279,9 +279,12 @@ function KundliForm() {
                           onChange={handleLocationChange}
                           onLocationSelect={handleLocationSelect}
                           placeholder={t('kundli.form.placePlaceholder') || 'Search city, state...'}
-                          inputClassName="form-control"
+                          inputClassName="form-control cosmic-input"
                           required
                         />
+                        <p className="small mt-2 mb-0" style={{ color: 'var(--muted-text-color)' }}>
+                          {t('kundli.form.placeHint')}
+                        </p>
                         {formData.latitude && formData.longitude && (
                           <small className="text-muted mt-1 d-block">
                             <i className="bi bi-geo-alt-fill me-1"></i>
@@ -291,7 +294,7 @@ function KundliForm() {
                       </div>
                       <button
                         type="submit"
-                        className="btn btn-primary w-100"
+                        className="btn btn-cosmic w-100 btn-lg rounded-pill mt-2"
                         disabled={isLoading}
                       >
                         {isLoading ? (
