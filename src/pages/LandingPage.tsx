@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import LocationAutocomplete from '../components/common/LocationAutocomplete';
-import AOS from 'aos';
+import { refreshAos } from '../common/utils/refreshAos';
 
 type FormState = {
   fullName: string;
@@ -47,7 +47,7 @@ const LandingPage: React.FC = () => {
   const { t } = useLanguage();
 
   useEffect(() => {
-    AOS.refresh();
+    refreshAos();
   }, [mode]);
 
   const handleSendOtp = async () => {

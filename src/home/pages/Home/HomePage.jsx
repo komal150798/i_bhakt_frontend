@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import AOS from 'aos';
+import { refreshAos } from '../../../common/utils/refreshAos';
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
 import TrustStrip from '../../components/TrustStrip/TrustStrip';
 import AIManifestBlock from '../../components/AIManifestBlock/AIManifestBlock';
@@ -16,16 +16,8 @@ const SITE_URL = 'https://ibhakt.com';
 
 function HomePage() {
   useEffect(() => {
-    document.title = 'iBhakt — AI Manifestation & Vedic Kundli Platform';
     const desc =
       'Premium AI-powered manifestation aligned to your Vedic birth chart. Free Kundli calculator, karma tracking, and cosmic guidance.';
-    let meta = document.querySelector('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'description');
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute('content', desc);
 
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -48,7 +40,7 @@ function HomePage() {
       ],
     });
     document.head.appendChild(script);
-    requestAnimationFrame(() => AOS.refresh());
+    requestAnimationFrame(() => refreshAos());
     return () => {
       script.remove();
     };

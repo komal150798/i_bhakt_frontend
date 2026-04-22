@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import AOS from 'aos';
 import { useTranslation } from '../common/hooks/useTranslation.js';
+import { refreshAos } from '../common/utils/refreshAos';
 import { textWithBrandMark } from '../common/utils/textWithBrandMark';
 import styles from './AboutPage.module.css';
 
@@ -34,7 +34,7 @@ const AboutPage: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    AOS.refresh();
+    refreshAos();
   }, []);
 
   return (

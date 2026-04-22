@@ -1,14 +1,15 @@
-import HomePage from '../pages/Home/HomePage';
-import KundliPage from '../pages/KundliPage/KundliPage';
-import HoroscopePage from '../pages/HoroscopePage/HoroscopePage';
-import KarmaPage from '../pages/KarmaPage/KarmaPage';
-import KarmaDashboardPage from '../pages/KarmaDashboard/KarmaDashboardPage';
-import LoginPage from '../pages/LoginPage/LoginPage';
-import SignupPage from '../pages/SignupPage/SignupPage';
-import ReferPage from '../pages/ReferPage/ReferPage';
-import ProfilePage from '../pages/ProfilePage/ProfilePage';
-// Use the correct ManifestationPage with Dashboard (not the form screen)
-import ManifestationPage from '../../pages/ManifestationPage';
+import { lazy } from 'react';
+
+const HomePage = lazy(() => import('../pages/Home/HomePage'));
+const KundliPage = lazy(() => import('../pages/KundliPage/KundliPage'));
+const HoroscopePage = lazy(() => import('../pages/HoroscopePage/HoroscopePage'));
+const KarmaPage = lazy(() => import('../pages/KarmaPage/KarmaPage'));
+const KarmaDashboardPage = lazy(() => import('../pages/KarmaDashboard/KarmaDashboardPage'));
+const LoginPage = lazy(() => import('../pages/LoginPage/LoginPage'));
+const SignupPage = lazy(() => import('../pages/SignupPage/SignupPage'));
+const ReferPage = lazy(() => import('../pages/ReferPage/ReferPage'));
+const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
+const ManifestationPage = lazy(() => import('../../pages/ManifestationPage'));
 
 export const homeRoutes = [
   {

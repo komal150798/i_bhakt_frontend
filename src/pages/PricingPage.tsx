@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AOS from 'aos';
 import { useLanguage } from '../context/LanguageContext';
+import { refreshAos } from '../common/utils/refreshAos';
 
 const PricingPage: React.FC = () => {
   const { t } = useLanguage();
 
   useEffect(() => {
-    AOS.refresh();
+    refreshAos();
   }, []);
 
   const plans = [

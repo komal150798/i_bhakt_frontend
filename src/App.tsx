@@ -1,8 +1,7 @@
-import React, { lazy, Suspense, useEffect } from 'react'
+import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
+import { pathNeedsAos } from './common/utils/aosRouteBootstrap'
 // variables.css loaded via index.css before design-system
 import './styles/globals.css'
 import './styles/bootstrap-overrides.css'
@@ -16,6 +15,7 @@ import { ToastProvider } from './common/components/Toast/ToastProvider'
 
 // Layouts
 import HomeLayout from './home/layout/HomeLayout'
+import { RouteSeo } from './common/seo/RouteSeo'
 
 // Home pages (loaded via homeRoutes)
 import { homeRoutes } from './home/routes/homeRoutes'
@@ -63,20 +63,41 @@ function AdminProtectedRoute({ children }: { children: React.ReactElement }) {
 }
 
 const AppContentInner: React.FC = () => {
+	const { pathname } = useLocation()
+	const aosInitializedRef = useRef(false)
+
 	useEffect(() => {
-		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-		AOS.init({
-			duration: reduceMotion ? 0 : 800,
-			easing: 'ease-in-out',
-			once: true,
-			offset: 100,
-			disable: reduceMotion,
-		})
-	}, [])
+		if (!pathNeedsAos(pathname)) return
+		let cancelled = false
+		void (async () => {
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+			const [{ default: AOS }] = await Promise.all([import('aos'), import('aos/dist/aos.css')])
+			if (cancelled) return
+			if (!aosInitializedRef.current) {
+				AOS.init({
+					duration: reduceMotion ? 0 : 800,
+					easing: 'ease-in-out',
+					once: true,
+					offset: 100,
+					disable: reduceMotion,
+				})
+				aosInitializedRef.current = true
+			} else {
+				AOS.refresh()
+			}
+			requestAnimationFrame(() => {
+				if (!cancelled) AOS.refresh()
+			})
+		})()
+		return () => {
+			cancelled = true
+		}
+	}, [pathname])
 
 	return (
 		<>
 			<ScrollToTop />
+			<RouteSeo />
 			<Suspense fallback={<RouteFallback />}>
 			<Routes>
 				{/* Admin Login */}

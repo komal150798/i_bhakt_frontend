@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import AOS from 'aos';
 import { textWithBrandMark } from '../common/utils/textWithBrandMark';
+import { refreshAos } from '../common/utils/refreshAos';
 
 const RefundPolicyPage: React.FC = () => {
   useEffect(() => {
-    AOS.refresh();
+    refreshAos();
   }, []);
 
   return (

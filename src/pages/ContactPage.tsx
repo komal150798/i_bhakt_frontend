@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AOS from 'aos';
+import { refreshAos } from '../common/utils/refreshAos';
 import styles from './ContactPage.module.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
@@ -91,7 +91,7 @@ const ContactPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    AOS.refresh();
+    refreshAos();
   }, []);
 
   const handleChange = (field: FieldKey, value: string) => {

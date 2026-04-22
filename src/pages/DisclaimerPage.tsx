@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import AOS from 'aos';
+import { refreshAos } from '../common/utils/refreshAos';
 
 const DisclaimerPage: React.FC = () => {
   useEffect(() => {
-    AOS.refresh();
+    refreshAos();
   }, []);
 
   return (
