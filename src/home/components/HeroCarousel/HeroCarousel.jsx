@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
-import HomeCtaPair from '../HomeCtaPair/HomeCtaPair';
+import HomeCtaPair, { BTN_PRIMARY } from '../HomeCtaPair/HomeCtaPair';
 import styles from './HeroCarousel.module.css';
 
 const SLIDES = [
@@ -75,7 +75,10 @@ function HeroCarousel() {
                 <p className={`lead mb-5 ${styles.subtitle}`}>
                   {t(slide.subtitleKey)}
                 </p>
-                <HomeCtaPair className={styles.ctaRow} />
+                <HomeCtaPair
+                  className={styles.ctaRow}
+                  secondaryClassName={BTN_PRIMARY}
+                />
               </div>
             </div>
           </div>

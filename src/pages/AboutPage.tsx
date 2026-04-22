@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import { useTranslation } from '../common/hooks/useTranslation.js';
+import { textWithBrandMark } from '../common/utils/textWithBrandMark';
 import styles from './AboutPage.module.css';
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
@@ -60,7 +61,7 @@ const AboutPage: React.FC = () => {
             >
               <p className={styles.founderEyebrow}>{t('aboutPage.founder.eyebrow')}</p>
               <h2 id="founder-section-title" className={`page-hero-heading page-hero-heading--compact fw-bold text-center ${styles.founderTitle}`}>
-                {t('aboutPage.founder.sectionTitle')}
+                {textWithBrandMark(t('aboutPage.founder.sectionTitle'))}
               </h2>
               <p className={styles.founderIntro}>{t('aboutPage.founder.intro')}</p>
               <div className="row g-4 justify-content-center mb-2">
@@ -94,7 +95,7 @@ const AboutPage: React.FC = () => {
                   <div className={styles.callout}>
                     <h4 className={styles.calloutTitle}>
                       <i className="bi bi-stars" aria-hidden />
-                      {t('aboutPage.founder.whyTitle')}
+                      {textWithBrandMark(t('aboutPage.founder.whyTitle'))}
                     </h4>
                     <p className={styles.calloutBody}>{t('aboutPage.founder.whyBody')}</p>
                   </div>

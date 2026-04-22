@@ -131,25 +131,82 @@
 :root[data-theme="admin-light"] {
   --admin-bg: #f4f5f8;
   --admin-bg-elevated: #ffffff;
+  --admin-surface: #ffffff;
   --admin-sidebar-bg: var(--brand-navy);
   --admin-header-bg: #ffffff;
   --admin-text: var(--brand-navy);
   --admin-text-muted: #5c6a7d;
+  --admin-label: #0f172a;
+  /* Navy sidebar: always light copy (do not use --admin-text here) */
+  --admin-sidebar-text: #f1f5f9;
+  --admin-sidebar-text-muted: #94a3b8;
+  --admin-sidebar-border: rgba(148, 163, 184, 0.28);
   --admin-primary: var(--brand-gold);
   --admin-accent: var(--brand-teal);
   --admin-border: #e2e6ed;
   --admin-hover: #eef1f6;
+  /* variables.css — forms, cards, tables */
+  --text-color: var(--admin-text);
+  --muted-text-color: var(--admin-text-muted);
+  --bg-color: var(--admin-bg);
+  --bg-elevated: var(--admin-bg-elevated);
+  --border-color: var(--admin-border);
+  --text-inverse: #0a1628;
+  --primary-color: var(--brand-gold);
+  --primary-soft: #dcc685;
+  --primary-dark: #9d823c;
+  /* design-system.css + body — keep in sync while on admin routes */
+  --text-primary: var(--admin-text);
+  --text-secondary: var(--admin-text-muted);
+  --text-muted: #7a8a9e;
+  --bg-primary: var(--admin-bg);
+  --bg-secondary: var(--admin-hover);
+  --bg-tertiary: #e2e6ed;
+  --card-bg: var(--admin-bg-elevated);
+  --card-border: var(--admin-border);
+  --input-bg: var(--admin-bg-elevated);
+  --input-border: var(--admin-border);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 16px 32px rgba(15, 23, 42, 0.14);
 }
 
 :root[data-theme="admin-dark"] {
   --admin-bg: #060d18;
   --admin-bg-elevated: #0f1f36;
+  --admin-surface: #0f1f36;
   --admin-sidebar-bg: var(--brand-navy);
   --admin-header-bg: #0f1f36;
   --admin-text: #f1f5f9;
   --admin-text-muted: #94a3b8;
+  --admin-label: #e2e8f0;
+  --admin-sidebar-text: #f1f5f9;
+  --admin-sidebar-text-muted: #94a3b8;
+  --admin-sidebar-border: rgba(148, 163, 184, 0.22);
   --admin-primary: var(--brand-gold);
   --admin-accent: #3d7a8c;
   --admin-border: #1f3550;
   --admin-hover: #152a45;
+  --text-color: var(--admin-text);
+  --muted-text-color: var(--admin-text-muted);
+  --bg-color: var(--admin-bg);
+  --bg-elevated: var(--admin-bg-elevated);
+  --border-color: var(--admin-border);
+  --text-inverse: #0a1628;
+  --primary-color: var(--brand-gold);
+  --primary-soft: #dcc685;
+  --primary-dark: #9d823c;
+  --text-primary: var(--admin-text);
+  --text-secondary: var(--admin-text-muted);
+  --text-muted: #64748b;
+  --bg-primary: var(--admin-bg);
+  --bg-secondary: var(--admin-bg-elevated);
+  --bg-tertiary: var(--admin-hover);
+  --card-bg: var(--admin-bg-elevated);
+  --card-border: var(--admin-border);
+  --input-bg: var(--admin-bg-elevated);
+  --input-border: var(--admin-border);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
 }

@@ -4,6 +4,7 @@ import styles from './AIManifestBlock.module.css';
 
 function AIManifestBlock() {
   const { t } = useLanguage();
+  const ctaBtn = `btn btn-cosmic rounded-pill ${styles.cardCtaBtn}`;
 
   return (
     <section className={styles.section} data-aos="fade-up">
@@ -28,8 +29,8 @@ function AIManifestBlock() {
               <p className={styles.cardText}>{t('landingAi.cardBody')}</p>
               <HomeCtaPair
                 className={styles.cardActions}
-                primaryClassName={`btn btn-cosmic rounded-pill ${styles.cardCtaBtn}`}
-                secondaryClassName={`btn btn-cosmic-outline rounded-pill ${styles.cardCtaBtn}`}
+                primaryClassName={ctaBtn}
+                secondaryClassName={ctaBtn}
               />
               <p className={styles.cardFoot}>{t('landingAi.cardFoot')}</p>
             </div>

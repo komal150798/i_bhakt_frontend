@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
+import { textWithBrandMark } from '../common/utils/textWithBrandMark';
 
 const RefundPolicyPage: React.FC = () => {
   useEffect(() => {
@@ -14,7 +15,9 @@ const RefundPolicyPage: React.FC = () => {
             <div className="text-center mb-5" data-aos="fade-up">
               <h1 className="page-hero-heading fw-bold mb-4">Refund &amp; Cancellation Policy</h1>
               <p className="lead page-hero-subtitle">
-                How refunds, cancellations, and billing work for iBhakt subscriptions and paid features.
+                {textWithBrandMark(
+                  'How refunds, cancellations, and billing work for iBhakt subscriptions and paid features.',
+                )}
               </p>
               <p className="small mb-0" style={{ color: 'var(--text-secondary)' }}>
                 Last updated: {new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -23,12 +26,13 @@ const RefundPolicyPage: React.FC = () => {
 
             <div className="cosmic-card" data-aos="fade-up">
               <section className="mb-5">
-                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">1. About iBhakt</h2>
+                <h2 className="page-hero-heading page-hero-heading--compact fw-bold mb-3">
+                  {textWithBrandMark('1. About iBhakt')}
+                </h2>
                 <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                  <span className="brand-mark">iBhakt</span> is a digital platform for Vedic-aligned tools—including Kundli
-                  generation, AI-assisted manifestation sessions, karma logging, and related insights. This policy applies
-                  to fees paid through the iBhakt website or app for subscriptions and one-time or add-on digital
-                  services, subject to the law and the terms shown at checkout.
+                  {textWithBrandMark(
+                    'iBhakt is a digital platform for Vedic-aligned tools—including Kundli generation, AI-assisted manifestation sessions, karma logging, and related insights. This policy applies to fees paid through the iBhakt website or app for subscriptions and one-time or add-on digital services, subject to the law and the terms shown at checkout.',
+                  )}
                 </p>
               </section>
 

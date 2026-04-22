@@ -5,7 +5,7 @@
   height: 100vh;
   width: 260px;
   background: var(--admin-sidebar-bg, #0f172a);
-  border-right: 1px solid var(--admin-border, #334155);
+  border-right: 1px solid var(--admin-sidebar-border, rgba(148, 163, 184, 0.25));
   display: flex;
   flex-direction: column;
   transition: var(--transition-base, 300ms ease);
@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--admin-border, #334155);
+  border-bottom: 1px solid var(--admin-sidebar-border, rgba(148, 163, 184, 0.25));
   min-height: var(--header-height, 72px);
 }
 
@@ -48,7 +48,7 @@
 .collapseToggle {
   background: none;
   border: none;
-  color: var(--admin-text-muted, #9ca3af);
+  color: var(--admin-sidebar-text-muted, #94a3b8);
   font-size: 1rem;
   cursor: pointer;
   padding: var(--spacing-xs, 0.25rem);
@@ -57,7 +57,7 @@
 }
 
 .collapseToggle:hover {
-  color: var(--admin-text, #e5e7eb);
+  color: var(--admin-sidebar-text, #f1f5f9);
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -78,7 +78,7 @@
   align-items: center;
   gap: var(--spacing-md, 1rem);
   padding: var(--spacing-md, 1rem) var(--spacing-lg, 1.5rem);
-  color: var(--admin-text-muted, #9ca3af);
+  color: var(--admin-sidebar-text-muted, #94a3b8);
   text-decoration: none;
   transition: var(--transition-base, 300ms ease);
   border-left: 3px solid transparent;
@@ -86,7 +86,7 @@
 
 .menuItem:hover {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--admin-text, #e5e7eb);
+  color: var(--admin-sidebar-text, #f1f5f9);
 }
 
 .menuItem.active {
@@ -112,7 +112,7 @@
 
 .sidebarFooter {
   padding: var(--spacing-md, 1rem) var(--spacing-lg, 1.5rem);
-  border-top: 1px solid var(--admin-border, #334155);
+  border-top: 1px solid var(--admin-sidebar-border, rgba(148, 163, 184, 0.25));
 }
 
 .profileLink {
@@ -120,7 +120,7 @@
   align-items: center;
   gap: var(--spacing-md, 1rem);
   padding: var(--spacing-sm, 0.5rem);
-  color: var(--admin-text-muted, #9ca3af);
+  color: var(--admin-sidebar-text-muted, #94a3b8);
   text-decoration: none;
   border-radius: var(--button-radius, 12px);
   transition: var(--transition-base, 300ms ease);
@@ -128,7 +128,7 @@
 
 .profileLink:hover {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--admin-text, #e5e7eb);
+  color: var(--admin-sidebar-text, #f1f5f9);
 }
 
 .profileLink i {

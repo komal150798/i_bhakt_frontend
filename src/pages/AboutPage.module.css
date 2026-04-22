@@ -10,7 +10,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--primary-color, var(--soft-gold, #c9a84c));
   margin-bottom: 0.5rem;
 }

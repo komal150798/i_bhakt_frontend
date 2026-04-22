@@ -68,6 +68,17 @@
   color: var(--text-color);
 }
 
+/* Admin area only: labels/checkbox copy use admin label tone (html data-theme is admin-light | admin-dark) */
+:root[data-theme^='admin-'] .form-label,
+:root[data-theme^='admin-'] .col-form-label {
+  color: var(--admin-label, var(--admin-text, var(--text-color)));
+  font-weight: 600;
+}
+
+:root[data-theme^='admin-'] .form-check-label {
+  color: var(--admin-label, var(--admin-text, var(--text-color)));
+}
+
 /* Form Controls */
 .form-control,
 .form-select {
@@ -139,10 +150,48 @@
   background-color: var(--bg-color);
 }
 
+/* Admin shell — tables, add-ons (only when html data-theme is admin-light | admin-dark) */
+:root[data-theme^='admin-'] .table > :not(caption) > * > * {
+  background-color: transparent;
+  border-bottom-color: var(--border-color);
+  color: var(--text-color);
+}
+
+:root[data-theme^='admin-'] .table thead th {
+  color: var(--admin-label, var(--text-color));
+  font-weight: 600;
+}
+
+:root[data-theme^='admin-'] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: var(--bg-color);
+  color: var(--text-color);
+}
+
+:root[data-theme^='admin-'] .table-hover > tbody > tr:hover > * {
+  --bs-table-accent-bg: var(--admin-hover);
+  color: var(--text-color);
+}
+
+:root[data-theme^='admin-'] .input-group-text {
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+  color: var(--muted-text-color);
+}
+
+:root[data-theme^='admin-'] .list-group-item {
+  background-color: var(--bg-elevated);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+:root[data-theme^='admin-'] .form-control:focus,
+:root[data-theme^='admin-'] .form-select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(201, 168, 76, 0.22);
+}
+
 /* Cosmic marketing pages — hero line under title (Bootstrap text-muted can stay too dark / wrong token) */
 .cosmic-bg p.lead,
 .cosmic-bg p.lead.text-muted {
   color: var(--text-secondary) !important;
   -webkit-text-fill-color: var(--text-secondary) !important;
 }
-

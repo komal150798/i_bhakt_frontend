@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
 
-const BTN_PRIMARY = 'btn btn-cosmic btn-lg rounded-pill px-4 px-md-5';
+export const BTN_PRIMARY = 'btn btn-cosmic btn-lg rounded-pill px-4 px-md-5';
 const BTN_SECONDARY = 'btn btn-cosmic-outline btn-lg rounded-pill px-4 px-md-5';
 
 /**

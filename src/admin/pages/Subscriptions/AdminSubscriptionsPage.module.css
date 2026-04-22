@@ -1,7 +1,7 @@
 .pageContainer {
   padding: 24px;
-  background: #f8fafc;
-  min-height: 100vh;
+  background: var(--admin-bg, #f4f5f8);
+  min-height: 100%;
 }
 
 .header {
@@ -14,23 +14,23 @@
 .header h1 {
   font-size: 24px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--admin-text, #0a1628);
   margin: 0;
 }
 
 .addButton {
   padding: 10px 20px;
-  background: #3b82f6;
-  color: #fff;
+  background: var(--primary-color, var(--brand-gold, #c9a84c));
+  color: var(--text-inverse, #0a1628);
   border: none;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, opacity 0.2s;
 }
 
 .addButton:hover {
-  background: #2563eb;
+  opacity: 0.92;
 }
 
 .filters {
@@ -44,17 +44,20 @@
   flex: 1;
   min-width: 200px;
   padding: 10px 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--admin-border, #e2e6ed);
   border-radius: 6px;
   font-size: 14px;
+  background: var(--admin-bg-elevated, #fff);
+  color: var(--admin-text, #0a1628);
 }
 
 .filterSelect {
   padding: 10px 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--admin-border, #e2e6ed);
   border-radius: 6px;
   font-size: 14px;
-  background: #fff;
+  background: var(--admin-bg-elevated, #fff);
+  color: var(--admin-text, #0a1628);
   cursor: pointer;
 }
 
@@ -72,20 +75,22 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--admin-bg-elevated, #fff);
+  border: 1px solid var(--admin-border, #e2e6ed);
   border-radius: 8px;
   padding: 24px;
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  color: var(--admin-text, #0a1628);
 }
 
 .modal h2 {
   margin: 0 0 20px 0;
   font-size: 20px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--admin-text, #0a1628);
 }
 
 .formGroup {
@@ -96,7 +101,7 @@
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
-  color: #475569;
+  color: var(--admin-label, var(--admin-text-muted, #5c6a7d));
   font-size: 14px;
 }
 
@@ -106,9 +111,11 @@
 .formGroup select {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--admin-border, #e2e6ed);
   border-radius: 6px;
   font-size: 14px;
+  background: var(--admin-bg-elevated, #fff);
+  color: var(--admin-text, #0a1628);
 }
 
 .formGroup input[type="checkbox"] {
@@ -118,7 +125,7 @@
 .formGroup small {
   display: block;
   margin-top: 4px;
-  color: #64748b;
+  color: var(--admin-text-muted, #64748b);
   font-size: 12px;
 }
 
@@ -131,8 +138,8 @@
 
 .saveButton {
   padding: 10px 20px;
-  background: #3b82f6;
-  color: #fff;
+  background: var(--primary-color, var(--brand-gold, #c9a84c));
+  color: var(--text-inverse, #0a1628);
   border: none;
   border-radius: 6px;
   font-weight: 600;
@@ -140,21 +147,19 @@
 }
 
 .saveButton:hover {
-  background: #2563eb;
+  opacity: 0.92;
 }
 
 .cancelButton {
   padding: 10px 20px;
-  background: #e2e8f0;
-  color: #475569;
-  border: none;
+  background: var(--admin-hover, #eef1f6);
+  color: var(--admin-text, #0a1628);
+  border: 1px solid var(--admin-border, #e2e6ed);
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .cancelButton:hover {
-  background: #cbd5e1;
+  filter: brightness(0.97);
 }
-
-
