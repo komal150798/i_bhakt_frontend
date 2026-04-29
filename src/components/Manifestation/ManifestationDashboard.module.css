@@ -27,6 +27,35 @@
   font-weight: 400;
 }
 
+.planInfo {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.planPill,
+.usagePill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.planPill {
+  background: rgba(251, 191, 36, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  color: #fcd34d;
+}
+
+.usagePill {
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  color: #cbd5e1;
+}
+
 .createButton {
   display: flex;
   align-items: center;
@@ -49,6 +78,94 @@
   background: linear-gradient(135deg, rgba(251, 191, 36, 1), rgba(249, 115, 22, 1));
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(251, 191, 36, 0.6);
+}
+
+.createButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: grayscale(0.2);
+}
+
+.upgradeCard {
+  margin-bottom: 24px;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.92));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.upgradeCardLeft {
+  flex: 1;
+}
+
+.upgradeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fcd34d;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  background: rgba(251, 191, 36, 0.12);
+  margin-bottom: 10px;
+}
+
+.upgradeTitle {
+  margin: 0 0 6px 0;
+  font-size: 22px;
+  color: #f8fafc;
+}
+
+.upgradeSubtitle {
+  margin: 0 0 12px 0;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.upgradeFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.upgradeFeatures span {
+  font-size: 12px;
+  color: #f1f5f9;
+  background: rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+
+.upgradeCta {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #0f172a;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 1), rgba(249, 115, 22, 0.95));
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.35);
+}
+
+.upgradeCta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(251, 191, 36, 0.45);
 }
 
 .createButtonIcon {
@@ -424,6 +541,26 @@
   transform: translateX(4px);
 }
 
+.accordionToggle {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(251, 191, 36, 0.1);
+  color: #fcd34d;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.accordionToggle:hover {
+  background: rgba(251, 191, 36, 0.2);
+}
+
 .cardMetrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -477,6 +614,133 @@
   gap: 12px;
   position: relative;
   z-index: 2;
+}
+
+.accordionContent {
+  margin-top: 16px;
+  border-top: 1px solid rgba(148, 163, 184, 0.24);
+  padding-top: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.addSubEntryBox {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.subEntryDateInput,
+.subEntryTextInput {
+  width: 100%;
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  color: #f8fafc;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.subEntryTextInput {
+  resize: vertical;
+  min-height: 64px;
+}
+
+.addSubEntryButton {
+  width: fit-content;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(124, 58, 237, 0.9));
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.addSubEntryButton:hover {
+  transform: translateY(-1px);
+}
+
+.addSubEntryButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.accordionLoading,
+.accordionEmpty {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.accordionSection h5 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #cbd5e1;
+}
+
+.accordionDescription {
+  margin: 0;
+  color: #e2e8f0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.accordionMetrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.accordionMetrics div {
+  padding: 10px 12px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.accordionMetrics span {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.accordionMetrics strong {
+  font-size: 18px;
+  color: #fbbf24;
+}
+
+.subManifestationList {
+  display: grid;
+  gap: 8px;
+}
+
+.subManifestationItem {
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.subManifestationDate {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.subManifestationText {
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .viewButton,
@@ -579,6 +843,15 @@
   .createButton {
     width: 100%;
     justify-content: center;
+  }
+
+  .upgradeCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .upgradeCta {
+    width: 100%;
   }
 
   .summaryCards {

@@ -5,3 +5,9 @@
   align-items: center;
 }
 
+.helpText {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted-text-color);
+}
+

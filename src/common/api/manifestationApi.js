@@ -133,6 +133,46 @@ export const manifestationApi = {
       body: JSON.stringify({ description }),
     });
   },
+
+  /**
+   * Add daily progress entry for a manifestation
+   * POST /api/v1/app/manifestation/daily-progress/add
+   */
+  addDailyProgressEntry: async (manifestation_id, entry_date, action_text) => {
+    return apiRequest('/app/manifestation/daily-progress/add', {
+      method: 'POST',
+      body: JSON.stringify({ manifestation_id, entry_date, action_text }),
+    });
+  },
+
+  /**
+   * Get daily progress entries
+   * GET /api/v1/app/manifestation/:id/daily-progress
+   */
+  getDailyProgressEntries: async (manifestationId) => {
+    return apiRequest(`/app/manifestation/${manifestationId}/daily-progress`);
+  },
+
+  /**
+   * Update daily progress entry
+   * PUT /api/v1/app/manifestation/daily-progress/:entryId
+   */
+  updateDailyProgressEntry: async (entryId, action_text) => {
+    return apiRequest(`/app/manifestation/daily-progress/${entryId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ action_text }),
+    });
+  },
+
+  /**
+   * Delete daily progress entry
+   * DELETE /api/v1/app/manifestation/daily-progress/:entryId
+   */
+  deleteDailyProgressEntry: async (entryId) => {
+    return apiRequest(`/app/manifestation/daily-progress/${entryId}`, {
+      method: 'DELETE',
+    });
+  },
 };
 
 

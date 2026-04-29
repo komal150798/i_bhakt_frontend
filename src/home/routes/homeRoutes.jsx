@@ -10,6 +10,8 @@ const SignupPage = lazy(() => import('../pages/SignupPage/SignupPage'));
 const ReferPage = lazy(() => import('../pages/ReferPage/ReferPage'));
 const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
 const ManifestationPage = lazy(() => import('../../pages/ManifestationPage'));
+const DashboardPage = lazy(() => import('../../pages/DashboardPage'));
+const PricingPage = lazy(() => import('../../pages/PricingPage'));
 
 export const homeRoutes = [
   {
@@ -52,5 +54,13 @@ export const homeRoutes = [
   {
     path: '/manifestations',
     element: ManifestationPage,
+  },
+  {
+    path: '/dashboard',
+    element: DashboardPage,
+  },
+  {
+    path: '/pricing',
+    element: PricingPage,
   },
 ];

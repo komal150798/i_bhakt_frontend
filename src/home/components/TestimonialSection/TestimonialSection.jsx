@@ -185,10 +185,10 @@ function TestimonialSection() {
         <div className="row mb-4">
           <div className="col-lg-8 mx-auto text-center">
             <h2 className={`display-5 fw-bold mb-3 ${styles.sectionTitle}`}>
-              Real Stories, Real Transformations
+              Trusted by people pursuing real life goals
             </h2>
             <p className={`lead ${styles.sectionSubtitle}`}>
-              See how iBhakt is helping people manifest their dreams, track their karma, and transform their lives.
+              See verified journeys from users using iBhakt to improve career growth, relationships, wellbeing, and daily alignment.
             </p>
           </div>
         </div>

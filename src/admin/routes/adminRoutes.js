@@ -22,6 +22,7 @@ import ContentPage from '../pages/Content/ContentPage';
 import AdminUserListPage from '../pages/UserManagement/AdminUserListPage';
 import RoleListPage from '../pages/UserManagement/RoleListPage';
 import AdminSubscriptionsPage from '../pages/Subscriptions/AdminSubscriptionsPage';
+import AdminPlansPage from '../pages/Plans/AdminPlansPage';
 import AIPromptsPage from '../pages/Prompts/AIPromptsPage';
 import AdminTestimonialsPage from '../pages/Testimonials/AdminTestimonialsPage';
 
@@ -41,6 +42,7 @@ const componentMap = {
   'admin-users': AdminUserListPage,
   'role-list': RoleListPage,
   'subscriptions': AdminSubscriptionsPage,
+  'plans': AdminPlansPage,
   'ai-prompts': AIPromptsPage,
   testimonials: AdminTestimonialsPage,
   // Add future modules here:

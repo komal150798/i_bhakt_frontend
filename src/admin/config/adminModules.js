@@ -139,6 +139,16 @@ export const adminModules = [
   
   // Subscription Management
   {
+    id: 'plans',
+    label: 'Plans',
+    icon: 'bi-card-checklist',
+    path: 'plans',
+    permission: 'MANAGE_USERS',
+    order: 69,
+    category: 'products',
+  },
+
+  {
     id: 'subscriptions',
     label: 'Subscriptions',
     icon: 'bi-credit-card',

@@ -328,6 +328,35 @@ export const adminApi = {
     return adminApiRequest('/admin/subscriptions/plans/available');
   },
 
+  // Plans (master plan configuration)
+  getPlans: async () => {
+    return adminApiRequest('/admin/plans');
+  },
+
+  getPlanByUniqueId: async (uniqueId) => {
+    return adminApiRequest(`/admin/plans/${uniqueId}`);
+  },
+
+  createPlan: async (planData) => {
+    return adminApiRequest('/admin/plans', {
+      method: 'POST',
+      body: JSON.stringify(planData),
+    });
+  },
+
+  updatePlan: async (uniqueId, planData) => {
+    return adminApiRequest(`/admin/plans/${uniqueId}`, {
+      method: 'PUT',
+      body: JSON.stringify(planData),
+    });
+  },
+
+  deletePlan: async (uniqueId) => {
+    return adminApiRequest(`/admin/plans/${uniqueId}`, {
+      method: 'DELETE',
+    });
+  },
+
   // Profile
   getAdminProfile: async () => {
     return adminApiRequest('/admin/auth/me');

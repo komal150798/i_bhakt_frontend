@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../common/context/AuthContext'
 import logoImage from '../../ibhakt_logo.jpeg'
 import { SouthIndianChart } from '../Chart'
 import { getTwinState } from '../common/api/twinApi'
@@ -877,6 +877,7 @@ const PLAN_DATA: PlanData[] = [
 
 const DashboardPage: React.FC = () => {
 	const navigate = useNavigate()
+	const location = useLocation()
 	const { token, setToken, profile, setProfile, userId, setUserId } = useAuth()
 	
 	// Debug: Log when component mounts and token status
@@ -938,6 +939,29 @@ const DashboardPage: React.FC = () => {
 	const [mfpHovered, setMfpHovered] = useState(false)
 	const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null)
 	const [showPlanModal, setShowPlanModal] = useState(false)
+	useEffect(() => {
+		const query = new URLSearchParams(location.search)
+		const shouldOpenFromState = !!(location.state as any)?.openPlanModal
+		if (query.get('openPlanModal') === '1' || shouldOpenFromState) {
+			setShowPlanModal(true)
+			query.delete('openPlanModal')
+			const cleaned = query.toString()
+			navigate(
+				{
+					pathname: location.pathname,
+					search: cleaned ? `?${cleaned}` : '',
+				},
+				{ replace: true, state: {} },
+			)
+		}
+	}, [location.pathname, location.search, location.state, navigate])
+
+	useEffect(() => {
+		const openPlanModal = () => setShowPlanModal(true)
+		window.addEventListener('ibhakt:open-plan-modal', openPlanModal)
+		return () => window.removeEventListener('ibhakt:open-plan-modal', openPlanModal)
+	}, [])
+
 	const [showReferralModal, setShowReferralModal] = useState(false)
 	const [referralPhoneNumbers, setReferralPhoneNumbers] = useState<string[]>([''])
 	const [showGuidanceModal, setShowGuidanceModal] = useState(false)
@@ -1551,7 +1575,10 @@ const DashboardPage: React.FC = () => {
 	}, [currentUser?.id, referralPhoneNumbers, authHeaders, fetchUserReferrals, fetchReferralStats, referralLimitAwaken, fetchUser])
 
 	const handleUpgradePlan = useCallback(async (planId: 'karma_pro' | 'dharma_master') => {
-		if (!currentUser?.id) return
+		if (!currentUser?.id) {
+			showToast('User profile is still loading. Please wait 2 seconds and try again.', 'info')
+			return
+		}
 		setUpgradingPlan(planId)
 		try {
 			const res = await fetch(`${backendBaseUrl}/api/users/${currentUser.id}/upgrade-plan`, {
@@ -3487,6 +3514,12 @@ const DashboardPage: React.FC = () => {
 								// Show all plans (no filter)
 								return PLAN_DATA.map((plan) => {
 									const planLevel = planHierarchy[plan.id] || 0
+									const canUpgradeToKarmaPro =
+										plan.id === 'karma_pro' &&
+										currentPlan !== 'karma_pro' &&
+										currentPlan !== 'dharma_master'
+									const canUpgradeToDharmaMaster =
+										plan.id === 'dharma_master' && currentPlan !== 'dharma_master'
 									return (
 										<div key={plan.id} style={planCardStyle(plan.tier, currentPlan === plan.id)}>
 											{currentPlan === plan.id && (
@@ -3507,6 +3540,24 @@ const DashboardPage: React.FC = () => {
 								</div>
 							)}
 									<div style={planCardBodyStyle}>
+										{(canUpgradeToKarmaPro || canUpgradeToDharmaMaster) && (
+											<div style={planQuickActionWrapStyle}>
+												<button
+													type="button"
+													style={planQuickActionButtonStyle}
+													onClick={(e) => {
+														e.stopPropagation()
+														void handleUpgradePlan(
+															canUpgradeToKarmaPro ? 'karma_pro' : 'dharma_master',
+														)
+													}}
+												>
+													{canUpgradeToKarmaPro
+														? (upgradingPlan === 'karma_pro' ? 'Upgrading...' : 'Upgrade to Karma Pro')
+														: (upgradingPlan === 'dharma_master' ? 'Upgrading...' : 'Upgrade to Dharma Master')}
+												</button>
+											</div>
+										)}
 										<div style={planCardIncludesStyle}>
 											<strong>Includes:</strong>
 											<ul style={planCardListStyle}>
@@ -3517,24 +3568,20 @@ const DashboardPage: React.FC = () => {
 							</div>
 									{plan.unlocksWhen && plan.id === 'karma_builder' && (
 										<div style={planCardUnlocksStyle}>
-											<button
-												type="button"
-												onClick={() => setShowReferralModal(true)}
+											<div
 												style={{
 													width: '100%',
-													background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-													border: '1px solid rgba(99, 102, 241, 0.5)',
-													color: '#f8fafc',
+													background: 'rgba(99, 102, 241, 0.14)',
+													border: '1px solid rgba(99, 102, 241, 0.35)',
+													color: '#c7d2fe',
 													fontWeight: 600,
 													padding: '12px 20px',
 													fontSize: 14,
-													cursor: 'pointer',
 													borderRadius: 8,
-													transition: 'all 0.2s ease',
 												}}
 											>
-												🔗 Unlock when: {plan.unlocksWhen}
-											</button>
+												🔗 Auto-unlock via referrals: {plan.unlocksWhen}
+											</div>
 										</div>
 									)}
 									{plan.unlocksWhen && plan.id !== 'karma_builder' && (
@@ -3743,25 +3790,23 @@ const DashboardPage: React.FC = () => {
 						</div>
 									)}
 								</div>
-								{plan.id === 'karma_pro' && currentPlan !== 'karma_pro' && currentPlan !== 'dharma_master' && (
+								{canUpgradeToKarmaPro && (
 									<button
-									type="button"
+										type="button"
 										style={upgradeButtonStyle}
-										onClick={() => handleUpgradePlan('karma_pro')}
-										disabled={upgradingPlan === 'karma_pro'}
-								>
+										onClick={() => void handleUpgradePlan('karma_pro')}
+									>
 										{upgradingPlan === 'karma_pro' ? 'Upgrading...' : 'Upgrade to Karma Pro'}
-								</button>
+									</button>
 								)}
-								{plan.id === 'dharma_master' && currentPlan !== 'dharma_master' && (
-								<button
-									type="button"
+								{canUpgradeToDharmaMaster && (
+									<button
+										type="button"
 										style={upgradeButtonStyle}
-										onClick={() => handleUpgradePlan('dharma_master')}
-										disabled={upgradingPlan === 'dharma_master'}
-								>
+										onClick={() => void handleUpgradePlan('dharma_master')}
+									>
 										{upgradingPlan === 'dharma_master' ? 'Upgrading...' : 'Upgrade to Dharma Master'}
-								</button>
+									</button>
 								)}
 							</div>
 									)
@@ -5918,6 +5963,30 @@ const upgradeButtonStyle: React.CSSProperties = {
 	cursor: 'pointer',
 	boxShadow: '0 4px 12px rgba(251, 191, 36, 0.4)',
 	transition: 'all 0.2s ease-in-out',
+	position: 'relative',
+	zIndex: 20,
+	pointerEvents: 'auto',
+}
+
+const planQuickActionWrapStyle: React.CSSProperties = {
+	marginBottom: 14,
+	position: 'relative',
+	zIndex: 50,
+}
+
+const planQuickActionButtonStyle: React.CSSProperties = {
+	width: '100%',
+	padding: '12px 16px',
+	borderRadius: 10,
+	border: '1px solid rgba(16, 185, 129, 0.45)',
+	background: 'linear-gradient(135deg, rgba(16,185,129,0.95), rgba(5,150,105,0.92))',
+	color: '#ecfeff',
+	fontWeight: 800,
+	fontSize: 14,
+	cursor: 'pointer',
+	pointerEvents: 'auto',
+	position: 'relative',
+	zIndex: 60,
 }
 
 export default DashboardPage

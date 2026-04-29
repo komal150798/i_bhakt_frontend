@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../common/hooks/useAuth';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
@@ -15,9 +15,18 @@ function SignupPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    referral_code: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const refFromUrl = (searchParams.get('ref') || '').trim();
+    if (!refFromUrl) return;
+
+    setFormData((prev) => ({ ...prev, referral_code: refFromUrl }));
+  }, [location.search]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +56,9 @@ function SignupPage() {
         name: formData.name,
         email: formData.email,
         password: formData.password,
+        ...(formData.referral_code?.trim()
+          ? { referral_code: formData.referral_code.trim() }
+          : {}),
       });
 
       // Navigate to the page user was trying to access, or home page
@@ -134,6 +146,24 @@ function SignupPage() {
                       autoComplete="new-password"
                       minLength={6}
                     />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="referral_code" className="form-label">
+                      Referral Code (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="referral_code"
+                      name="referral_code"
+                      value={formData.referral_code}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      placeholder="Enter referral code"
+                    />
+                    <small className={styles.helpText}>
+                      If you opened this page from a referral link, it is auto-filled.
+                    </small>
                   </div>
                   <button
                     type="submit"

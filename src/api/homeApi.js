@@ -7,7 +7,7 @@ const HOME_ENDPOINTS = {
   MATCHMAKING: '/matchmaking',
   TAROT: '/tarot',
   NUMEROLOGY: '/numerology',
-  REFER: '/refer',
+  REFER: '/home/refer',
 };
 
 export const homeApi = {
@@ -86,12 +86,12 @@ export const homeApi = {
   // Refer & Earn
   getReferralCode: async () => {
     const response = await httpClient.get(`${HOME_ENDPOINTS.REFER}/code`);
-    return response.data;
+    return response.data?.data || response.data;
   },
 
   getReferralStats: async () => {
     const response = await httpClient.get(`${HOME_ENDPOINTS.REFER}/stats`);
-    return response.data;
+    return response.data?.data || response.data;
   },
 };
 

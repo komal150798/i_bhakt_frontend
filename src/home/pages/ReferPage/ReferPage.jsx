@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { homeApi } from '../../../api/homeApi';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
 import Loader from '../../../common/components/Loader/Loader';
@@ -6,12 +7,22 @@ import styles from './ReferPage.module.css';
 
 function ReferPage() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [referralCode, setReferralCode] = useState('');
   const [stats, setStats] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem('ibhakt_token');
+    if (!token) {
+      setIsAuthenticated(false);
+      setIsLoading(false);
+      return;
+    }
+    setIsAuthenticated(true);
+
     const fetchData = async () => {
       try {
         const [codeData, statsData] = await Promise.all([
@@ -38,6 +49,33 @@ function ReferPage() {
 
   if (isLoading) {
     return <Loader fullScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className={styles.referPage}>
+        <div className="container py-5">
+          <div className="row">
+            <div className="col-lg-8 mx-auto">
+              <div className="card">
+                <div className="card-body p-4 text-center">
+                  <h3 className="mb-3">Login Required</h3>
+                  <p className="text-muted mb-4">
+                    Please login to view your referral code and share referral links.
+                  </p>
+                  <button className="btn btn-primary me-2" onClick={() => navigate('/login')}>
+                    Go to Login
+                  </button>
+                  <Link className="btn btn-outline-secondary" to="/signup">
+                    Create Account
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

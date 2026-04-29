@@ -11,6 +11,10 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
   const [errors, setErrors] = useState({});
   const [isViewMode, setIsViewMode] = useState(false);
   const [resonanceResult, setResonanceResult] = useState(null);
+  const [dailyEntryDate, setDailyEntryDate] = useState('');
+  const [dailyActionText, setDailyActionText] = useState('');
+  const [dailySubmitting, setDailySubmitting] = useState(false);
+  const [dailyEntries, setDailyEntries] = useState([]);
 
   useEffect(() => {
     if (manifestation) {
@@ -19,6 +23,9 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
       setFormData({
         description: manifestation.description || '',
       });
+      setDailyEntries(manifestation.daily_progress_entries || []);
+      setDailyEntryDate(new Date().toISOString().split('T')[0]);
+      setDailyActionText('');
       setResonanceResult(null);
     } else {
       // Add mode - pre-fill with pending text from social media flow
@@ -26,6 +33,7 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
       setFormData({
         description: initialDescription || '',
       });
+      setDailyEntries([]);
       setResonanceResult(null);
       setErrors({});
     }
@@ -125,6 +133,41 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
 
     // If result exists, lock it
     await handleLock();
+  };
+
+  const dailyProgressEntries = dailyEntries;
+
+  const handleAddDailyProgress = async () => {
+    if (!manifestation?.id) return;
+    if (!dailyEntryDate || !dailyActionText.trim()) {
+      alert('Please select date and enter what you did today.');
+      return;
+    }
+
+    try {
+      setDailySubmitting(true);
+      const newEntry = await manifestationApi.addDailyProgressEntry(
+        manifestation.id,
+        dailyEntryDate,
+        dailyActionText.trim(),
+      );
+      setDailyActionText('');
+      setDailyEntries((prev) => [
+        {
+          id: newEntry.id,
+          manifestation_id: newEntry.manifestation_id,
+          entry_date: newEntry.entry_date,
+          action_text: newEntry.action_text,
+          added_date: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
+    } catch (error) {
+      console.error('Failed to add daily progress entry:', error);
+      alert(error.message || 'Failed to add daily progress entry.');
+    } finally {
+      setDailySubmitting(false);
+    }
   };
 
   return (
@@ -238,6 +281,86 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
                       day: 'numeric' 
                     })}
                   </span>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.insightSection}>
+              <h3>Daily Sub Manifestation (What you did)</h3>
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ display: 'grid', gap: 8 }}>
+                  <input
+                    type="date"
+                    value={dailyEntryDate}
+                    onChange={(e) => setDailyEntryDate(e.target.value)}
+                    style={{
+                      width: '220px',
+                      padding: '8px 10px',
+                      background: 'rgba(30, 41, 59, 0.8)',
+                      border: '1px solid rgba(251, 191, 36, 0.3)',
+                      borderRadius: '8px',
+                      color: '#f8fafc',
+                    }}
+                  />
+                  <textarea
+                    value={dailyActionText}
+                    onChange={(e) => setDailyActionText(e.target.value)}
+                    placeholder="Aaj manifestation complete karne ke liye maine kya kiya..."
+                    rows={3}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      background: 'rgba(30, 41, 59, 0.8)',
+                      border: '1px solid rgba(251, 191, 36, 0.3)',
+                      borderRadius: '8px',
+                      color: '#f8fafc',
+                      fontSize: '14px',
+                      fontFamily: 'inherit',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddDailyProgress}
+                    disabled={dailySubmitting}
+                    style={{
+                      width: 'fit-content',
+                      padding: '8px 14px',
+                      background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      color: 'white',
+                      cursor: dailySubmitting ? 'not-allowed' : 'pointer',
+                      opacity: dailySubmitting ? 0.7 : 1,
+                    }}
+                  >
+                    {dailySubmitting ? 'Adding...' : 'Add Daily Entry'}
+                  </button>
+                </div>
+              </div>
+              {dailyProgressEntries.length === 0 ? (
+                <p style={{ color: '#94a3b8', marginTop: 0 }}>
+                  No daily entries yet.
+                </p>
+              ) : (
+                <div style={{ display: 'grid', gap: 10 }}>
+                  {dailyProgressEntries.map((entry) => (
+                    <div
+                      key={entry.id}
+                      style={{
+                        padding: '10px 12px',
+                        background: 'rgba(15, 23, 42, 0.8)',
+                        border: '1px solid rgba(148, 163, 184, 0.2)',
+                        borderRadius: '8px',
+                      }}
+                    >
+                      <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 4 }}>
+                        {new Date(entry.entry_date).toLocaleDateString()}
+                      </div>
+                      <div style={{ fontSize: 14, color: '#e2e8f0', lineHeight: 1.5 }}>
+                        {entry.action_text}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -526,11 +649,10 @@ function ManifestationModal({ manifestation, initialDescription, onClose, onSucc
                   style={{
                     background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
                     color: 'white',
-                    width: '100%',
-                    maxWidth: '400px'
+                    minWidth: '220px'
                   }}
                 >
-                  {calculating ? 'Calculating...' : 'Calculate Resonance Score & Generate Reading'}
+                  {calculating ? 'Analyzing...' : 'Analyze & Score'}
                 </button>
               </div>
             ) : (
