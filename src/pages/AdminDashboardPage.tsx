@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useToast } from '../common/hooks/useToast'
+import { useConfirmWithToast, useNotifyHeuristic } from '../common/hooks/useToast'
 
 type AdminInfo = {
 	id: number
@@ -19,7 +19,6 @@ type Stats = {
 }
 
 export default function AdminDashboardPage() {
-	const { showSuccess, showError, showWarning } = useToast()
 	const [adminInfo, setAdminInfo] = useState<AdminInfo | null>(null)
 	const [stats, setStats] = useState<Stats | null>(null)
 	const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'karma' | 'guidance' | 'tips' | 'config' | 'audit' | 'plan_limits' | 'referrals'>('dashboard')
@@ -49,24 +48,6 @@ export default function AdminDashboardPage() {
 			'Content-Type': 'application/json',
 		}
 	}, [])
-
-	const notifyInfo = useCallback((message: string) => {
-		if (/error|failed|fail/i.test(message)) {
-			showError(message)
-		} else {
-			showSuccess(message)
-		}
-	}, [showError, showSuccess])
-
-	const confirmWithToast = useCallback((message: string, onConfirm: () => void | Promise<void>) => {
-		showWarning(message, {
-			actionLabel: 'Confirm',
-			duration: 7000,
-			onActionClick: () => {
-				void onConfirm()
-			},
-		})
-	}, [showWarning])
 
 	useEffect(() => {
 		const token = localStorage.getItem('admin_token')
@@ -212,6 +193,7 @@ function StatCard({ title, value, color }: { title: string; value: number; color
 }
 
 function UsersManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [users, setUsers] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -339,6 +321,8 @@ function UsersManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAu
 }
 
 function KarmaManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
+	const confirmWithToast = useConfirmWithToast()
 	const [records, setRecords] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -530,6 +514,8 @@ function KarmaManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAu
 }
 
 function GuidanceManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
+	const confirmWithToast = useConfirmWithToast()
 	const [logs, setLogs] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -671,6 +657,7 @@ function GuidanceManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { ge
 }
 
 function EditGuidanceModal({ log, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { log: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [formData, setFormData] = useState({ guidance_text: log.guidance_text || '', status: log.status || 'pending' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -742,6 +729,8 @@ function EditGuidanceModal({ log, backendBaseUrl, getAuthHeaders, onClose, apiBa
 }
 
 function TipsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
+	const confirmWithToast = useConfirmWithToast()
 	const [tips, setTips] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -884,6 +873,7 @@ function TipsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAut
 }
 
 function EditTipModal({ tip, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { tip: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [formData, setFormData] = useState({ tip_text: tip.tip_text || '', status: tip.status || 'active', frequency: tip.frequency || 'daily' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -967,6 +957,7 @@ function EditTipModal({ tip, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl
 }
 
 function ConfigManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [configs, setConfigs] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 
@@ -1460,6 +1451,7 @@ const deleteButtonStyle: React.CSSProperties = {
 
 // Create Karma Modal
 function CreateKarmaModal({ backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [formData, setFormData] = useState({ user_id: '', input_text: '', category_slug: '', score_delta: '0', source: 'admin' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -1552,6 +1544,7 @@ function CreateKarmaModal({ backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl 
 
 // Edit Karma Modal
 function EditKarmaModal({ record, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl }: { record: any; backendBaseUrl: string; getAuthHeaders: () => Record<string, string>; onClose: () => void; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [formData, setFormData] = useState({ input_text: record.input_text || '', score_delta: record.score_delta?.toString() || '0', status: record.status || 'pending' })
 	const [submitting, setSubmitting] = useState(false)
 
@@ -1798,6 +1791,7 @@ function AuditLogsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { g
 
 // Plan Limits Management Component
 function ReferralsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [referrals, setReferrals] = useState<any[]>([])
 	const [stats, setStats] = useState<any>(null)
 	const [loading, setLoading] = useState(true)
@@ -1953,6 +1947,7 @@ function ReferralsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { g
 }
 
 function PlanLimitsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string; apiBaseUrl: string }) {
+	const notifyInfo = useNotifyHeuristic()
 	const [limits, setLimits] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [editingRow, setEditingRow] = useState<string | null>(null) // Format: "plan-feature"
