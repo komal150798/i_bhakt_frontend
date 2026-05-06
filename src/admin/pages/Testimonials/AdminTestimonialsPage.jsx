@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
+import { useToast } from '../../../common/hooks/useToast';
 import DataTable from '../../components/DataTable/DataTable';
 import styles from './AdminTestimonialsPage.module.css';
 
@@ -24,6 +25,7 @@ const emptyForm = () => ({
 });
 
 function AdminTestimonialsPage() {
+  const { showSuccess, showError, showWarning } = useToast();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(emptyForm);
@@ -116,29 +118,40 @@ function AdminTestimonialsPage() {
       if (editingId) {
         await adminApi.updateTestimonial(editingId, payload);
         setOkMsg('Testimonial updated.');
+        showSuccess('Testimonial updated');
       } else {
         await adminApi.createTestimonial(payload);
         setOkMsg('Testimonial created.');
+        showSuccess('Testimonial created');
       }
       resetForm();
       await load();
     } catch (err) {
       setError(err.message || 'Save failed');
+      showError('Save failed', { description: err.message || 'Unknown error' });
     }
   };
 
   const handleDelete = async (row) => {
-    if (!window.confirm(`Delete testimonial from "${row.name}"? This removes it from the site.`)) return;
-    setError(null);
-    setOkMsg(null);
-    try {
-      await adminApi.deleteTestimonial(row.id);
-      setOkMsg('Testimonial deleted.');
-      if (editingId === row.id) resetForm();
-      await load();
-    } catch (err) {
-      setError(err.message || 'Delete failed');
-    }
+    showWarning(`Delete testimonial from "${row.name}"?`, {
+      description: 'This removes it from the site.',
+      actionLabel: 'Delete',
+      duration: 7000,
+      onActionClick: async () => {
+        setError(null);
+        setOkMsg(null);
+        try {
+          await adminApi.deleteTestimonial(row.id);
+          setOkMsg('Testimonial deleted.');
+          showSuccess('Testimonial deleted');
+          if (editingId === row.id) resetForm();
+          await load();
+        } catch (err) {
+          setError(err.message || 'Delete failed');
+          showError('Delete failed', { description: err.message || 'Unknown error' });
+        }
+      },
+    });
   };
 
   const columns = [

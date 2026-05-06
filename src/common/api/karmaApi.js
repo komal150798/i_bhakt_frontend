@@ -3,8 +3,20 @@
  * Handles all karma-related API calls
  */
 
-// VITE_API_URL already includes /api/v1
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+/** Align with Dashboard / Nest: prefer VITE_BACKEND_URL, then VITE_API_URL (strip trailing /api/v? if duplicated). */
+function resolveApiV1BaseUrl() {
+  const raw =
+    (typeof import.meta.env.VITE_BACKEND_URL === 'string' && import.meta.env.VITE_BACKEND_URL.trim()) ||
+    (typeof import.meta.env.VITE_API_URL === 'string' && import.meta.env.VITE_API_URL.trim()) ||
+    'http://localhost:8000';
+  let origin = raw.replace(/\/$/, '');
+  if (/\/api\/v\d+$/i.test(origin)) {
+    return origin;
+  }
+  return `${origin}/api/v1`;
+}
+
+const BASE_URL = resolveApiV1BaseUrl();
 const ENDPOINTS = {
   ADD_KARMA: '/customer/karma/add',
   GET_SUMMARY: '/customer/karma/user',

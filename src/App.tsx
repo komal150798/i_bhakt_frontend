@@ -12,6 +12,7 @@ import { AuthProvider } from './common/context/AuthContext'
 import { AdminAuthProvider } from './common/context/AdminAuthContext'
 import { LanguageProvider } from './common/i18n/LanguageContext'
 import { ToastProvider } from './common/components/Toast/ToastProvider'
+import { PlanModalProvider } from './common/plan/PlanModalContext'
 
 // Layouts
 import HomeLayout from './home/layout/HomeLayout'
@@ -197,11 +198,13 @@ const App: React.FC = () => {
 				<LanguageProvider>
 					<ToastProvider>
 						<AuthProvider>
-							<AdminAuthProvider>
-								<BrowserRouter>
-									<AppContentInner />
-								</BrowserRouter>
-							</AdminAuthProvider>
+							<PlanModalProvider>
+								<AdminAuthProvider>
+									<BrowserRouter>
+										<AppContentInner />
+									</BrowserRouter>
+								</AdminAuthProvider>
+							</PlanModalProvider>
 						</AuthProvider>
 					</ToastProvider>
 				</LanguageProvider>

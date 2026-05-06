@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
 import { useAdminAuth } from '../../../common/context/AdminAuthContext';
+import { useToast } from '../../../common/hooks/useToast';
 import DataTable from '../../components/DataTable/DataTable';
 import RolePermissionDrawer from './RolePermissionDrawer';
 import styles from './RoleListPage.module.css';
 
 function RoleListPage() {
   const { hasPermission, isSuperAdmin } = useAdminAuth();
+  const { showError, showWarning, showSuccess } = useToast();
   const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState([]);
   const [filters, setFilters] = useState({
@@ -73,7 +75,7 @@ function RoleListPage() {
       if (editingRole) {
         const roleId = editingRole.role_id || editingRole.id;
         if (!roleId) {
-          alert('Role ID is missing');
+          showError('Role ID is missing');
           return;
         }
         await adminApi.updateRole(roleId, formData);
@@ -84,26 +86,32 @@ function RoleListPage() {
       fetchData();
     } catch (error) {
       console.error('Failed to save role:', error);
-      alert(error.message || 'Failed to save role');
+      showError('Failed to save role', { description: error.message || 'Unknown error' });
     }
   };
 
   const handleDelete = async (roleId) => {
-    if (!confirm('Are you sure you want to delete this role?')) return;
-    try {
-      await adminApi.deleteRole(roleId);
-      fetchData();
-    } catch (error) {
-      console.error('Failed to delete role:', error);
-      alert(error.message || 'Failed to delete role');
-    }
+    showWarning('Are you sure you want to delete this role?', {
+      actionLabel: 'Delete',
+      duration: 7000,
+      onActionClick: async () => {
+        try {
+          await adminApi.deleteRole(roleId);
+          showSuccess('Role deleted');
+          fetchData();
+        } catch (error) {
+          console.error('Failed to delete role:', error);
+          showError('Failed to delete role', { description: error.message || 'Unknown error' });
+        }
+      },
+    });
   };
 
   const handleManagePermissions = async (role) => {
     const roleId = role.role_id || role.id;
     if (!roleId) {
       console.error('Role ID is missing in role object:', role);
-      alert('Role ID is missing');
+      showError('Role ID is missing');
       return;
     }
     
@@ -118,7 +126,7 @@ function RoleListPage() {
       setShowPermissionDrawer(true);
     } catch (error) {
       console.error('Failed to open permission drawer:', error);
-      alert(error.message || 'Failed to load role permissions');
+      showError('Failed to load role permissions', { description: error.message || 'Unknown error' });
     }
   };
 

@@ -48,11 +48,6 @@ export function KarmaDashboardBody({ dashboardData, onAddKarma, embedded = false
           <div className={styles.scoreCircle}>
             <div className={styles.scoreValue}>{overall.score}</div>
             <div className={styles.scoreMax}>/ 100</div>
-            <div
-              className={`${styles.scoreGrade} ${styles[`grade${overall.grade.replace('+', 'Plus').replace('-', 'Minus')}`]}`}
-            >
-              {overall.grade}
-            </div>
           </div>
           <div className={styles.scoreInfo}>
             <div className={styles.trendIndicator}>

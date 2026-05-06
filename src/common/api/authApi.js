@@ -3,8 +3,19 @@
  * Handles all authentication-related API calls
  */
 
-// Base URL - VITE_API_URL already includes /api/v1 (e.g., http://localhost:3000/api/v1)
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+function resolveApiV1BaseUrl() {
+  const raw =
+    (typeof import.meta.env.VITE_BACKEND_URL === 'string' && import.meta.env.VITE_BACKEND_URL.trim()) ||
+    (typeof import.meta.env.VITE_API_URL === 'string' && import.meta.env.VITE_API_URL.trim()) ||
+    'http://localhost:8000';
+  let origin = raw.replace(/\/$/, '');
+  if (/\/api\/v\d+$/i.test(origin)) {
+    return origin;
+  }
+  return `${origin}/api/v1`;
+}
+
+const BASE_URL = resolveApiV1BaseUrl();
 
 // API Endpoints - include full path from base URL
 const ENDPOINTS = {

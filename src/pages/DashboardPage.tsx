@@ -8,6 +8,14 @@ import { getEntitlements, checkFeatureAccess } from '../common/api/entitlementsA
 import { getKarmaDashboard } from '../common/api/karmaApi'
 import ManifestationDashboard from '../components/Manifestation/ManifestationDashboard'
 import LocationAutocomplete from '../components/common/LocationAutocomplete'
+import { getApiV1BaseUrl, getBackendOrigin } from '../common/config/apiV1BaseUrl'
+import { usePlanModal, IBAHKT_PLAN_UPGRADED, IBAHKT_DASHBOARD_REFRESH } from '../common/plan/PlanModalContext'
+import {
+	parseJwtSub,
+	normalizeUserPlanType,
+	formatCurrentPlanLabel,
+	currentPlanBadgeStyle,
+} from '../common/plan/planCatalogHelpers'
 
 // Digital twin image path - user should place the image at frontend/public/digital-twin.png
 // Files in the public folder are served at the root path
@@ -658,7 +666,50 @@ type UserDetails = {
 	moon_longitude_deg: number
 	dasha_at_birth: string
 	avatar_url?: string | null
-	plan?: 'awaken' | 'karma_builder' | 'karma_pro' | 'dharma_master'
+	plan?: string
+}
+
+function optionalCoord(value: unknown): number | null {
+	if (value == null || value === '') return null
+	if (typeof value === 'number') return Number.isFinite(value) ? value : null
+	const n = Number(String(value).trim())
+	return Number.isFinite(n) ? n : null
+}
+
+/** Map GET /api/v1/users/profile `data` to dashboard `UserDetails` (numeric id from JWT `sub`). */
+function mapAppProfileToUserDetails(
+	row: Record<string, unknown>,
+	numericUserId: number,
+): UserDetails {
+	const padaRaw = row.pada
+	const pada =
+		typeof padaRaw === 'number'
+			? padaRaw
+			: typeof padaRaw === 'string'
+				? Number(padaRaw) || 0
+				: 0
+	const nakRaw = row.nakshatra
+	const nakshatra =
+		nakRaw == null ? '' : typeof nakRaw === 'string' ? nakRaw : String(nakRaw)
+	return {
+		id: numericUserId,
+		first_name: (row.first_name as string | null) ?? null,
+		last_name: (row.last_name as string | null) ?? null,
+		gender: (row.gender as string | null) ?? null,
+		phone_number: (row.phone_number as string | null) ?? null,
+		date_of_birth: (row.date_of_birth as string) || '1900-01-01',
+		time_of_birth: (row.time_of_birth as string) || '00:00:00',
+		place_name: (row.place_name as string) || 'Unknown',
+		latitude: optionalCoord(row.latitude),
+		longitude: optionalCoord(row.longitude),
+		timezone: (row.timezone as string | null | undefined) ?? null,
+		nakshatra,
+		pada,
+		moon_longitude_deg: typeof row.moon_longitude_deg === 'number' ? row.moon_longitude_deg : 0,
+		dasha_at_birth: (row.dasha_at_birth as string) || '',
+		avatar_url: (row.avatar_url as string | null | undefined) ?? (row.avatar_img as string | null | undefined) ?? null,
+		plan: (row.current_plan as string | undefined) || undefined,
+	}
 }
 
 type AvatarJobState = 'idle' | 'queued' | 'processing' | 'completed' | 'failed'
@@ -776,109 +827,11 @@ const normalizePhoneAttempts = (raw: string): string[] => {
 	return Array.from(attempts)
 }
 
-type PlanTier = 'free' | 'referral' | 'paid' | 'premium'
-
-type PlanData = {
-	id: 'awaken' | 'karma_builder' | 'karma_pro' | 'dharma_master'
-	tier: PlanTier
-	name: string
-	tagline: string
-	target: string
-	goal: string
-	includes: string[]
-	price?: string
-	unlocksWhen?: string
-}
-
-const PLAN_DATA: PlanData[] = [
-	{
-		id: 'awaken',
-		tier: 'free',
-		name: 'FREE Plan — "Awaken"',
-		tagline: 'Begin your consciousness journey.',
-		target: 'New users forming the habit',
-		goal: 'Daily engagement + emotional connection',
-		includes: [
-			'Daily AI Karma Journal (limited analysis)',
-			'Basic Karma Score',
-			'Starter Digital Twin (static aura)',
-			'Daily reflection reminders',
-			'Access to 108-Day Karma Challenge (basic version)',
-			'3 monthly manifestation entries (no MFP score)',
-			'Community feed (view-only)',
-			'Limited push notifications',
-		],
-	},
-	{
-		id: 'karma_builder',
-		tier: 'referral',
-		name: 'REFERRAL-REWARDS Plan — "Karma Builder"',
-		tagline: 'Your good karma unlocks more awareness.',
-		target: 'Users excited to share iBhakt',
-		goal: 'Virality + growth (self-expanding loops)',
-		unlocksWhen: 'Refer 5 friends',
-		includes: [
-			'Everything in Free +',
-			'Advanced Karma Journal Analysis (emotional depth + patterns)',
-			'Evolving Twin Aura (updates with your karma trends)',
-			'Weekly Karmic Energy Report',
-			'Unlock Custom Twin Accessories (each with moral symbolism)',
-			'10 monthly manifestation entries',
-			'Partial MFP (Manifestation Fulfillment Probability) score',
-			'Referral leaderboard to earn more perks',
-			'KarmaCoin pre-earn access (when launched)',
-		],
-	},
-	{
-		id: 'karma_pro',
-		tier: 'paid',
-		name: 'PAID LOWER TIER — "Karma Pro"',
-		tagline: 'Align your thoughts, emotions, and timing.',
-		target: 'Serious self-improvement & manifestation seekers',
-		goal: 'Strong MRR + broad adoption',
-		price: '₹199–399/month or ₹1,499–2,999 yearly',
-		includes: [
-			'Everything in Referral Tier +',
-			'Unlimited Manifestation Journal entries',
-			'Full MFP scoring engine (Astro timing + emotional coherence)',
-			'Personal Dharma Compass (AI guidance)',
-			'Weekly Astro-Emotional Forecast',
-			'Advanced Twin Evolution (shifts with emotional frequency)',
-			'Access to Karma Circles (group reflections)',
-			'Premium music & meditation library',
-			'« Action Tracker » — map your karma to habits',
-			'Remove ads',
-			'Priority email support',
-		],
-	},
-	{
-		id: 'dharma_master',
-		tier: 'premium',
-		name: 'PREMIUM / ELITE TIER — "Dharma Master"',
-		tagline: 'Master your Karma. Shape your destiny.',
-		target: 'High-intent spiritual seekers & manifestation believers',
-		goal: 'High LTV + strong brand equity',
-		price: '₹11,999–19,999/year',
-		includes: [
-			'Everything in Pro +',
-			'1:1 AI Mentor Twin (voice-based personalized mentor)',
-			'Monthly Karmic Alignment Report (professional-grade PDF)',
-			'Personalized Astro-Karma Life Blueprint',
-			'Advanced Manifestation Accelerator (timed rituals & actions)',
-			'Early access to all new features',
-			'VIP KarmaCoin multipliers (when blockchain launches)',
-			'Premium Twin skins (gold aura, trinetra, cosmic halo)',
-			'Exclusive Mastermind circles (elite community)',
-			'Founder-letter access (i.e., from Rahul)',
-			'Priority chat support',
-		],
-	},
-]
-
 const DashboardPage: React.FC = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const { token, setToken, profile, setProfile, userId, setUserId } = useAuth()
+	const { openPlanModal } = usePlanModal()
 	
 	// Debug: Log when component mounts and token status
 	useEffect(() => {
@@ -938,12 +891,11 @@ const DashboardPage: React.FC = () => {
 	} | null>(null)
 	const [mfpHovered, setMfpHovered] = useState(false)
 	const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null)
-	const [showPlanModal, setShowPlanModal] = useState(false)
 	useEffect(() => {
 		const query = new URLSearchParams(location.search)
-		const shouldOpenFromState = !!(location.state as any)?.openPlanModal
+		const shouldOpenFromState = !!(location.state as { openPlanModal?: boolean })?.openPlanModal
 		if (query.get('openPlanModal') === '1' || shouldOpenFromState) {
-			setShowPlanModal(true)
+			openPlanModal()
 			query.delete('openPlanModal')
 			const cleaned = query.toString()
 			navigate(
@@ -954,13 +906,7 @@ const DashboardPage: React.FC = () => {
 				{ replace: true, state: {} },
 			)
 		}
-	}, [location.pathname, location.search, location.state, navigate])
-
-	useEffect(() => {
-		const openPlanModal = () => setShowPlanModal(true)
-		window.addEventListener('ibhakt:open-plan-modal', openPlanModal)
-		return () => window.removeEventListener('ibhakt:open-plan-modal', openPlanModal)
-	}, [])
+	}, [location.pathname, location.search, location.state, navigate, openPlanModal])
 
 	const [showReferralModal, setShowReferralModal] = useState(false)
 	const [referralPhoneNumbers, setReferralPhoneNumbers] = useState<string[]>([''])
@@ -976,7 +922,7 @@ const DashboardPage: React.FC = () => {
 		placeOfBirth: '',
 		gender: '',
 	})
-	const [currentPlan, setCurrentPlan] = useState<'awaken' | 'karma_builder' | 'karma_pro' | 'dharma_master'>('awaken')
+	const [currentPlan, setCurrentPlan] = useState<string>('awaken')
 	const [activeSection, setActiveSection] = useState<'dashboard' | 'cosmic-blueprint' | 'charts'>('dashboard')
 	const [birthDetails, setBirthDetails] = useState<{
 		yoga?: string
@@ -1000,11 +946,7 @@ const DashboardPage: React.FC = () => {
 	const [referralsNeeded, setReferralsNeeded] = useState(11)
 	const [referralLimitAwaken, setReferralLimitAwaken] = useState(5)
 	const [referralLimitKarmaPro, setReferralLimitKarmaPro] = useState(51)
-	const [upgradingPlan, setUpgradingPlan] = useState<string | null>(null)
-	const [referralType, setReferralType] = useState<'email' | 'phone'>('email')
-	const [referralValue, setReferralValue] = useState('')
 	const [sendingReferral, setSendingReferral] = useState(false)
-	const [userReferrals, setUserReferrals] = useState<{pending: any[], completed: any[]} | null>(null)
 	const [featureLimits, setFeatureLimits] = useState<{
 		plan: string
 		features: {
@@ -1055,29 +997,16 @@ const DashboardPage: React.FC = () => {
 	} | null>(null)
 	const [karmaDashboardLoading, setKarmaDashboardLoading] = useState(false)
 
-	const backendBaseUrl = useMemo(() => {
-		const configured = import.meta.env.VITE_BACKEND_URL
-		if (typeof configured === 'string' && configured.trim().length > 0) {
-			return configured.replace(/\/$/, '')
-		}
-		return 'http://localhost:8000'
-	}, [])
-
-	const publicBaseUrl = useMemo(() => {
-		// Use environment variable if set, otherwise fall back to current origin
-		const configured = import.meta.env.VITE_PUBLIC_URL
-		if (typeof configured === 'string' && configured.trim().length > 0) {
-			return configured.replace(/\/$/, '')
-		}
-		// Fallback to current origin (works in development, but should be set in production)
-		return window.location.origin
-	}, [])
+	const apiV1Base = useMemo(() => getApiV1BaseUrl(), [])
+	const backendOrigin = useMemo(() => getBackendOrigin(), [])
 
 	const uploadInputRef = useRef<HTMLInputElement | null>(null)
 	const avatarPollRef = useRef<number | null>(null)
 	const guidanceSectionRef = useRef<HTMLDivElement | null>(null)
 	const manifestationSectionRef = useRef<HTMLDivElement | null>(null)
 	const karmaSectionRef = useRef<HTMLDivElement | null>(null)
+	/** Karma category list is only needed for the “Record karma” modal, not for Manifestation UI. */
+	const karmaCategoriesFetchedOkRef = useRef(false)
 
 	const authHeaders = useMemo(
 		() =>
@@ -1088,6 +1017,25 @@ const DashboardPage: React.FC = () => {
 				: undefined,
 		[token]
 	)
+
+	useEffect(() => {
+		karmaCategoriesFetchedOkRef.current = false
+	}, [token])
+
+	const fetchKarmaCategories = useCallback(async () => {
+		if (karmaCategoriesFetchedOkRef.current) return
+		try {
+			const res = await fetch('/api/karma/categories', {
+				headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
+			})
+			if (!res.ok) throw new Error('Unable to load karma categories.')
+			const data = await res.json()
+			setKarmaCategories(data || [])
+			karmaCategoriesFetchedOkRef.current = true
+		} catch (error: any) {
+			console.warn(error?.message || 'Unable to load karma categories.')
+		}
+	}, [authHeaders])
 
 	const supportiveGraphData = useMemo(() => {
 		if (!manifestationResult) return []
@@ -1149,21 +1097,53 @@ const DashboardPage: React.FC = () => {
 
 	const fetchUser = useCallback(
 		async (targetUserId: number) => {
+			const bearer = token || localStorage.getItem('ibhakt_token')
+			const effectiveId =
+				parseJwtSub(bearer || undefined) || targetUserId
+
 			try {
+				// Nest app profile (JWT); avoids broken relative `/api/users/:id` on Vite dev server.
+				const profileRes = await fetch(
+					`${apiV1Base}/users/profile`,
+					{
+						headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
+					},
+				)
+				const profilePayload = await profileRes.json().catch(() => null)
+				const row =
+					profilePayload &&
+					typeof profilePayload === 'object' &&
+					(profilePayload as { success?: boolean }).success === true &&
+					typeof (profilePayload as { data?: unknown }).data === 'object' &&
+					(profilePayload as { data: Record<string, unknown> }).data
+						? (profilePayload as { data: Record<string, unknown> }).data
+						: null
+
+				if (profileRes.ok && row && effectiveId > 0) {
+					const data = mapAppProfileToUserDetails(row, effectiveId)
+					setCurrentUser(data)
+					if (data.plan) setCurrentPlan(data.plan)
+					if (data.id && data.id !== userId && typeof setUserId === 'function') {
+						setUserId(data.id)
+					}
+					return data
+				}
+
+				// Legacy FastAPI-style path (when proxied to same origin)
 				const res = await fetch(`/api/users/${targetUserId}`, {
 					headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
 				})
 				const payload = await res.json().catch(() => null)
 				if (!res.ok || !payload) {
-					const message = (payload as { detail?: string } | null)?.detail || 'Unable to load user profile.'
+					const errBody = payload as { detail?: string; message?: string } | null
+					const message =
+						errBody?.message || errBody?.detail || 'Unable to load user profile.'
 					throw new Error(message)
 				}
 				const data = payload as UserDetails
 				setCurrentUser(data)
-			if (data.plan) {
-				setCurrentPlan(data.plan)
-			}
-				if (data.id && data.id !== userId) {
+				if (data.plan) setCurrentPlan(data.plan)
+				if (data.id && data.id !== userId && typeof setUserId === 'function') {
 					setUserId(data.id)
 				}
 				return data
@@ -1172,7 +1152,7 @@ const DashboardPage: React.FC = () => {
 				throw error
 			}
 		},
-		[authHeaders, setUserId, userId]
+		[authHeaders, apiV1Base, setUserId, token, userId],
 	)
 
 	const fetchBirthDetails = useCallback(
@@ -1256,7 +1236,7 @@ const DashboardPage: React.FC = () => {
 			setEntitlements(data)
 			// Update current plan from entitlements
 			if (data?.plan_type) {
-				setCurrentPlan(data.plan_type as any)
+				setCurrentPlan(String(data.plan_type))
 			}
 		} catch (error) {
 			console.warn('Failed to fetch entitlements:', error)
@@ -1418,95 +1398,114 @@ const DashboardPage: React.FC = () => {
 		}
 	}, [authHeaders])
 
-	const fetchCurrentDasha = useCallback(async (userId: number) => {
+	const fetchCurrentDasha = useCallback(async (_userId: number) => {
 		try {
-			const res = await fetch(`${backendBaseUrl}/api/users/${userId}/current-dasha`, {
-				headers: authHeaders,
+			const res = await fetch(`${apiV1Base}/users/current-dasha`, {
+				headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
 			})
-			if (!res.ok) {
-				return
+			const payload = await res.json().catch(() => null)
+			if (!res.ok || !payload) return
+			const inner =
+				payload &&
+				typeof payload === 'object' &&
+				(payload as { success?: boolean }).success === true &&
+				(payload as { data?: unknown }).data != null
+					? (payload as { data: Record<string, unknown> }).data
+					: payload
+			const row = inner && typeof inner === 'object' ? inner : null
+			const hasAny =
+				!!row &&
+				!!(
+					(row as { current_mahadasha?: unknown }).current_mahadasha ||
+					(row as { current_antardasha?: unknown }).current_antardasha ||
+					(row as { current_pratyantar?: unknown }).current_pratyantar ||
+					(row as { current_sukshma?: unknown }).current_sukshma
+				)
+			if (hasAny) {
+				setCurrentDasha(
+					row as {
+						current_mahadasha?: { lord: string } | null
+						current_antardasha?: { lord: string } | null
+						current_pratyantar?: { lord: string } | null
+						current_sukshma?: { lord: string } | null
+					},
+				)
+			} else {
+				setCurrentDasha(null)
 			}
-			const data = await res.json()
-			setCurrentDasha(data)
 		} catch (err) {
-			// Silently fail - dasha data is optional
 			console.warn('Failed to fetch current dasha:', err)
 		}
-	}, [backendBaseUrl, authHeaders])
+	}, [apiV1Base, authHeaders])
 
-	const fetchUserReferrals = useCallback(async (userId: number) => {
+	const fetchReferralStats = useCallback(async (_userId: number) => {
 		try {
-			const res = await fetch(`/api/users/${userId}/referrals`, {
-				headers: { ...(authHeaders || {}) },
+			const res = await fetch(`${apiV1Base}/users/referral-stats`, {
+				headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
 			})
-			if (res.ok) {
-				const data = await res.json()
-				setUserReferrals(data)
-			}
-		} catch (error) {
-			console.error('Failed to fetch user referrals', error)
-		}
-	}, [authHeaders])
-
-	const fetchReferralStats = useCallback(async (userId: number) => {
-		try {
-			const res = await fetch(`${backendBaseUrl}/api/users/${userId}/referral-stats`, {
-				headers: authHeaders || {},
-			})
-			if (!res.ok) return null
-			const data = await res.json()
-			setReferralCode(data.referral_code)
-			setReferralCount(data.referral_count)
-			setReferralsNeeded(data.referrals_needed || 0)
-			if (data.referral_limit_awaken_to_builder) {
+			const payload = await res.json().catch(() => null)
+			if (!res.ok || !payload) return null
+			const data =
+				payload &&
+				typeof payload === 'object' &&
+				(payload as { success?: boolean }).success === true &&
+				(payload as { data?: unknown }).data != null
+					? (payload as { data: Record<string, unknown> }).data
+					: (payload as Record<string, unknown>)
+			if (!data || typeof data !== 'object') return null
+			if (typeof data.referral_code === 'string') setReferralCode(data.referral_code)
+			if (typeof data.referral_count === 'number') setReferralCount(data.referral_count)
+			if (typeof data.referrals_needed === 'number') setReferralsNeeded(data.referrals_needed || 0)
+			if (typeof data.referral_limit_awaken_to_builder === 'number') {
 				setReferralLimitAwaken(data.referral_limit_awaken_to_builder)
 			}
-			if (data.referral_limit_karma_pro_to_dharma) {
+			if (typeof data.referral_limit_karma_pro_to_dharma === 'number') {
 				setReferralLimitKarmaPro(data.referral_limit_karma_pro_to_dharma)
 			}
-			if (data.current_plan) {
-				setCurrentPlan(data.current_plan as typeof currentPlan)
+			if (data.current_plan != null) {
+				setCurrentPlan(String(data.current_plan))
 			}
 			return data
-		} catch (error) {
-			// Silently fail
+		} catch {
 			return null
 		}
-	}, [backendBaseUrl, authHeaders])
+	}, [apiV1Base, authHeaders])
 
-	const handleSendReferral = useCallback(async () => {
-		if (!currentUser?.id || !referralValue.trim()) {
-			showToast('Please enter an email or phone number', 'error')
-			return
+	const refreshDashboardAfterPayment = useCallback(async () => {
+		let resolvedId = currentUser?.id ?? userId ?? null
+		if (!resolvedId) {
+			const t = token || (typeof window !== 'undefined' ? localStorage.getItem('ibhakt_token') : null)
+			const fromJwt = parseJwtSub(t)
+			if (fromJwt) resolvedId = fromJwt
 		}
-
-		setSendingReferral(true)
-		try {
-			const res = await fetch(`/api/users/${currentUser.id}/send-referral`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
-				body: JSON.stringify({
-					referral_type: referralType,
-					referral_value: referralValue.trim(),
-				}),
-			})
-
-			if (!res.ok) {
-				const error = await res.json().catch(() => ({}))
-				throw new Error(error.detail || 'Failed to send referral')
-			}
-
-			const data = await res.json()
-			showToast(data.message || 'Referral sent successfully!', 'success')
-			setReferralValue('')
-			await fetchUserReferrals(currentUser.id)
-			await fetchReferralStats(currentUser.id)
-		} catch (error: any) {
-			showToast(error?.message || 'Failed to send referral', 'error')
-		} finally {
-			setSendingReferral(false)
-		}
-	}, [currentUser?.id, referralType, referralValue, authHeaders, fetchUserReferrals, fetchReferralStats])
+		if (!resolvedId) return
+		await Promise.all([
+			fetchUser(resolvedId),
+			fetchGuidance(resolvedId, { silent: true }).catch(() => undefined),
+			fetchKarmaSummary(resolvedId).catch(() => undefined),
+			fetchAlignmentTips(resolvedId, { silent: true }).catch(() => undefined),
+			fetchReferralStats(resolvedId).catch(() => undefined),
+			fetchCurrentDasha(resolvedId).catch(() => undefined),
+			fetchKarmaDashboard().catch(() => undefined),
+			fetchTwinState().catch(() => undefined),
+			fetchEntitlements().catch(() => undefined),
+			fetchFeatureLimits(resolvedId).catch(() => undefined),
+		])
+	}, [
+		currentUser?.id,
+		userId,
+		token,
+		fetchUser,
+		fetchGuidance,
+		fetchKarmaSummary,
+		fetchAlignmentTips,
+		fetchReferralStats,
+		fetchCurrentDasha,
+		fetchKarmaDashboard,
+		fetchTwinState,
+		fetchEntitlements,
+		fetchFeatureLimits,
+	])
 
 	const handleSendMultipleReferrals = useCallback(async () => {
 		if (!currentUser?.id) {
@@ -1559,11 +1558,14 @@ const DashboardPage: React.FC = () => {
 			setReferralPhoneNumbers([''])
 			
 			// Refresh referral stats
-			await fetchUserReferrals(currentUser.id)
 			const updatedStats = await fetchReferralStats(currentUser.id)
 			
 			// Check if user should be upgraded
-			if (updatedStats && updatedStats.referral_count >= referralLimitAwaken) {
+			if (
+				updatedStats &&
+				typeof updatedStats.referral_count === 'number' &&
+				updatedStats.referral_count >= referralLimitAwaken
+			) {
 				// Refresh user data to get updated plan
 				await fetchUser(currentUser.id)
 			}
@@ -1572,34 +1574,41 @@ const DashboardPage: React.FC = () => {
 		} finally {
 			setSendingReferral(false)
 		}
-	}, [currentUser?.id, referralPhoneNumbers, authHeaders, fetchUserReferrals, fetchReferralStats, referralLimitAwaken, fetchUser])
+	}, [currentUser?.id, referralPhoneNumbers, authHeaders, fetchReferralStats, referralLimitAwaken, fetchUser])
 
-	const handleUpgradePlan = useCallback(async (planId: 'karma_pro' | 'dharma_master') => {
-		if (!currentUser?.id) {
-			showToast('User profile is still loading. Please wait 2 seconds and try again.', 'info')
-			return
+	useEffect(() => {
+		const onPlanUpgraded = (ev: Event) => {
+			const detail = (ev as CustomEvent<{ plan?: string }>).detail
+			if (detail?.plan) setCurrentPlan(String(detail.plan))
+			void refreshDashboardAfterPayment()
 		}
-		setUpgradingPlan(planId)
-		try {
-			const res = await fetch(`${backendBaseUrl}/api/users/${currentUser.id}/upgrade-plan`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
-				body: JSON.stringify({ plan: planId }),
-			})
-			if (!res.ok) {
-				const detail = await res.json().catch(() => ({}))
-				throw new Error(detail.detail || 'Failed to upgrade plan')
-			}
-			const data = await res.json()
-			setCurrentPlan(planId)
-			showToast(`Successfully upgraded to ${planId === 'karma_pro' ? 'Karma Pro' : 'Dharma Master'}!`, 'success')
-			setShowPlanModal(false)
-		} catch (error: any) {
-			showToast(error?.message || 'Failed to upgrade plan', 'error')
-		} finally {
-			setUpgradingPlan(null)
+		window.addEventListener(IBAHKT_PLAN_UPGRADED, onPlanUpgraded)
+		return () => window.removeEventListener(IBAHKT_PLAN_UPGRADED, onPlanUpgraded)
+	}, [refreshDashboardAfterPayment])
+
+	useEffect(() => {
+		const onDashRefresh = () => {
+			void refreshDashboardAfterPayment()
 		}
-	}, [currentUser?.id, backendBaseUrl, authHeaders, showToast])
+		window.addEventListener(IBAHKT_DASHBOARD_REFRESH, onDashRefresh)
+		return () => window.removeEventListener(IBAHKT_DASHBOARD_REFRESH, onDashRefresh)
+	}, [refreshDashboardAfterPayment])
+
+	useEffect(() => {
+		const query = new URLSearchParams(location.search)
+		if (query.get('payment') !== 'success') return
+		query.delete('payment')
+		const cleaned = query.toString()
+		navigate(
+			{
+				pathname: location.pathname,
+				search: cleaned ? `?${cleaned}` : '',
+			},
+			{ replace: true },
+		)
+		// Single refresh path: same as plan modal upgrade — updates dashboard + manifestation dashboard (plan limits).
+		window.dispatchEvent(new CustomEvent(IBAHKT_PLAN_UPGRADED, { detail: {} }))
+	}, [location.pathname, location.search, navigate])
 
 	const ensureUserProfile = useCallback(async (): Promise<number | null> => {
 		if (userId) {
@@ -1697,19 +1706,9 @@ const DashboardPage: React.FC = () => {
 	}, [clearAvatarPolling])
 
 	useEffect(() => {
-		;(async () => {
-			try {
-				const res = await fetch('/api/karma/categories', {
-					headers: { 'Content-Type': 'application/json', ...(authHeaders || {}) },
-				})
-				if (!res.ok) throw new Error('Unable to load karma categories.')
-				const data = await res.json()
-				setKarmaCategories(data || [])
-			} catch (error: any) {
-				console.warn(error?.message || 'Unable to load karma categories.')
-			}
-		})()
-	}, [authHeaders])
+		if (!showKarmaModal) return
+		void fetchKarmaCategories()
+	}, [showKarmaModal, fetchKarmaCategories])
 
 	// Fetch birth details when Cosmic Blueprint section is active
 	useEffect(() => {
@@ -2183,7 +2182,7 @@ const DashboardPage: React.FC = () => {
 
 	const resolvedAvatarUrl = useMemo(() => {
 		const url = currentUser?.avatar_url
-		console.log('Computing resolvedAvatarUrl, currentUser?.avatar_url:', url, 'backendBaseUrl:', backendBaseUrl)
+		console.log('Computing resolvedAvatarUrl, currentUser?.avatar_url:', url, 'backendOrigin:', backendOrigin)
 		if (!url) {
 			console.log('No avatar URL found')
 			return null
@@ -2192,10 +2191,10 @@ const DashboardPage: React.FC = () => {
 			console.log('Avatar URL is absolute:', url)
 			return url
 		}
-		const resolved = `${backendBaseUrl}${url}`
+		const resolved = `${backendOrigin}${url}`
 		console.log('Resolved avatar URL:', resolved)
 		return resolved
-	}, [backendBaseUrl, currentUser?.avatar_url])
+	}, [backendOrigin, currentUser?.avatar_url])
 
 	useEffect(() => {
 		if (currentUser?.id) {
@@ -2203,18 +2202,7 @@ const DashboardPage: React.FC = () => {
 		}
 	}, [currentUser?.id])
 
-	useEffect(() => {
-		if (currentUser?.id) {
-			void fetchAlignmentTips(currentUser.id, { silent: true })
-		}
-	}, [currentUser?.id, fetchAlignmentTips])
-
-	useEffect(() => {
-		if (showPlanModal && currentUser?.id) {
-			void fetchReferralStats(currentUser.id)
-			void fetchUserReferrals(currentUser.id)
-		}
-	}, [showPlanModal, currentUser?.id, fetchReferralStats, fetchUserReferrals])
+	// Alignment tips: loaded in bootstrap + refreshDashboardAfterPayment; avoid a second fetch when currentUser.id appears.
 
 	useEffect(() => {
 		if (activeSection === 'charts' && currentUser?.id && !chartData && !chartLoading && currentUser.date_of_birth && currentUser.time_of_birth) {
@@ -2230,9 +2218,17 @@ const DashboardPage: React.FC = () => {
 		const bootstrap = async () => {
 			setInitializing(true)
 			try {
-				let resolvedId = userId
+				let resolvedId = userId ?? null
 				if (!resolvedId) {
 					resolvedId = await ensureUserProfile()
+				}
+				if (!resolvedId) {
+					const t = token || localStorage.getItem('ibhakt_token')
+					const fromJwt = parseJwtSub(t)
+					if (fromJwt) {
+						resolvedId = fromJwt
+						if (setUserId) setUserId(fromJwt)
+					}
 				}
 				// Even if user doesn't exist yet, still render the dashboard
 				// User can create their digital twin from the dashboard
@@ -2265,7 +2261,7 @@ const DashboardPage: React.FC = () => {
 		return () => {
 			cancelled = true
 		}
-	}, [token, userId, ensureUserProfile, fetchUser, fetchGuidance, fetchKarmaSummary, fetchCurrentDasha])
+	}, [token, userId, ensureUserProfile, fetchUser, fetchGuidance, fetchKarmaSummary, fetchCurrentDasha, setUserId])
 
 	// Refresh referral stats when referral modal opens
 	useEffect(() => {
@@ -2333,8 +2329,14 @@ const DashboardPage: React.FC = () => {
 		)
 	}
 
-	// Debug: Force render something visible immediately
-	console.log('[DashboardPage] Rendering dashboard', { hasToken, initializing, hasUser: !!currentUser, showLoading })
+	if (import.meta.env.DEV) {
+		console.log('[DashboardPage] Rendering dashboard', {
+			hasToken: !!hasToken,
+			initializing,
+			hasUser: !!currentUser,
+			showLoading,
+		})
+	}
 	
 	// Always render - even if there are errors, show something
 	return (
@@ -2519,7 +2521,7 @@ const DashboardPage: React.FC = () => {
 													/>
 												) : currentUser?.avatar_url ? (
 													<img
-														src={`${backendBaseUrl}${currentUser.avatar_url}`}
+														src={`${backendOrigin}${currentUser.avatar_url}`}
 														alt="Cosmic Avatar"
 														style={avatarImageLeftStyle}
 														onLoad={() => {
@@ -2565,8 +2567,36 @@ const DashboardPage: React.FC = () => {
 							</div>
 									<div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
 										<div style={currentPlanBadgeStyle(currentPlan)}>
-											{currentPlan === 'awaken' ? 'Awaken' : currentPlan === 'karma_builder' ? 'Karma Builder' : currentPlan === 'karma_pro' ? 'Karma Pro' : 'Dharma Master'}
+											{formatCurrentPlanLabel(currentPlan)}
 							</div>
+										<button
+											type="button"
+											onClick={() => openPlanModal()}
+											style={{
+												padding: '10px 20px',
+												background: 'linear-gradient(135deg, #6366f1 0%, #7c3aed 55%, #a855f7 100%)',
+												border: '1px solid rgba(199, 210, 254, 0.45)',
+												borderRadius: 10,
+												color: '#fff',
+												fontWeight: 700,
+												fontSize: '13px',
+												cursor: 'pointer',
+												boxShadow: '0 4px 16px rgba(99, 102, 241, 0.45)',
+												whiteSpace: 'nowrap',
+											}}
+											onMouseEnter={(e) => {
+												e.currentTarget.style.transform = 'scale(1.03)'
+												e.currentTarget.style.boxShadow = '0 6px 20px rgba(99, 102, 241, 0.55)'
+											}}
+											onMouseLeave={(e) => {
+												e.currentTarget.style.transform = 'scale(1)'
+												e.currentTarget.style.boxShadow = '0 4px 16px rgba(99, 102, 241, 0.45)'
+											}}
+										>
+											{normalizeUserPlanType(currentPlan) === 'awaken'
+												? 'Upgrade plan'
+												: 'Change plan'}
+										</button>
 										{/* PDF Download Button */}
 										{currentUser?.id && currentUser?.date_of_birth && currentUser.date_of_birth !== '1900-01-01' && currentUser?.place_name && currentUser.place_name !== 'Unknown' && (
 											<button
@@ -2624,7 +2654,7 @@ const DashboardPage: React.FC = () => {
 										<button
 											type="button"
 											style={planButtonStyle}
-											onClick={() => setShowPlanModal(true)}
+											onClick={() => openPlanModal()}
 											onMouseEnter={e => {
 												e.currentTarget.style.transform = 'scale(1.05)'
 												e.currentTarget.style.boxShadow = '0 6px 16px rgba(99, 102, 241, 0.5)'
@@ -2634,7 +2664,7 @@ const DashboardPage: React.FC = () => {
 												e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.4)'
 											}}
 										>
-											PLAN
+											View plans
 										</button>
 									</div>
 								</div>
@@ -3477,346 +3507,6 @@ const DashboardPage: React.FC = () => {
 											</div>
 												</div>
 											)}
-			{showPlanModal && (
-				<div style={planModalOverlayStyle} onClick={() => setShowPlanModal(false)}>
-					<div style={planModalContentStyle} onClick={e => e.stopPropagation()}>
-						<div style={planModalHeaderStyle}>
-							<h2 style={planModalTitleStyle}>
-								<span className="brand-mark">iBhakt</span> Plan Structure
-							</h2>
-													<button
-														type="button"
-								style={planModalCloseButtonStyle}
-								onClick={() => setShowPlanModal(false)}
-								onMouseEnter={e => {
-									e.currentTarget.style.background = 'rgba(148, 163, 184, 0.3)'
-									e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.5)'
-								}}
-								onMouseLeave={e => {
-									e.currentTarget.style.background = 'rgba(148, 163, 184, 0.2)'
-									e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.3)'
-								}}
-							>
-								✕
-													</button>
-												</div>
-						<div style={planModalBodyStyle}>
-							{(() => {
-								// Define plan hierarchy
-								const planHierarchy: Record<string, number> = {
-									'awaken': 1,
-									'karma_builder': 2,
-									'karma_pro': 3,
-									'dharma_master': 4,
-								}
-								const currentPlanLevel = planHierarchy[currentPlan] || 0
-								
-								// Show all plans (no filter)
-								return PLAN_DATA.map((plan) => {
-									const planLevel = planHierarchy[plan.id] || 0
-									const canUpgradeToKarmaPro =
-										plan.id === 'karma_pro' &&
-										currentPlan !== 'karma_pro' &&
-										currentPlan !== 'dharma_master'
-									const canUpgradeToDharmaMaster =
-										plan.id === 'dharma_master' && currentPlan !== 'dharma_master'
-									return (
-										<div key={plan.id} style={planCardStyle(plan.tier, currentPlan === plan.id)}>
-											{currentPlan === plan.id && (
-												<div style={planCardCurrentBadgeStyle}>Current Plan</div>
-											)}
-											<div style={planCardHeaderStyle(plan.tier)}>
-												<div style={planCardTierStyle}>
-													<span style={planCardTierNumberStyle}>{planLevel}️⃣</span>
-													<div>
-														<h3 style={planCardTitleStyle}>{plan.name}</h3>
-														<p style={planCardTaglineStyle}>{plan.tagline}</p>
-												</div>
-										</div>
-											</div>
-									{plan.price && (
-										<div style={planCardPriceCenterStyle}>
-											{plan.price}
-								</div>
-							)}
-									<div style={planCardBodyStyle}>
-										{(canUpgradeToKarmaPro || canUpgradeToDharmaMaster) && (
-											<div style={planQuickActionWrapStyle}>
-												<button
-													type="button"
-													style={planQuickActionButtonStyle}
-													onClick={(e) => {
-														e.stopPropagation()
-														void handleUpgradePlan(
-															canUpgradeToKarmaPro ? 'karma_pro' : 'dharma_master',
-														)
-													}}
-												>
-													{canUpgradeToKarmaPro
-														? (upgradingPlan === 'karma_pro' ? 'Upgrading...' : 'Upgrade to Karma Pro')
-														: (upgradingPlan === 'dharma_master' ? 'Upgrading...' : 'Upgrade to Dharma Master')}
-												</button>
-											</div>
-										)}
-										<div style={planCardIncludesStyle}>
-											<strong>Includes:</strong>
-											<ul style={planCardListStyle}>
-												{plan.includes.map((item, idx) => (
-													<li key={idx} style={planCardListItemStyle}>{item}</li>
-												))}
-											</ul>
-							</div>
-									{plan.unlocksWhen && plan.id === 'karma_builder' && (
-										<div style={planCardUnlocksStyle}>
-											<div
-												style={{
-													width: '100%',
-													background: 'rgba(99, 102, 241, 0.14)',
-													border: '1px solid rgba(99, 102, 241, 0.35)',
-													color: '#c7d2fe',
-													fontWeight: 600,
-													padding: '12px 20px',
-													fontSize: 14,
-													borderRadius: 8,
-												}}
-											>
-												🔗 Auto-unlock via referrals: {plan.unlocksWhen}
-											</div>
-										</div>
-									)}
-									{plan.unlocksWhen && plan.id !== 'karma_builder' && (
-										<div style={planCardUnlocksStyle}>
-											<strong>Unlocks when:</strong> {plan.unlocksWhen}
-										</div>
-									)}
-									{plan.id === 'karma_builder' && currentPlan === 'awaken' && (
-										<div style={referralProgressStyle}>
-											<div style={referralProgressHeaderStyle}>
-												<strong>Referral Progress:</strong>
-												<span>{referralCount} / {referralLimitAwaken} referrals</span>
-							</div>
-											<div style={referralProgressBarStyle}>
-											<div
-												style={{
-														...referralProgressFillStyle,
-														width: `${Math.min(100, (referralCount / referralLimitAwaken) * 100)}%`,
-													}}
-												/>
-											</div>
-											{referralCode && (
-												<div style={referralCodeDisplayStyle}>
-													<span>Your Referral Code:</span>
-													<div style={referralCodeBoxStyle}>
-														<code style={referralCodeTextStyle}>{referralCode}</code>
-								<button
-															type="button"
-															style={copyButtonStyle}
-															onClick={() => {
-																navigator.clipboard.writeText(referralCode)
-																showToast('Referral code copied!', 'success')
-															}}
-														>
-															Copy Code
-														</button>
-											</div>
-													<div style={{ marginTop: 12 }}>
-														<span style={{ fontSize: 12, color: '#94a3b8', display: 'block', marginBottom: 6 }}>Share Your Referral Link:</span>
-														<div style={referralCodeBoxStyle}>
-															<code style={{ ...referralCodeTextStyle, fontSize: 11, wordBreak: 'break-all' }}>
-																{publicBaseUrl}/?ref={referralCode}
-															</code>
-													<button
-														type="button"
-																style={copyButtonStyle}
-																onClick={() => {
-																	const referralUrl = `${publicBaseUrl}/?ref=${referralCode}`
-																	navigator.clipboard.writeText(referralUrl)
-																	showToast('Referral link copied! Share it with friends.', 'success')
-																}}
-															>
-																Copy Link
-													</button>
-														</div>
-													</div>
-													{/* Send Referral via Email/Phone */}
-													<div style={{ marginTop: 20, padding: 16, background: 'rgba(15, 23, 42, 0.6)', borderRadius: 12, border: '1px solid rgba(148, 163, 184, 0.2)' }}>
-														<div style={{ fontSize: 13, fontWeight: 600, color: '#cbd5f5', marginBottom: 12 }}>Refer via Email or Phone</div>
-														<div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-													<button
-														type="button"
-																onClick={() => setReferralType('email')}
-									style={{
-																	flex: 1,
-																	padding: '8px 12px',
-																	borderRadius: 8,
-																	border: '1px solid rgba(148, 163, 184, 0.3)',
-																	background: referralType === 'email' ? 'rgba(99, 102, 241, 0.3)' : 'rgba(15, 23, 42, 0.5)',
-																	color: '#e0e7ff',
-																	fontSize: 12,
-																	cursor: 'pointer',
-																}}
-															>
-																Email
-															</button>
-															<button
-									type="button"
-																onClick={() => setReferralType('phone')}
-																style={{
-																	flex: 1,
-																	padding: '8px 12px',
-																	borderRadius: 8,
-																	border: '1px solid rgba(148, 163, 184, 0.3)',
-																	background: referralType === 'phone' ? 'rgba(99, 102, 241, 0.3)' : 'rgba(15, 23, 42, 0.5)',
-																	color: '#e0e7ff',
-																	fontSize: 12,
-																	cursor: 'pointer',
-																}}
-															>
-																Phone
-													</button>
-												</div>
-														<input
-															type={referralType === 'email' ? 'email' : 'tel'}
-															value={referralValue}
-															onChange={(e) => setReferralValue(e.target.value)}
-															placeholder={referralType === 'email' ? 'Enter email address' : 'Enter phone number'}
-															style={{
-																width: '100%',
-																padding: '10px 12px',
-																borderRadius: 8,
-																border: '1px solid rgba(148, 163, 184, 0.3)',
-																background: 'rgba(15, 23, 42, 0.7)',
-																color: '#f8fafc',
-																fontSize: 13,
-																marginBottom: 12,
-															}}
-														/>
-							<button
-								type="button"
-															onClick={handleSendReferral}
-															disabled={sendingReferral || !referralValue.trim()}
-								style={{
-									width: '100%',
-																padding: '10px 16px',
-																borderRadius: 8,
-																border: 'none',
-																background: sendingReferral ? 'rgba(148, 163, 184, 0.5)' : 'rgba(99, 102, 241, 0.8)',
-																color: '#f8fafc',
-																fontSize: 13,
-																fontWeight: 600,
-																cursor: sendingReferral ? 'not-allowed' : 'pointer',
-																opacity: sendingReferral || !referralValue.trim() ? 0.6 : 1,
-															}}
-														>
-															{sendingReferral ? 'Sending...' : `Send Referral via ${referralType === 'email' ? 'Email' : 'Phone'}`}
-														</button>
-												</div>
-													{/* Show pending and completed referrals */}
-													{userReferrals && (userReferrals.pending.length > 0 || userReferrals.completed.length > 0) && (
-														<div style={{ marginTop: 16, padding: 12, background: 'rgba(15, 23, 42, 0.4)', borderRadius: 10, fontSize: 11 }}>
-															<div style={{ color: '#94a3b8', marginBottom: 8 }}>
-																Pending: {userReferrals.pending.length} | Completed: {userReferrals.completed.length}
-															</div>
-															{userReferrals.pending.length > 0 && (
-																<div style={{ marginTop: 8 }}>
-																	<div style={{ color: '#c9a84c', marginBottom: 4, fontSize: 10 }}>Pending Referrals:</div>
-																	{userReferrals.pending.slice(0, 3).map((ref: any) => (
-																		<div key={ref.id} style={{ color: '#cbd5f5', fontSize: 10, marginTop: 2 }}>
-																			{ref.referral_type === 'email' ? '📧' : '📱'} {ref.referral_value}
-										</div>
-									))}
-																	{userReferrals.pending.length > 3 && (
-																		<div style={{ color: '#94a3b8', fontSize: 10, marginTop: 4 }}>+{userReferrals.pending.length - 3} more</div>
-																	)}
-								</div>
-													)}
-												</div>
-											)}
-										</div>
-											)}
-								</div>
-							)}
-									{plan.id === 'dharma_master' && currentPlan === 'karma_pro' && (
-										<div style={referralProgressStyle}>
-											<div style={referralProgressHeaderStyle}>
-												<strong>Referral Progress to Dharma Master:</strong>
-												<span>{referralCount} / {referralLimitKarmaPro} referrals</span>
-						</div>
-											<div style={referralProgressBarStyle}>
-												<div
-													style={{
-														...referralProgressFillStyle,
-														width: `${Math.min(100, (referralCount / referralLimitKarmaPro) * 100)}%`,
-													}}
-												/>
-					</div>
-											{referralCode && (
-												<div style={referralCodeDisplayStyle}>
-													<span>Your Referral Code:</span>
-													<div style={referralCodeBoxStyle}>
-														<code style={referralCodeTextStyle}>{referralCode}</code>
-														<button
-															type="button"
-															style={copyButtonStyle}
-								onClick={() => {
-																navigator.clipboard.writeText(referralCode)
-																showToast('Referral code copied!', 'success')
-															}}
-														>
-															Copy Code
-							</button>
-													</div>
-													<div style={{ marginTop: 12 }}>
-														<span style={{ fontSize: 12, color: '#94a3b8', display: 'block', marginBottom: 6 }}>Share Your Referral Link:</span>
-														<div style={referralCodeBoxStyle}>
-															<code style={{ ...referralCodeTextStyle, fontSize: 11, wordBreak: 'break-all' }}>
-																{publicBaseUrl}/?ref={referralCode}
-															</code>
-								<button
-																type="button"
-																style={copyButtonStyle}
-																onClick={() => {
-																	const referralUrl = `${publicBaseUrl}/?ref=${referralCode}`
-																	navigator.clipboard.writeText(referralUrl)
-																	showToast('Referral link copied! Share it with friends.', 'success')
-																}}
-															>
-																Copy Link
-															</button>
-														</div>
-													</div>
-								</div>
-							)}
-						</div>
-									)}
-								</div>
-								{canUpgradeToKarmaPro && (
-									<button
-										type="button"
-										style={upgradeButtonStyle}
-										onClick={() => void handleUpgradePlan('karma_pro')}
-									>
-										{upgradingPlan === 'karma_pro' ? 'Upgrading...' : 'Upgrade to Karma Pro'}
-									</button>
-								)}
-								{canUpgradeToDharmaMaster && (
-									<button
-										type="button"
-										style={upgradeButtonStyle}
-										onClick={() => void handleUpgradePlan('dharma_master')}
-									>
-										{upgradingPlan === 'dharma_master' ? 'Upgrading...' : 'Upgrade to Dharma Master'}
-									</button>
-								)}
-							</div>
-									)
-								})
-							})()}
-						</div>
-					</div>
-				</div>
-			)}
-
 			{/* Referral Modal */}
 			{showReferralModal && (
 				<div style={planModalOverlayStyle} onClick={() => setShowReferralModal(false)}>
@@ -5629,27 +5319,6 @@ const planButtonStyle: React.CSSProperties = {
 	transition: 'all 0.2s ease-in-out',
 }
 
-const currentPlanBadgeStyle = (plan: string): React.CSSProperties => {
-	const colors: Record<string, { bg: string; color: string; border: string }> = {
-		awaken: { bg: 'rgba(148, 163, 184, 0.2)', color: '#cbd5e1', border: 'rgba(148, 163, 184, 0.4)' },
-		karma_builder: { bg: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', border: 'rgba(59, 130, 246, 0.4)' },
-		karma_pro: { bg: 'rgba(139, 92, 246, 0.2)', color: '#c4b5fd', border: 'rgba(139, 92, 246, 0.4)' },
-		dharma_master: { bg: 'rgba(251, 191, 36, 0.2)', color: '#fde047', border: 'rgba(251, 191, 36, 0.4)' },
-	}
-	const style = colors[plan] || colors.awaken
-	return {
-		background: style.bg,
-		color: style.color,
-		border: `1px solid ${style.border}`,
-		borderRadius: 8,
-		padding: '4px 12px',
-		fontSize: 11,
-		fontWeight: 600,
-		letterSpacing: '0.05em',
-		textTransform: 'uppercase',
-	}
-}
-
 const planModalOverlayStyle: React.CSSProperties = {
 	position: 'fixed',
 	top: 0,
@@ -5737,149 +5406,6 @@ const planModalBodyStyle: React.CSSProperties = {
 	gap: 20,
 }
 
-const planCardStyle = (tier: PlanTier, isCurrent: boolean): React.CSSProperties => {
-	const tierColors: Record<PlanTier, { bg: string; border: string }> = {
-		free: { bg: 'rgba(148, 163, 184, 0.1)', border: 'rgba(148, 163, 184, 0.3)' },
-		referral: { bg: 'rgba(59, 130, 246, 0.1)', border: 'rgba(59, 130, 246, 0.3)' },
-		paid: { bg: 'rgba(139, 92, 246, 0.1)', border: 'rgba(139, 92, 246, 0.3)' },
-		premium: { bg: 'rgba(251, 191, 36, 0.1)', border: 'rgba(251, 191, 36, 0.3)' },
-	}
-	const colors = tierColors[tier]
-	return {
-		background: colors.bg,
-		border: `2px solid ${isCurrent ? colors.border : 'rgba(148, 163, 184, 0.2)'}`,
-		borderRadius: 16,
-		padding: 20,
-		position: 'relative',
-		boxShadow: isCurrent ? `0 8px 24px ${colors.border}40` : '0 4px 12px rgba(0, 0, 0, 0.2)',
-		transition: 'all 0.3s ease-in-out',
-	}
-}
-
-const planCardHeaderStyle = (tier: PlanTier): React.CSSProperties => {
-	return {
-		display: 'flex',
-		justifyContent: 'flex-start',
-		alignItems: 'flex-start',
-		marginBottom: 12,
-		gap: 12,
-	}
-}
-
-const planCardTierStyle: React.CSSProperties = {
-	display: 'flex',
-	gap: 12,
-	alignItems: 'flex-start',
-	flex: 1,
-}
-
-const planCardTierNumberStyle: React.CSSProperties = {
-	fontSize: 28,
-	lineHeight: 1,
-}
-
-const planCardTitleStyle: React.CSSProperties = {
-	margin: 0,
-	fontSize: 18,
-	fontWeight: 700,
-	color: '#f8fafc',
-	marginBottom: 4,
-}
-
-const planCardTaglineStyle: React.CSSProperties = {
-	margin: 0,
-	fontSize: 13,
-	color: '#94a3b8',
-	fontStyle: 'italic',
-}
-
-const planCardPriceStyle: React.CSSProperties = {
-	background: 'rgba(251, 191, 36, 0.2)',
-	color: '#fde047',
-	padding: '8px 16px',
-	borderRadius: 8,
-	fontSize: 14,
-	fontWeight: 700,
-	border: '1px solid rgba(251, 191, 36, 0.4)',
-	whiteSpace: 'nowrap',
-}
-
-const planCardPriceCenterStyle: React.CSSProperties = {
-	background: 'rgba(251, 191, 36, 0.2)',
-	color: '#fde047',
-	padding: '12px 20px',
-	borderRadius: 12,
-	fontSize: 16,
-	fontWeight: 700,
-	border: '1px solid rgba(251, 191, 36, 0.4)',
-	textAlign: 'center',
-	marginBottom: 16,
-	boxShadow: '0 4px 12px rgba(251, 191, 36, 0.2)',
-}
-
-const planCardBodyStyle: React.CSSProperties = {
-	display: 'grid',
-	gap: 12,
-}
-
-const planCardTargetStyle: React.CSSProperties = {
-	fontSize: 13,
-	color: '#cbd5e1',
-	lineHeight: 1.6,
-}
-
-const planCardGoalStyle: React.CSSProperties = {
-	fontSize: 13,
-	color: '#cbd5e1',
-	lineHeight: 1.6,
-}
-
-const planCardIncludesStyle: React.CSSProperties = {
-	fontSize: 13,
-	color: '#cbd5e1',
-	lineHeight: 1.6,
-}
-
-const planCardListStyle: React.CSSProperties = {
-	margin: '8px 0 0 0',
-	paddingLeft: 20,
-	display: 'grid',
-	gap: 6,
-}
-
-const planCardListItemStyle: React.CSSProperties = {
-	fontSize: 12,
-	color: '#94a3b8',
-	lineHeight: 1.5,
-}
-
-const planCardUnlocksStyle: React.CSSProperties = {
-	fontSize: 13,
-	color: '#c9a84c',
-	lineHeight: 1.6,
-	marginTop: 8,
-	padding: '8px 12px',
-	background: 'rgba(251, 191, 36, 0.1)',
-	borderRadius: 8,
-	border: '1px solid rgba(251, 191, 36, 0.2)',
-}
-
-const planCardCurrentBadgeStyle: React.CSSProperties = {
-	position: 'absolute',
-	top: 16,
-	right: 16,
-	background: 'linear-gradient(135deg, #34d399, #10b981)',
-	color: '#064e3b',
-	padding: '6px 14px',
-	borderRadius: 999,
-	fontSize: 11,
-	fontWeight: 700,
-	letterSpacing: '0.1em',
-	textTransform: 'uppercase',
-	boxShadow: '0 4px 12px rgba(52, 211, 153, 0.4)',
-	zIndex: 10,
-}
-
 const referralProgressStyle: React.CSSProperties = {
 	marginTop: 16,
 	padding: '16px',
@@ -5911,82 +5437,6 @@ const referralProgressFillStyle: React.CSSProperties = {
 	background: 'linear-gradient(90deg, #3b82f6, #2563eb)',
 	borderRadius: 999,
 	transition: 'width 0.3s ease-in-out',
-}
-
-const referralCodeDisplayStyle: React.CSSProperties = {
-	marginTop: 12,
-	fontSize: 12,
-	color: '#94a3b8',
-}
-
-const referralCodeBoxStyle: React.CSSProperties = {
-	display: 'flex',
-	alignItems: 'center',
-	gap: 8,
-	marginTop: 8,
-}
-
-const referralCodeTextStyle: React.CSSProperties = {
-	background: 'rgba(15, 23, 42, 0.6)',
-	padding: '8px 12px',
-	borderRadius: 8,
-	fontSize: 14,
-	fontWeight: 700,
-	color: '#c9a84c',
-	letterSpacing: '0.1em',
-	flex: 1,
-	border: '1px solid rgba(251, 191, 36, 0.3)',
-}
-
-const copyButtonStyle: React.CSSProperties = {
-	background: 'rgba(59, 130, 246, 0.2)',
-	color: '#93c5fd',
-	border: '1px solid rgba(59, 130, 246, 0.4)',
-	borderRadius: 8,
-	padding: '8px 16px',
-	fontSize: 12,
-	fontWeight: 600,
-	cursor: 'pointer',
-	transition: 'all 0.2s ease-in-out',
-}
-
-const upgradeButtonStyle: React.CSSProperties = {
-	width: '100%',
-	marginTop: 16,
-	padding: '12px 24px',
-	background: 'linear-gradient(135deg, #c9a84c, #9d823c)',
-	color: '#064e3b',
-	border: 'none',
-	borderRadius: 12,
-	fontSize: 14,
-	fontWeight: 700,
-	cursor: 'pointer',
-	boxShadow: '0 4px 12px rgba(251, 191, 36, 0.4)',
-	transition: 'all 0.2s ease-in-out',
-	position: 'relative',
-	zIndex: 20,
-	pointerEvents: 'auto',
-}
-
-const planQuickActionWrapStyle: React.CSSProperties = {
-	marginBottom: 14,
-	position: 'relative',
-	zIndex: 50,
-}
-
-const planQuickActionButtonStyle: React.CSSProperties = {
-	width: '100%',
-	padding: '12px 16px',
-	borderRadius: 10,
-	border: '1px solid rgba(16, 185, 129, 0.45)',
-	background: 'linear-gradient(135deg, rgba(16,185,129,0.95), rgba(5,150,105,0.92))',
-	color: '#ecfeff',
-	fontWeight: 800,
-	fontSize: 14,
-	cursor: 'pointer',
-	pointerEvents: 'auto',
-	position: 'relative',
-	zIndex: 60,
 }
 
 export default DashboardPage

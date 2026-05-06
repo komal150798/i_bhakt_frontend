@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { homeApi } from '../../../api/homeApi';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
+import { useToast } from '../../../common/hooks/useToast';
 import styles from './ReferBanner.module.css';
 
 function ReferBanner() {
   const { t } = useLanguage();
+  const { showWarning, showError } = useToast();
   const navigate = useNavigate();
   const [shareUrl, setShareUrl] = useState(window.location.origin);
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -36,7 +38,7 @@ function ReferBanner() {
   const ensureLoggedIn = () => {
     const token = localStorage.getItem('ibhakt_token');
     if (token) return true;
-    alert('Please login to use referral sharing.');
+    showWarning('Login required', { description: 'Please sign in to use referral sharing.' });
     navigate('/login');
     return false;
   };
@@ -53,7 +55,7 @@ function ReferBanner() {
       setCopyFeedback(`Copied: ${shareUrl}`);
       setTimeout(() => setCopyFeedback(''), 2500);
     } catch (error) {
-      alert('Unable to copy. Please copy manually.');
+      showError('Copy failed', { description: 'Please copy the link manually from the field above.' });
     }
   };
 
@@ -95,7 +97,7 @@ function ReferBanner() {
       setCopyFeedback(`Link copied (share fallback): ${shareUrl}`);
       setTimeout(() => setCopyFeedback(''), 2500);
     } catch (error) {
-      alert('Sharing is not supported on this device.');
+      showError('Sharing unavailable', { description: 'Copy the link manually or try another browser.' });
     }
   };
 

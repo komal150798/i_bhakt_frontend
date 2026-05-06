@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
 import { useAdminAuth } from '../../../common/context/AdminAuthContext';
+import { useToast } from '../../../common/hooks/useToast';
 import DataTable from '../../components/DataTable/DataTable';
 import styles from './SmsTemplatesPage.module.css';
 
 function SmsTemplatesPage() {
   const { hasPermission, isSuperAdmin } = useAdminAuth();
+  const { showSuccess, showError, showWarning } = useToast();
   const [loading, setLoading] = useState(true);
   const [templates, setTemplates] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -71,7 +73,7 @@ function SmsTemplatesPage() {
       fetchTemplates();
     } catch (error) {
       console.error('Failed to save template:', error);
-      alert(error.message || 'Failed to save template');
+      showError('Failed to save template', { description: error.message || 'Unknown error' });
     }
   };
 
@@ -81,19 +83,25 @@ function SmsTemplatesPage() {
       fetchTemplates();
     } catch (error) {
       console.error('Failed to toggle template status:', error);
-      alert(error.message || 'Failed to update template status');
+      showError('Failed to update template status', { description: error.message || 'Unknown error' });
     }
   };
 
   const handleDelete = async (templateId) => {
-    if (!confirm('Are you sure you want to delete this template?')) return;
-    try {
-      await adminApi.deleteSmsTemplate(templateId);
-      fetchTemplates();
-    } catch (error) {
-      console.error('Failed to delete template:', error);
-      alert(error.message || 'Failed to delete template');
-    }
+    showWarning('Are you sure you want to delete this template?', {
+      actionLabel: 'Delete',
+      duration: 7000,
+      onActionClick: async () => {
+        try {
+          await adminApi.deleteSmsTemplate(templateId);
+          showSuccess('Template deleted');
+          fetchTemplates();
+        } catch (error) {
+          console.error('Failed to delete template:', error);
+          showError('Failed to delete template', { description: error.message || 'Unknown error' });
+        }
+      },
+    });
   };
 
   const columns = [

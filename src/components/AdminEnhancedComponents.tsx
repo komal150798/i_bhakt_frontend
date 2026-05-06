@@ -2,9 +2,11 @@
 // This file contains reusable components for the admin dashboard
 
 import { useState, useEffect, useMemo } from 'react'
+import { useToast } from '../common/hooks/useToast'
 
 // Enhanced UsersManagement with Pagination, Search, Export
 export function EnhancedUsersManagement({ getAuthHeaders, backendBaseUrl }: { getAuthHeaders: () => Record<string, string>; backendBaseUrl: string }) {
+	const { showError } = useToast()
 	const [users, setUsers] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [currentPage, setCurrentPage] = useState(1)
@@ -57,7 +59,7 @@ export function EnhancedUsersManagement({ getAuthHeaders, backendBaseUrl }: { ge
 			document.body.removeChild(a)
 		} catch (error) {
 			console.error('Export failed', error)
-			alert('Export failed')
+			showError('Export failed', { description: 'Could not export users right now.' })
 		}
 	}
 

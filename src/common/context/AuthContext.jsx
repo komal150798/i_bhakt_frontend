@@ -6,12 +6,93 @@ const AuthContext = createContext();
 const TOKEN_STORAGE_KEY = 'ibhakt_token';
 const REFRESH_TOKEN_STORAGE_KEY = 'ibhakt_refresh_token';
 const USER_STORAGE_KEY = 'ibhakt_user';
+const PROFILE_STORAGE_KEY = 'ibhakt_profile';
+const USER_ID_STORAGE_KEY = 'ibhakt_user_id';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [token, setTokenState] = useState(null);
+  const [profile, setProfileState] = useState(() => {
+    try {
+      const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  });
+  const [userId, setUserIdState] = useState(() => {
+    const raw = localStorage.getItem(USER_ID_STORAGE_KEY);
+    if (!raw) return null;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : null;
+  });
   const [isLoading, setIsLoading] = useState(true);
   const hasLoadedRef = useRef(false);
+
+  /** Seeds dashboard `userId` / `profile` from login user payload (matches legacy AuthContext.tsx behavior). */
+  const seedDashboardAuth = useCallback((userData) => {
+    if (!userData || typeof userData !== 'object') return;
+    const idNum = Number(userData.id);
+    if (Number.isFinite(idNum) && idNum > 0) {
+      setUserIdState((prev) => {
+        if (prev != null) return prev;
+        localStorage.setItem(USER_ID_STORAGE_KEY, String(idNum));
+        return idNum;
+      });
+    }
+    setProfileState((prev) => {
+      if (prev) return prev;
+      const next = {
+        fullName: userData.full_name || userData.name || userData.fullName,
+        email: userData.email,
+        phoneNumber: userData.phone_number || userData.phoneNumber,
+        dateOfBirth: userData.date_of_birth || userData.dateOfBirth,
+        timeOfBirth: userData.time_of_birth || userData.timeOfBirth,
+        placeOfBirth: userData.place_of_birth || userData.placeOfBirth || userData.place_name,
+        gender: userData.gender,
+      };
+      const hasAny = Object.values(next).some((v) => v != null && v !== '');
+      if (!hasAny) return prev;
+      localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const setProfile = useCallback((value) => {
+    setProfileState(value);
+    if (value) {
+      localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(value));
+    } else {
+      localStorage.removeItem(PROFILE_STORAGE_KEY);
+    }
+  }, []);
+
+  const setUserId = useCallback((value) => {
+    setUserIdState(value);
+    if (value !== null && Number.isFinite(value)) {
+      localStorage.setItem(USER_ID_STORAGE_KEY, String(value));
+    } else {
+      localStorage.removeItem(USER_ID_STORAGE_KEY);
+    }
+  }, []);
+
+  /** Public: sync token + storage; `null` clears session (dashboard + legacy keys). */
+  const setToken = useCallback((value) => {
+    setTokenState(value);
+    if (value) {
+      localStorage.setItem(TOKEN_STORAGE_KEY, value);
+      return;
+    }
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
+    localStorage.removeItem(USER_STORAGE_KEY);
+    setUser(null);
+    setProfileState(null);
+    localStorage.removeItem(PROFILE_STORAGE_KEY);
+    setUserIdState(null);
+    localStorage.removeItem(USER_ID_STORAGE_KEY);
+  }, []);
 
   /**
    * Load authentication state from localStorage on app startup
@@ -34,8 +115,9 @@ export function AuthProvider({ children }) {
       if (storedUser) {
         try {
           const parsedUser = JSON.parse(storedUser);
-          setToken(storedToken);
+          setTokenState(storedToken);
           setUser(parsedUser);
+          seedDashboardAuth(parsedUser);
         } catch (e) {
           // Invalid JSON, ignore
         }
@@ -44,28 +126,21 @@ export function AuthProvider({ children }) {
       // Validate token in background
       try {
         const userData = await authApi.getCurrentUser(storedToken);
-        setToken(storedToken);
+        setTokenState(storedToken);
         setUser(userData);
+        seedDashboardAuth(userData);
       } catch (error) {
         // Token is invalid or expired
         console.warn('Token validation failed:', error.message);
-        localStorage.removeItem(TOKEN_STORAGE_KEY);
-        localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
-        localStorage.removeItem(USER_STORAGE_KEY);
         setToken(null);
-        setUser(null);
       }
     } catch (error) {
       console.error('Error loading auth from storage:', error);
-      localStorage.removeItem(TOKEN_STORAGE_KEY);
-      localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
-      localStorage.removeItem(USER_STORAGE_KEY);
       setToken(null);
-      setUser(null);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [seedDashboardAuth, setToken]);
 
   /**
    * Logout user
@@ -88,16 +163,9 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.warn('Logout error:', error);
     } finally {
-      // Always clear localStorage and state, even if API call fails
-      localStorage.removeItem(TOKEN_STORAGE_KEY);
-      localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY);
-      localStorage.removeItem(USER_STORAGE_KEY);
-
-      // Clear state
       setToken(null);
-      setUser(null);
     }
-  }, [token]);
+  }, [token, setToken]);
 
   /**
    * Login user with credentials
@@ -138,8 +206,9 @@ export function AuthProvider({ children }) {
       });
 
       // Update state - this triggers re-render
-      setToken(access_token);
+      setTokenState(access_token);
       setUser(userData);
+      seedDashboardAuth(userData);
 
       // Dispatch event to notify other auth contexts
       window.dispatchEvent(new Event('auth:login'));
@@ -175,8 +244,9 @@ export function AuthProvider({ children }) {
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
 
       // Update state
-      setToken(access_token);
+      setTokenState(access_token);
       setUser(newUser);
+      seedDashboardAuth(newUser);
 
       return { access_token, refresh_token, user: newUser };
     } catch (error) {
@@ -254,8 +324,9 @@ export function AuthProvider({ children }) {
       });
 
       // Update state
-      setToken(accessToken);
+      setTokenState(accessToken);
       setUser(userData);
+      seedDashboardAuth(userData);
 
       // Dispatch event to notify other auth contexts
       window.dispatchEvent(new Event('auth:login'));
@@ -263,12 +334,17 @@ export function AuthProvider({ children }) {
       // Debug: Verify state
       console.log('📊 Auth State Updated:', { hasToken: !!accessToken, hasUser: !!userData });
     },
-    [],
+    [seedDashboardAuth],
   );
 
   const value = {
     user,
     token,
+    setToken,
+    profile,
+    setProfile,
+    userId,
+    setUserId,
     isLoading,
     isAuthenticated,
     role,

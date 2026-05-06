@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
+import { useToast } from '../../../common/hooks/useToast';
 import styles from './AdminPlansPage.module.css';
 
 const PLAN_TYPES = ['awaken', 'karma_builder', 'karma_pro', 'dharma_master'];
@@ -22,6 +23,7 @@ const DEFAULT_FORM = {
 };
 
 function AdminPlansPage() {
+  const { showSuccess, showError, showWarning } = useToast();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterEnabled, setFilterEnabled] = useState('all');
@@ -41,7 +43,7 @@ function AdminPlansPage() {
       setPlans(Array.isArray(response) ? response : []);
     } catch (error) {
       console.error('Failed to fetch plans:', error);
-      alert(`Failed to fetch plans: ${error.message || 'Unknown error'}`);
+      showError('Failed to fetch plans', { description: error.message || 'Unknown error' });
     } finally {
       setLoading(false);
     }
@@ -129,31 +131,37 @@ function AdminPlansPage() {
 
       if (editingPlan) {
         await adminApi.updatePlan(editingPlan.unique_id, payload);
-        alert('Plan updated successfully');
+        showSuccess('Plan updated successfully');
       } else {
         await adminApi.createPlan(payload);
-        alert('Plan created successfully');
+        showSuccess('Plan created successfully');
       }
       closeModal();
       fetchPlans();
     } catch (error) {
       console.error('Failed to save plan:', error);
-      alert(error.message || 'Failed to save plan');
+      showError('Failed to save plan', { description: error.message || 'Unknown error' });
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDelete = async (plan) => {
-    if (!window.confirm(`Delete plan "${plan.name}"?`)) return;
-    try {
-      await adminApi.deletePlan(plan.unique_id);
-      alert('Plan deleted successfully');
-      fetchPlans();
-    } catch (error) {
-      console.error('Failed to delete plan:', error);
-      alert(error.message || 'Failed to delete plan');
-    }
+    showWarning(`Delete plan "${plan.name}"?`, {
+      description: 'This action cannot be undone.',
+      actionLabel: 'Delete',
+      duration: 7000,
+      onActionClick: async () => {
+        try {
+          await adminApi.deletePlan(plan.unique_id);
+          showSuccess('Plan deleted successfully');
+          fetchPlans();
+        } catch (error) {
+          console.error('Failed to delete plan:', error);
+          showError('Failed to delete plan', { description: error.message || 'Unknown error' });
+        }
+      },
+    });
   };
 
   const handleToggleEnabled = async (plan) => {
@@ -162,7 +170,7 @@ function AdminPlansPage() {
       fetchPlans();
     } catch (error) {
       console.error('Failed to toggle plan status:', error);
-      alert(error.message || 'Failed to update plan status');
+      showError('Failed to update plan status', { description: error.message || 'Unknown error' });
     }
   };
 

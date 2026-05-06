@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
+import { useToast } from '../../../common/hooks/useToast';
 import styles from './AdminSettingsPage.module.css';
 
 function AdminSettingsPage() {
+  const { showSuccess, showError } = useToast();
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -27,10 +29,10 @@ function AdminSettingsPage() {
     try {
       setSaving(true);
       await adminApi.updateSettings(settings);
-      alert('Settings saved successfully!');
+      showSuccess('Settings saved successfully');
     } catch (error) {
       console.error('Failed to save settings:', error);
-      alert('Failed to save settings');
+      showError('Failed to save settings', { description: error.message || 'Unknown error' });
     } finally {
       setSaving(false);
     }

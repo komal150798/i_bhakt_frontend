@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
+import { useToast } from '../../../common/hooks/useToast';
 import styles from './RolePermissionDrawer.module.css';
 
 function RolePermissionDrawer({ role, onClose, onSave }) {
+  const { showError, showSuccess } = useToast();
   const [loading, setLoading] = useState(true);
   const [permissionsTree, setPermissionsTree] = useState([]);
   const [permissionMap, setPermissionMap] = useState(new Map());
@@ -63,7 +65,7 @@ function RolePermissionDrawer({ role, onClose, onSave }) {
     
     const roleId = role.role_id || role.id;
     if (!roleId) {
-      alert('Role ID is missing');
+      showError('Role ID is missing');
       return;
     }
 
@@ -75,10 +77,11 @@ function RolePermissionDrawer({ role, onClose, onSave }) {
       }));
 
       await adminApi.updateRolePermissions(roleId, permissions);
+      showSuccess('Permissions updated');
       onSave();
     } catch (error) {
       console.error('Failed to save permissions:', error);
-      alert(error.message || 'Failed to save permissions');
+      showError('Failed to save permissions', { description: error.message || 'Unknown error' });
     } finally {
       setSaving(false);
     }

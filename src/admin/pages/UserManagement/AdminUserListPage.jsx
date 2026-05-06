@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
 import { useAdminAuth } from '../../../common/context/AdminAuthContext';
+import { useToast } from '../../../common/hooks/useToast';
 import DataTable from '../../components/DataTable/DataTable';
 import styles from './AdminUserListPage.module.css';
 
 function AdminUserListPage() {
   const { hasPermission, isSuperAdmin } = useAdminAuth();
+  const { showError, showSuccess } = useToast();
   const [loading, setLoading] = useState(true);
   const [adminUsers, setAdminUsers] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -107,8 +109,10 @@ function AdminUserListPage() {
       fetchData();
     } catch (error) {
       console.error('Failed to save admin user:', error);
-      alert(error.message || 'Failed to save admin user');
+      showError('Failed to save admin user', { description: error.message || 'Unknown error' });
+      return;
     }
+    showSuccess(editingUser ? 'Admin user updated' : 'Admin user created');
   };
 
   const handleChangeRole = async (userId, roleId) => {
@@ -117,8 +121,10 @@ function AdminUserListPage() {
       fetchData();
     } catch (error) {
       console.error('Failed to update role:', error);
-      alert(error.message || 'Failed to update role');
+      showError('Failed to update role', { description: error.message || 'Unknown error' });
+      return;
     }
+    showSuccess('Role updated');
   };
 
   const columns = [

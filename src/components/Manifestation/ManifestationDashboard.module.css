@@ -829,6 +829,77 @@
   box-shadow: 0 12px 28px rgba(251, 191, 36, 0.7), 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(15, 23, 42, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.confirmDialog {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(30, 41, 59, 0.98);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.confirmTitle {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.confirmBody {
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.confirmCancel {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.8);
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.confirmDanger {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(220, 38, 38, 0.9));
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.confirmCancel:disabled,
+.confirmDanger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .dashboard {
     padding: 16px;

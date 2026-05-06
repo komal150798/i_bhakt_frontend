@@ -1,20 +1,21 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import HomeHeader from './HomeHeader';
 import HomeFooter from './HomeFooter';
 
+/** Full-screen app pages ship their own chrome; avoid double header/footer. */
 function HomeLayout() {
+  const location = useLocation();
+  const isDashboardOnly = location.pathname === '/dashboard';
+
   return (
     <div className="d-flex flex-column min-vh-100">
-      {/* Sticky Header */}
-      <HomeHeader />
-      
-      {/* Main Content - Hero carousel and pages render here */}
+      {!isDashboardOnly && <HomeHeader />}
+
       <main className="flex-grow-1" style={{ paddingTop: 0 }}>
         <Outlet />
       </main>
-      
-      {/* Footer */}
-      <HomeFooter />
+
+      {!isDashboardOnly && <HomeFooter />}
     </div>
   );
 }

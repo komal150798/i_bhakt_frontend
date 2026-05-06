@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '../common/hooks/useToast'
 
 type AdminInfo = {
 	id: number
@@ -18,6 +19,7 @@ type Stats = {
 }
 
 export default function AdminDashboardPage() {
+	const { showSuccess, showError, showWarning } = useToast()
 	const [adminInfo, setAdminInfo] = useState<AdminInfo | null>(null)
 	const [stats, setStats] = useState<Stats | null>(null)
 	const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'karma' | 'guidance' | 'tips' | 'config' | 'audit' | 'plan_limits' | 'referrals'>('dashboard')
@@ -47,6 +49,24 @@ export default function AdminDashboardPage() {
 			'Content-Type': 'application/json',
 		}
 	}, [])
+
+	const notifyInfo = useCallback((message: string) => {
+		if (/error|failed|fail/i.test(message)) {
+			showError(message)
+		} else {
+			showSuccess(message)
+		}
+	}, [showError, showSuccess])
+
+	const confirmWithToast = useCallback((message: string, onConfirm: () => void | Promise<void>) => {
+		showWarning(message, {
+			actionLabel: 'Confirm',
+			duration: 7000,
+			onActionClick: () => {
+				void onConfirm()
+			},
+		})
+	}, [showWarning])
 
 	useEffect(() => {
 		const token = localStorage.getItem('admin_token')
@@ -244,7 +264,7 @@ function UsersManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAu
 			document.body.removeChild(a)
 		} catch (error) {
 			console.error('Export failed', error)
-			alert('Export failed')
+			notifyInfo('Export failed')
 		}
 	}
 
@@ -360,20 +380,21 @@ function KarmaManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAu
 	}
 
 	const handleDelete = async (id: number) => {
-		if (!confirm('Are you sure you want to delete this karma record?')) return
-		try {
-			const res = await fetch(`${apiBaseUrl}/admin/karma-records/${id}`, {
-				method: 'DELETE',
-				headers: getAuthHeaders(),
-			})
-			if (res.ok) {
-				fetchRecords()
-				alert('Record deleted successfully')
+		confirmWithToast('Are you sure you want to delete this karma record?', async () => {
+			try {
+				const res = await fetch(`${apiBaseUrl}/admin/karma-records/${id}`, {
+					method: 'DELETE',
+					headers: getAuthHeaders(),
+				})
+				if (res.ok) {
+					fetchRecords()
+					notifyInfo('Record deleted successfully')
+				}
+			} catch (error) {
+				console.error('Delete failed', error)
+				notifyInfo('Delete failed')
 			}
-		} catch (error) {
-			console.error('Delete failed', error)
-			alert('Delete failed')
-		}
+		})
 	}
 
 	const handleExport = async (format: 'csv' | 'json') => {
@@ -392,7 +413,7 @@ function KarmaManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAu
 			document.body.removeChild(a)
 		} catch (error) {
 			console.error('Export failed', error)
-			alert('Export failed')
+			notifyInfo('Export failed')
 		}
 	}
 
@@ -547,20 +568,21 @@ function GuidanceManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { ge
 	}
 
 	const handleDelete = async (id: number) => {
-		if (!confirm('Are you sure you want to delete this guidance log?')) return
-		try {
-			const res = await fetch(`${apiBaseUrl}/admin/guidance/${id}`, {
-				method: 'DELETE',
-				headers: getAuthHeaders(),
-			})
-			if (res.ok) {
-				fetchLogs()
-				alert('Guidance log deleted successfully')
+		confirmWithToast('Are you sure you want to delete this guidance log?', async () => {
+			try {
+				const res = await fetch(`${apiBaseUrl}/admin/guidance/${id}`, {
+					method: 'DELETE',
+					headers: getAuthHeaders(),
+				})
+				if (res.ok) {
+					fetchLogs()
+					notifyInfo('Guidance log deleted successfully')
+				}
+			} catch (error) {
+				console.error('Delete failed', error)
+				notifyInfo('Delete failed')
 			}
-		} catch (error) {
-			console.error('Delete failed', error)
-			alert('Delete failed')
-		}
+		})
 	}
 
 	const totalPages = Math.ceil(total / limit)
@@ -667,15 +689,15 @@ function EditGuidanceModal({ log, backendBaseUrl, getAuthHeaders, onClose, apiBa
 			})
 
 			if (res.ok) {
-				alert('Guidance log updated successfully')
+				notifyInfo('Guidance log updated successfully')
 				onClose()
 			} else {
 				const error = await res.json()
-				alert(`Error: ${error.detail || 'Failed to update log'}`)
+				notifyInfo(`Error: ${error.detail || 'Failed to update log'}`)
 			}
 		} catch (error) {
 			console.error('Update failed', error)
-			alert('Update failed')
+			notifyInfo('Update failed')
 		} finally {
 			setSubmitting(false)
 		}
@@ -759,20 +781,21 @@ function TipsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getAut
 	}
 
 	const handleDelete = async (id: number) => {
-		if (!confirm('Are you sure you want to delete this alignment tip?')) return
-		try {
-			const res = await fetch(`${apiBaseUrl}/admin/alignment-tips/${id}`, {
-				method: 'DELETE',
-				headers: getAuthHeaders(),
-			})
-			if (res.ok) {
-				fetchTips()
-				alert('Alignment tip deleted successfully')
+		confirmWithToast('Are you sure you want to delete this alignment tip?', async () => {
+			try {
+				const res = await fetch(`${apiBaseUrl}/admin/alignment-tips/${id}`, {
+					method: 'DELETE',
+					headers: getAuthHeaders(),
+				})
+				if (res.ok) {
+					fetchTips()
+					notifyInfo('Alignment tip deleted successfully')
+				}
+			} catch (error) {
+				console.error('Delete failed', error)
+				notifyInfo('Delete failed')
 			}
-		} catch (error) {
-			console.error('Delete failed', error)
-			alert('Delete failed')
-		}
+		})
 	}
 
 	const totalPages = Math.ceil(total / limit)
@@ -881,15 +904,15 @@ function EditTipModal({ tip, backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl
 
 			if (res.ok) {
 				const data = await res.json()
-				alert(data.message || 'Alignment tip updated successfully. Historical data preserved - old tip archived.')
+				notifyInfo(data.message || 'Alignment tip updated successfully. Historical data preserved - old tip archived.')
 				onClose() // This will trigger fetchTips() in the parent component
 			} else {
 				const error = await res.json()
-				alert(`Error: ${error.detail || 'Failed to update tip'}`)
+				notifyInfo(`Error: ${error.detail || 'Failed to update tip'}`)
 			}
 		} catch (error) {
 			console.error('Update failed', error)
-			alert('Update failed')
+			notifyInfo('Update failed')
 		} finally {
 			setSubmitting(false)
 		}
@@ -980,7 +1003,7 @@ function ConfigManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { getA
 
 			if (res.ok) {
 				fetchConfigs()
-				alert('Config updated successfully!')
+				notifyInfo('Config updated successfully!')
 			}
 		} catch (error) {
 			console.error('Failed to update config', error)
@@ -1458,15 +1481,15 @@ function CreateKarmaModal({ backendBaseUrl, getAuthHeaders, onClose, apiBaseUrl 
 			})
 
 			if (res.ok) {
-				alert('Karma record created successfully')
+				notifyInfo('Karma record created successfully')
 				onClose()
 			} else {
 				const error = await res.json()
-				alert(`Error: ${error.detail || 'Failed to create record'}`)
+				notifyInfo(`Error: ${error.detail || 'Failed to create record'}`)
 			}
 		} catch (error) {
 			console.error('Create failed', error)
-			alert('Create failed')
+			notifyInfo('Create failed')
 		} finally {
 			setSubmitting(false)
 		}
@@ -1548,15 +1571,15 @@ function EditKarmaModal({ record, backendBaseUrl, getAuthHeaders, onClose, apiBa
 			})
 
 			if (res.ok) {
-				alert('Karma record updated successfully')
+				notifyInfo('Karma record updated successfully')
 				onClose()
 			} else {
 				const error = await res.json()
-				alert(`Error: ${error.detail || 'Failed to update record'}`)
+				notifyInfo(`Error: ${error.detail || 'Failed to update record'}`)
 			}
 		} catch (error) {
 			console.error('Update failed', error)
-			alert('Update failed')
+			notifyInfo('Update failed')
 		} finally {
 			setSubmitting(false)
 		}
@@ -1807,7 +1830,7 @@ function ReferralsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { g
 			setReferrals(data.referrals || [])
 		} catch (error) {
 			console.error('Failed to fetch referrals', error)
-			alert('Failed to fetch referrals')
+			notifyInfo('Failed to fetch referrals')
 		} finally {
 			setLoading(false)
 		}
@@ -1960,7 +1983,7 @@ function PlanLimitsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { 
 			setLimits(data.limits || [])
 		} catch (error) {
 			console.error('Failed to fetch plan limits', error)
-			alert('Failed to fetch plan limits')
+			notifyInfo('Failed to fetch plan limits')
 		} finally {
 			setLoading(false)
 		}
@@ -2011,17 +2034,17 @@ function PlanLimitsManagement({ getAuthHeaders, backendBaseUrl, apiBaseUrl }: { 
 			})
 
 			if (res.ok) {
-				alert('Plan limit saved successfully!')
+				notifyInfo('Plan limit saved successfully!')
 				setEditingRow(null)
 				setEditingData({})
 				fetchLimits()
 			} else {
 				const error = await res.json()
-				alert(`Failed to save: ${error.detail || 'Unknown error'}`)
+				notifyInfo(`Failed to save: ${error.detail || 'Unknown error'}`)
 			}
 		} catch (error) {
 			console.error('Save failed', error)
-			alert('Save failed')
+			notifyInfo('Save failed')
 		}
 	}
 

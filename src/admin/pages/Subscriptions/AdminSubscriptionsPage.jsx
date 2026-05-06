@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
+import { useToast } from '../../../common/hooks/useToast';
 import DataTable from '../../components/DataTable/DataTable';
 import styles from './AdminSubscriptionsPage.module.css';
 
 function AdminSubscriptionsPage() {
+  const { showSuccess, showError, showWarning } = useToast();
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,7 +51,7 @@ function AdminSubscriptionsPage() {
       setTotal(meta.total || 0);
     } catch (error) {
       console.error('Failed to fetch subscriptions:', error);
-      alert('Failed to load subscriptions: ' + (error.message || 'Unknown error'));
+      showError('Failed to load subscriptions', { description: error.message || 'Unknown error' });
     } finally {
       setLoading(false);
     }
@@ -97,7 +99,7 @@ function AdminSubscriptionsPage() {
           start_date: formData.start_date,
           end_date: formData.end_date || undefined,
         });
-        alert('Subscription created successfully!');
+        showSuccess('Subscription created successfully');
       } else {
         await adminApi.updateSubscription(editingSubscription.id, {
           plan_id: parseInt(formData.plan_id),
@@ -105,7 +107,7 @@ function AdminSubscriptionsPage() {
           end_date: formData.end_date || null,
           is_active: formData.is_active,
         });
-        alert('Subscription updated successfully!');
+        showSuccess('Subscription updated successfully');
       }
       setShowAddModal(false);
       setShowEditModal(false);
@@ -113,24 +115,26 @@ function AdminSubscriptionsPage() {
       fetchSubscriptions();
     } catch (error) {
       console.error('Failed to save subscription:', error);
-      alert('Failed to save subscription: ' + (error.message || 'Unknown error'));
+      showError('Failed to save subscription', { description: error.message || 'Unknown error' });
     }
   };
 
   const handleCancel = async (subscription) => {
-    if (!confirm(`Are you sure you want to cancel subscription for ${subscription.user_name || subscription.user_email}?`)) {
-      return;
-    }
-
-    try {
-      const reason = prompt('Cancellation reason (optional):');
-      await adminApi.cancelSubscription(subscription.id, reason || undefined);
-      alert('Subscription cancelled successfully!');
-      fetchSubscriptions();
-    } catch (error) {
-      console.error('Failed to cancel subscription:', error);
-      alert('Failed to cancel subscription: ' + (error.message || 'Unknown error'));
-    }
+    showWarning(`Cancel subscription for ${subscription.user_name || subscription.user_email}?`, {
+      description: 'This will mark the subscription as cancelled.',
+      actionLabel: 'Cancel subscription',
+      duration: 7000,
+      onActionClick: async () => {
+        try {
+          await adminApi.cancelSubscription(subscription.id);
+          showSuccess('Subscription cancelled successfully');
+          fetchSubscriptions();
+        } catch (error) {
+          console.error('Failed to cancel subscription:', error);
+          showError('Failed to cancel subscription', { description: error.message || 'Unknown error' });
+        }
+      },
+    });
   };
 
   const columns = [

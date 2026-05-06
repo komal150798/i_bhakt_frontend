@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
 import { useAdminAuth } from '../../../common/context/AdminAuthContext';
+import { useToast } from '../../../common/hooks/useToast';
 import styles from './AdminProfilePage.module.css';
 
 function AdminProfilePage() {
   const { adminUser } = useAdminAuth();
+  const { showSuccess, showError } = useToast();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -33,10 +35,10 @@ function AdminProfilePage() {
     try {
       setSaving(true);
       await adminApi.updateAdminProfile(profile);
-      alert('Profile updated successfully!');
+      showSuccess('Profile updated successfully');
     } catch (error) {
       console.error('Failed to update profile:', error);
-      alert('Failed to update profile');
+      showError('Failed to update profile', { description: error.message || 'Unknown error' });
     } finally {
       setSaving(false);
     }

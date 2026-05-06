@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../../common/api/adminApi';
 import { useAdminAuth } from '../../../common/context/AdminAuthContext';
+import { useToast } from '../../../common/hooks/useToast';
 import DataTable from '../../components/DataTable/DataTable';
 import styles from './AIPromptsPage.module.css';
 
 function AIPromptsPage() {
   const { hasPermission, isSuperAdmin } = useAdminAuth();
+  const { showSuccess, showError, showWarning } = useToast();
   const [loading, setLoading] = useState(true);
   const [prompts, setPrompts] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -97,7 +99,7 @@ function AIPromptsPage() {
       fetchPrompts();
     } catch (error) {
       console.error('Failed to save prompt:', error);
-      alert(error.message || 'Failed to save prompt');
+      showError('Failed to save prompt', { description: error.message || 'Unknown error' });
     }
   };
 
@@ -107,28 +109,34 @@ function AIPromptsPage() {
       fetchPrompts();
     } catch (error) {
       console.error('Failed to toggle prompt status:', error);
-      alert(error.message || 'Failed to update prompt status');
+      showError('Failed to update prompt status', { description: error.message || 'Unknown error' });
     }
   };
 
   const handleDelete = async (promptId) => {
-    if (!confirm('Are you sure you want to delete this prompt?')) return;
-    try {
-      await adminApi.deleteAIPrompt(promptId);
-      fetchPrompts();
-    } catch (error) {
-      console.error('Failed to delete prompt:', error);
-      alert(error.message || 'Failed to delete prompt');
-    }
+    showWarning('Are you sure you want to delete this prompt?', {
+      actionLabel: 'Delete',
+      duration: 7000,
+      onActionClick: async () => {
+        try {
+          await adminApi.deleteAIPrompt(promptId);
+          showSuccess('Prompt deleted');
+          fetchPrompts();
+        } catch (error) {
+          console.error('Failed to delete prompt:', error);
+          showError('Failed to delete prompt', { description: error.message || 'Unknown error' });
+        }
+      },
+    });
   };
 
   const handleClearCache = async (promptId) => {
     try {
       await adminApi.clearAIPromptCache(promptId);
-      alert('Cache cleared successfully');
+      showSuccess('Cache cleared successfully');
     } catch (error) {
       console.error('Failed to clear cache:', error);
-      alert(error.message || 'Failed to clear cache');
+      showError('Failed to clear cache', { description: error.message || 'Unknown error' });
     }
   };
 
@@ -228,14 +236,18 @@ function AIPromptsPage() {
               </button>
               <button
                 onClick={async () => {
-                  if (confirm('Clear all prompt caches?')) {
-                    try {
-                      await adminApi.clearAllAIPromptCache();
-                      alert('All caches cleared successfully');
-                    } catch (error) {
-                      alert(error.message || 'Failed to clear caches');
-                    }
-                  }
+                  showWarning('Clear all prompt caches?', {
+                    actionLabel: 'Clear all',
+                    duration: 7000,
+                    onActionClick: async () => {
+                      try {
+                        await adminApi.clearAllAIPromptCache();
+                        showSuccess('All caches cleared successfully');
+                      } catch (error) {
+                        showError('Failed to clear caches', { description: error.message || 'Unknown error' });
+                      }
+                    },
+                  });
                 }}
                 className={styles.btnClearCache}
               >

@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { homeApi } from '../../../api/homeApi';
 import { useLanguage } from '../../../common/i18n/LanguageContext';
 import Loader from '../../../common/components/Loader/Loader';
+import { useToast } from '../../../common/hooks/useToast';
 import styles from './ReferPage.module.css';
 
 function ReferPage() {
   const { t } = useLanguage();
+  const { showSuccess } = useToast();
   const navigate = useNavigate();
   const [referralCode, setReferralCode] = useState('');
   const [stats, setStats] = useState(null);
@@ -44,7 +46,7 @@ function ReferPage() {
   const copyToClipboard = () => {
     const url = `${window.location.origin}/signup?ref=${referralCode}`;
     navigator.clipboard.writeText(url);
-    alert('Referral link copied to clipboard!');
+    showSuccess('Link copied', { description: 'Share it with friends to earn rewards.' });
   };
 
   if (isLoading) {

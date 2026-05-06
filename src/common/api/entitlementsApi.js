@@ -11,7 +11,7 @@ import httpClient from '../../api/httpClient';
  */
 export async function getEntitlements() {
   try {
-    const response = await httpClient.get('/app/entitlements');
+    const response = await httpClient.get('/entitlements');
     return response.data?.data || response.data;
   } catch (error) {
     console.error('Failed to get entitlements:', error);
@@ -26,7 +26,7 @@ export async function getEntitlements() {
  */
 export async function checkFeatureAccess(feature) {
   try {
-    const response = await httpClient.get(`/app/entitlements/check/${feature}`);
+    const response = await httpClient.get(`/entitlements/check/${feature}`);
     return response.data?.data || response.data;
   } catch (error) {
     console.error(`Failed to check feature access for ${feature}:`, error);

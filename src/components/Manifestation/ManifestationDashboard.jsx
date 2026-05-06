@@ -1,14 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { manifestationApi } from '../../common/api/manifestationApi';
+import { useToast } from '../../common/hooks/useToast';
+import {
+  IBAHKT_PLAN_UPGRADED,
+  IBAHKT_DASHBOARD_REFRESH,
+} from '../../common/plan/PlanStructureModal';
 import ManifestationModal from './ManifestationModal';
 import styles from './ManifestationDashboard.module.css';
 
 const PENDING_KEY = 'ibhakt_pending_manifestation';
 
 function ManifestationDashboard() {
-  const navigate = useNavigate();
   const location = useLocation();
+  const { showSuccess, showError, showWarning, showInfo } = useToast();
   const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -21,6 +26,8 @@ function ManifestationDashboard() {
   const [subEntryDateMap, setSubEntryDateMap] = useState({});
   const [subEntryTextMap, setSubEntryTextMap] = useState({});
   const [subEntrySubmittingMap, setSubEntrySubmittingMap] = useState({});
+  const [archiveConfirmId, setArchiveConfirmId] = useState(null);
+  const [archiveSubmitting, setArchiveSubmitting] = useState(false);
 
   const getPlanLabel = (planType) => {
     if (planType === 'awaken') return 'Awaken (Free)';
@@ -30,22 +37,7 @@ function ManifestationDashboard() {
     return planType || 'Unknown';
   };
 
-  useEffect(() => {
-    console.log('[ManifestationDashboard] Component mounted - fetching dashboard');
-    fetchDashboard();
-
-    // Check for pending manifestation from Instagram/social flow
-    const pending = localStorage.getItem(PENDING_KEY);
-    if (pending) {
-      setPendingDescription(pending);
-      localStorage.removeItem(PENDING_KEY);
-      // Auto-open modal with the pending text
-      setSelectedManifestation(null);
-      setShowModal(true);
-    }
-  }, []);
-
-  const fetchDashboard = async () => {
+  const fetchDashboard = useCallback(async () => {
     try {
       setLoading(true);
       const data = await manifestationApi.getDashboard();
@@ -54,7 +46,7 @@ function ManifestationDashboard() {
       console.error('Failed to fetch dashboard:', error);
       // Don't show alert for auth errors (they redirect to login via ProtectedRoute)
       if (!error.message.includes('Authentication') && !error.message.includes('Session expired')) {
-        alert('Failed to load manifestation dashboard: ' + error.message);
+        showError('Could not load dashboard', { description: error.message });
       }
       // Set empty dashboard state on error to prevent redirect
       setDashboard({
@@ -70,18 +62,49 @@ function ManifestationDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError]);
+
+  useEffect(() => {
+    console.log('[ManifestationDashboard] Component mounted - fetching dashboard');
+    void fetchDashboard();
+    // Mount-only: plan refresh uses IBAHKT_* listeners below
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const pending = localStorage.getItem(PENDING_KEY);
+    if (pending) {
+      setPendingDescription(pending);
+      localStorage.removeItem(PENDING_KEY);
+      setSelectedManifestation(null);
+      setShowModal(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const refresh = () => {
+      void fetchDashboard();
+    };
+    window.addEventListener(IBAHKT_PLAN_UPGRADED, refresh);
+    window.addEventListener(IBAHKT_DASHBOARD_REFRESH, refresh);
+    return () => {
+      window.removeEventListener(IBAHKT_PLAN_UPGRADED, refresh);
+      window.removeEventListener(IBAHKT_DASHBOARD_REFRESH, refresh);
+    };
+  }, [fetchDashboard]);
 
   const handleAddManifestation = () => {
     if (dashboard?.plan?.can_create_manifestation === false) {
       const monthlyLimit = dashboard?.plan?.monthly_limit;
       const used = dashboard?.plan?.monthly_used || 0;
       if (monthlyLimit !== null && monthlyLimit !== undefined) {
-        alert(
-          `Monthly manifestation limit reached (${used}/${monthlyLimit}) for your current plan. Please upgrade to continue.`,
-        );
+        showWarning('Monthly limit reached', {
+          description: `You have used ${used} of ${monthlyLimit} manifestations this month. Upgrade your plan to continue.`,
+        });
       } else {
-        alert('Manifestation creation is not available in your current plan.');
+        showWarning('Creation not available', {
+          description: 'Manifestation creation is not available on your current plan.',
+        });
       }
       return;
     }
@@ -96,7 +119,7 @@ function ManifestationDashboard() {
       setShowModal(true);
     } catch (error) {
       console.error('Failed to fetch manifestation:', error);
-      alert('Failed to load manifestation details: ' + error.message);
+      showError('Could not load details', { description: error.message });
     }
   };
 
@@ -118,7 +141,7 @@ function ManifestationDashboard() {
       setManifestationDetailsMap((prev) => ({ ...prev, [manifestationId]: data }));
     } catch (error) {
       console.error('Failed to fetch manifestation details for accordion:', error);
-      alert('Failed to load manifestation details: ' + error.message);
+      showError('Could not load details', { description: error.message });
     } finally {
       setDetailsLoadingMap((prev) => ({ ...prev, [manifestationId]: false }));
     }
@@ -130,7 +153,9 @@ function ManifestationDashboard() {
     const actionText = (subEntryTextMap[manifestationId] || '').trim();
 
     if (!entryDate || !actionText) {
-      alert('Please select date and enter what you did today.');
+      showWarning('Missing information', {
+        description: 'Please select a date and describe what you did today.',
+      });
       return;
     }
 
@@ -164,26 +189,41 @@ function ManifestationDashboard() {
       });
 
       setSubEntryTextMap((prev) => ({ ...prev, [manifestationId]: '' }));
+      showSuccess('Daily entry saved', { description: 'Your progress has been recorded.' });
     } catch (error) {
       console.error('Failed to add sub manifestation entry:', error);
-      alert(error.message || 'Failed to add sub manifestation entry.');
+      showError('Could not save entry', {
+        description: error.message || 'Failed to add daily progress.',
+      });
     } finally {
       setSubEntrySubmittingMap((prev) => ({ ...prev, [manifestationId]: false }));
     }
   };
 
-  const handleArchive = async (manifestationId) => {
-    if (!confirm('Are you sure you want to archive this manifestation?')) {
-      return;
-    }
+  const requestArchive = (manifestationId) => {
+    setArchiveConfirmId(manifestationId);
+  };
 
+  const cancelArchive = () => setArchiveConfirmId(null);
+
+  const confirmArchive = async () => {
+    if (archiveConfirmId == null || archiveSubmitting) return;
+    const manifestationId = archiveConfirmId;
     try {
-      await manifestationApi.archiveManifestation(manifestationId);
-      alert('Manifestation archived successfully!');
+      setArchiveSubmitting(true);
+      const result = await manifestationApi.archiveManifestation(manifestationId);
+      const msg =
+        (typeof result === 'object' && result?.message) ||
+        (typeof result === 'object' && result?.data?.message) ||
+        'Your manifestation has been archived.';
+      showSuccess('Archived', { description: String(msg) });
+      setArchiveConfirmId(null);
       fetchDashboard();
     } catch (error) {
       console.error('Failed to archive manifestation:', error);
-      alert('Failed to archive manifestation: ' + error.message);
+      showError('Archive failed', { description: error.message });
+    } finally {
+      setArchiveSubmitting(false);
     }
   };
 
@@ -198,12 +238,12 @@ function ManifestationDashboard() {
       await fetchDashboard();
       
       // Show success message (optional - can remove alert if you prefer)
-      console.log('Lock toggled successfully:', message);
+      showInfo('Lock updated', { description: message });
     } catch (error) {
       console.error('Failed to toggle lock:', error);
       // Only show error if it's not an auth error (auth errors are handled by ProtectedRoute)
       if (!error.message.includes('Authentication') && !error.message.includes('Session expired')) {
-        alert('Failed to toggle lock: ' + error.message);
+        showError('Could not update lock', { description: error.message });
       }
       // Don't navigate on error - stay on page
     }
@@ -237,13 +277,7 @@ function ManifestationDashboard() {
   const hasReachedLimit = planInfo?.can_create_manifestation === false;
 
   const openUpgradeFlow = () => {
-    if (location.pathname === '/dashboard') {
-      window.dispatchEvent(new Event('ibhakt:open-plan-modal'));
-      return;
-    }
-    navigate('/dashboard?openPlanModal=1', {
-      state: { openPlanModal: true, from: 'manifestation_limit' },
-    });
+    window.dispatchEvent(new Event('ibhakt:open-plan-modal'));
   };
 
   // Separate locked and unlocked manifestations
@@ -578,7 +612,7 @@ function ManifestationDashboard() {
                     className={styles.archiveButton}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleArchive(manifestation.id);
+                      requestArchive(manifestation.id);
                     }}
                   >
                     Archive
@@ -676,16 +710,65 @@ function ManifestationDashboard() {
           <div className={styles.emptyStateIcon}>✨</div>
           <h3>No Manifestations Yet</h3>
           <p>Start your manifestation journey by creating your first intention.</p>
-          <button className={styles.addButton} onClick={handleAddManifestation}>
-            Create Your First Manifestation
+          <button
+            className={styles.addButton}
+            onClick={hasReachedLimit ? openUpgradeFlow : handleAddManifestation}
+          >
+            {hasReachedLimit ? 'Upgrade Plan' : 'Create Your First Manifestation'}
           </button>
         </div>
       )}
 
       {/* Floating Add Button */}
-      <button className={styles.floatingAddButton} onClick={handleAddManifestation}>
+      <button
+        className={styles.floatingAddButton}
+        onClick={hasReachedLimit ? openUpgradeFlow : handleAddManifestation}
+        title={hasReachedLimit ? 'Upgrade plan' : 'Create manifestation'}
+        aria-label={hasReachedLimit ? 'Upgrade plan' : 'Create manifestation'}
+      >
         +
       </button>
+
+      {archiveConfirmId != null && (
+        <div
+          className={styles.confirmOverlay}
+          role="presentation"
+          onClick={cancelArchive}
+        >
+          <div
+            className={styles.confirmDialog}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="archive-confirm-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 id="archive-confirm-title" className={styles.confirmTitle}>
+              Archive this manifestation?
+            </h3>
+            <p className={styles.confirmBody}>
+              It will be removed from your active dashboard list.
+            </p>
+            <div className={styles.confirmActions}>
+              <button
+                type="button"
+                className={styles.confirmCancel}
+                disabled={archiveSubmitting}
+                onClick={cancelArchive}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.confirmDanger}
+                disabled={archiveSubmitting}
+                onClick={() => void confirmArchive()}
+              >
+                {archiveSubmitting ? 'Archiving…' : 'Archive'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal */}
       {showModal && (
@@ -694,6 +777,8 @@ function ManifestationDashboard() {
           initialDescription={pendingDescription}
           onClose={handleModalClose}
           onSuccess={handleModalClose}
+          plan={dashboard?.plan}
+          dashboardLoading={loading}
         />
       )}
     </div>
